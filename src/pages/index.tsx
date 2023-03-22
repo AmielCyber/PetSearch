@@ -1,12 +1,14 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import DogIcon from "@/components/icons/DogIcon";
+// Our imports.
+import styles from "@/styles/Home.module.css";
 import CatIcon from "@/components/icons/CatIcon";
+import DogIcon from "@/components/icons/DogIcon";
+import PetSelectionCard from "@/components/cards/PetSelectionCard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,16 +33,12 @@ export default function Home() {
             gap: "1rem",
           }}
         >
-          <Paper elevation={10} sx={{ padding: "2rem", borderRadius: "30px" }}>
-            <Link href="/dogs">
-              <CatIcon sx={{ fontSize: 180 }} />
-            </Link>
-          </Paper>
-          <Paper elevation={10} sx={{ padding: "2rem", borderRadius: "30px" }}>
-            <Link href="/dogs">
-              <DogIcon sx={{ fontSize: 180 }} />
-            </Link>
-          </Paper>
+          <PetSelectionCard petUrl="/cats">
+            <CatIcon sx={{ fontSize: 180 }} />
+          </PetSelectionCard>
+          <PetSelectionCard petUrl="/dogs">
+            <DogIcon sx={{ fontSize: 180 }} />
+          </PetSelectionCard>
         </Box>
       </main>
     </>
