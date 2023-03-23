@@ -1,9 +1,7 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Link from "next/link";
 // Our imports.
 import styles from "@/styles/Home.module.css";
 import CatIcon from "@/components/icons/CatIcon";
@@ -11,6 +9,9 @@ import DogIcon from "@/components/icons/DogIcon";
 import PetSelectionCard from "@/components/cards/PetSelectionCard";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Will implement location with useContext later.
+const LOCATION = "92101";
 
 export default function Home() {
   return (
@@ -33,10 +34,10 @@ export default function Home() {
             gap: "1rem",
           }}
         >
-          <PetSelectionCard petUrl="/cats">
+          <PetSelectionCard petType="cats" location={LOCATION}>
             <CatIcon sx={{ fontSize: 180 }} />
           </PetSelectionCard>
-          <PetSelectionCard petUrl="/dogs">
+          <PetSelectionCard petType="dogs" location={LOCATION}>
             <DogIcon sx={{ fontSize: 180 }} />
           </PetSelectionCard>
         </Box>
