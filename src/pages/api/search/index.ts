@@ -9,6 +9,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Will validate later.
     // Access token from the client.
     const accessToken = req.headers.authorization;
+    if (!accessToken) {
+      res.status(400).json({ message: "Invalid token passed." });
+      return;
+    }
     let page, location, petType;
     //{ page, location } = req.query;
     // Needs validation
@@ -26,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       response = await fetch(PET_FINDER_URL + searchQuery.toString(), {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: accessToken,
         },
       });
       result = await response.json();

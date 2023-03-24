@@ -19,7 +19,11 @@ export default function AvailablePets() {
   // May change the query parameters later.
   let petType = router.query.petType as string;
   const location = router.query.location as string;
-  petType = petType.slice(0, 1).toUpperCase() + petType.slice(1);
+  if (petType) {
+    petType = petType.slice(0, 1).toUpperCase() + petType.slice(1);
+  } else {
+    petType = "Pets";
+  }
 
   return (
     <Typography sx={{ textAlign: "center", marginBottom: "2rem" }} variant="h2">

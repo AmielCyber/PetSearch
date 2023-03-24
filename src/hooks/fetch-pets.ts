@@ -10,7 +10,7 @@ const fetcher = async (url: string, accessToken: AccessToken) => {
   const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: accessToken.token,
+      Authorization: `Bearer ${accessToken.token}`,
       "Content-Type": "application/json",
     },
   });
