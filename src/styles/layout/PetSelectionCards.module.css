@@ -1,27 +1,27 @@
-.petTextLabels {
+/* .petTextLabels {
   font-size: 2rem;
   color: #00a693;
   text-align: center;
   padding-top: 10px;
   text-transform: capitalize;
-}
+} */
 
-.petCards {
+/* .petCards {
   padding: 3rem;
   border-radius: 30px;
 }
 .petCards:hover {
   outline-color: #00a693;
   outline-style: solid;
-}
+} */
 
-.petIcons {
+/* .petIcons {
   color: #212427;
-}
+} */
 
-.petCardBox {
+/* .petCardBox {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
-}
+} */

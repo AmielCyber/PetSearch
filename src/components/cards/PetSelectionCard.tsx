@@ -1,7 +1,6 @@
 import Paper from "@mui/material/Paper";
 import Link from "next/link";
 import Typography from "@mui/material/Typography";
-import styles from "@/styles/layout/PetSelectionCards.module.css";
 
 type Props = {
   petType: string;
@@ -9,21 +8,38 @@ type Props = {
   children: React.ReactNode;
 };
 
+// Styles
+const petCards = {
+  padding: "3rem",
+  borderRadius: "30px",
+  "&:hover": {
+    outlineColor: "#00a693",
+    outlineStyle: "solid",
+  },
+};
+const petTextLabels = {
+  fontSize: "2rem",
+  color: "#00a693",
+  textAlign: "center",
+  paddingTop: "10px",
+  textTransform: "capitalize",
+};
+
 // May change the pathname to support dynamic routing: /search/cats?.... /search/dogs?....
 
 export default function PetSelectionCard(props: Props) {
   return (
-    <Paper className={styles.petCards} elevation={10}>
-      <Link
-        href={{
-          pathname: "/search/",
-          query: { petType: props.petType, location: props.location },
-        }}
-        className={styles.petIcons}
-      >
+    <Link
+      style={{ textDecoration: "none" }}
+      href={{
+        pathname: "/search/",
+        query: { petType: props.petType, location: props.location },
+      }}
+    >
+      <Paper sx={petCards} elevation={10}>
         {props.children}
-      </Link>
-      <Typography className={styles.petTextLabels}>{props.petType}</Typography>
-    </Paper>
+        <Typography sx={petTextLabels}>{props.petType}</Typography>
+      </Paper>
+    </Link>
   );
 }
