@@ -34,10 +34,10 @@ export default function Home() {
             gap: "1rem",
           }}
         >
-          <PetSelectionCard petType="cats" location={LOCATION}>
+          <PetSelectionCard petType="cat" location={LOCATION}>
             <CatIcon sx={{ fontSize: 180 }} />
           </PetSelectionCard>
-          <PetSelectionCard petType="dogs" location={LOCATION}>
+          <PetSelectionCard petType="dog" location={LOCATION}>
             <DogIcon sx={{ fontSize: 180 }} />
           </PetSelectionCard>
         </Box>

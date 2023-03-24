@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const PETS = ["cats", "dogs"];
+const PETS = ["cat", "dog"];
 const PET_FINDER_URL = "https://api.petfinder.com/v2/animals?";
 
 //"Authorization: Bearer {YOUR_ACCESS_TOKEN}" GET https://api.petfinder.com/v2/{CATEGORY}/{ACTION}?{parameter_1}={value_1}&{parameter_2}={value_2}
