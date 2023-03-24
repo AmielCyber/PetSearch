@@ -10,8 +10,13 @@ export default function MainNavigation() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="inherit" component="div" sx={{ flexGrow: 1 }}>
-            <Link href={"/"}>Home</Link>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link
+              href={"/"}
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              PetSearch
+            </Link>
           </Typography>
           <Button color="inherit">
             <Typography variant="inherit" component="div">

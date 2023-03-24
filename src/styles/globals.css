@@ -1,3 +1,7 @@
 :root {
   --header-color: #421e86;
 }
+
+body {
+  margin: 0px;
+}
