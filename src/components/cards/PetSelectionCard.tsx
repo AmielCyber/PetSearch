@@ -1,5 +1,7 @@
 import Paper from "@mui/material/Paper";
 import Link from "next/link";
+import Typography from "@mui/material/Typography";
+import styles from "@/styles/layout/PetSelectionCards.module.css";
 
 type Props = {
   petType: string;
@@ -11,16 +13,17 @@ type Props = {
 
 export default function PetSelectionCard(props: Props) {
   return (
-    <Paper elevation={10} sx={{ padding: "2rem", borderRadius: "30px" }}>
+    <Paper className={styles.petCards} elevation={10}>
       <Link
         href={{
           pathname: "/search/",
           query: { petType: props.petType, location: props.location },
         }}
-        style={{ color: "inherit" }}
+        className={styles.petIcons}
       >
         {props.children}
       </Link>
+      <Typography className={styles.petTextLabels}>{props.petType}</Typography>
     </Paper>
   );
 }

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 // Our imports.
 import styles from "@/styles/Home.module.css";
+import cardStyles from "@/styles/layout/PetSelectionCards.module.css";
 import CatIcon from "@/components/icons/CatIcon";
 import DogIcon from "@/components/icons/DogIcon";
 import PetSelectionCard from "@/components/cards/PetSelectionCard";
@@ -22,18 +23,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <Typography sx={{ textAlign: "center", marginBottom: "2rem" }} variant="h2">
+      <main>
+        <Typography className={styles.title} variant="h2">
           Find Your Fur Ever Friend!
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: "1rem",
-          }}
-        >
+        <Box className={cardStyles.petCardBox}>
           <PetSelectionCard petType="cats" location={LOCATION}>
             <CatIcon sx={{ fontSize: 180 }} />
           </PetSelectionCard>
