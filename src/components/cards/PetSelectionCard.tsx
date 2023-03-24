@@ -12,7 +12,13 @@ type Props = {
 export default function PetSelectionCard(props: Props) {
   return (
     <Paper elevation={10} sx={{ padding: "2rem", borderRadius: "30px" }}>
-      <Link href={{ pathname: "/search/", query: { petType: props.petType, location: props.location } }}>
+      <Link
+        href={{
+          pathname: "/search/",
+          query: { petType: props.petType, location: props.location },
+        }}
+        style={{ color: "inherit" }}
+      >
         {props.children}
       </Link>
     </Paper>

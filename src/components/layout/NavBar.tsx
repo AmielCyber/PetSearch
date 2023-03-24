@@ -11,7 +11,12 @@ export default function MainNavigation() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="inherit" component="div" sx={{ flexGrow: 1 }}>
-            <Link href={"/"}>Home</Link>
+            <Link
+              href={"/"}
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              Home
+            </Link>
           </Typography>
           <Button color="inherit">
             <Typography variant="inherit" component="div">
