@@ -1,9 +1,10 @@
 import useSWR from "swr";
+// Our imports.
+import type AccessToken from "@/types/AccessToken";
+import type PetResponse from "@/models/PetResponse";
 import useToken from "./useToken";
-import AccessToken from "@/types/AccessToken";
 
 const fetcher = async (url: string, accessToken: AccessToken) => {
-  console.log(accessToken);
   if (!accessToken) {
     throw new Error("Failed to validate token");
   }
@@ -14,14 +15,16 @@ const fetcher = async (url: string, accessToken: AccessToken) => {
       "Content-Type": "application/json",
     },
   });
-  const responseData = await response.json();
   if (!response.ok) {
+    const responseData = await response.json();
     // Make SWR catch the failed response.
     throw new Error(responseData.message);
   }
+  const responseData: Promise<PetResponse> = await response.json();
   return responseData;
 };
 
+// Set revalidation options, fetches data again if true during the following conditions:
 const revalidateOptions = {
   revalidateOnFocus: false,
   revalidateIfStale: false,
@@ -29,7 +32,9 @@ const revalidateOptions = {
 };
 
 export default function FetchPets(url: string) {
-  const { accessToken } = useToken();
+  const { accessToken } = useToken(); // Get access token.
+  // Only fetch data if we have an access token.
+  // Will pass a conditional function later to handle tokens stored in browser.
   const { data, error, isLoading } = useSWR(
     accessToken ? [url, accessToken] : null,
     ([url, accessToken]) => fetcher(url, accessToken),
