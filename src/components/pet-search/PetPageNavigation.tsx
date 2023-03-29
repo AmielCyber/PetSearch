@@ -1,30 +1,23 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useRouter } from "next/router";
+
 type Props = {
+  currentPage: number;
   totalPages: number;
+  isLoading: boolean;
+  onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 };
 export default function PetPageNavigation(props: Props) {
-  const router = useRouter();
-  const query = router.query;
-  const page = query.page ? parseInt(query.page as string) : 1;
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    router.push({
-      query: {
-        ...query,
-        page: value,
-      },
-    });
-  };
   return (
     <Stack spacing={2} direction="row" justifyContent="center" alignItems="center">
       <Pagination
         count={props.totalPages}
-        page={page}
+        page={props.currentPage}
         color="primary"
         showFirstButton
-        showLastButton
-        onChange={handlePageChange}
+        onChange={props.onPageChange}
+        disabled={props.isLoading}
+        size="large"
       />
     </Stack>
   );
