@@ -1,8 +1,5 @@
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
-import PetSearchHeader from "@/components/pet-search/PetSearchHeader";
 import DisplaySearch from "@/components/pet-search/DisplaySearch";
-import { useState } from "react";
-import { URL } from "url";
 
 const petSet = new Set(["dogs", "cats"]);
 

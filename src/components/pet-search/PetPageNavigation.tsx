@@ -1,7 +1,5 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
 import { useRouter } from "next/router";
 type Props = {
   totalPages: number;

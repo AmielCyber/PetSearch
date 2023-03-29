@@ -1,18 +1,21 @@
+import Alert from "@mui/material/Alert";
 import PetSearchHeader from "./PetSearchHeader";
 import fetchPets from "@/hooks/fetch-pets";
 import PetPageNavigation from "./PetPageNavigation";
+
 type Props = {
   petTypePlural: string;
   searchParams: URLSearchParams;
 };
 export default function DisplaySearch(props: Props) {
-  const pets = fetchPets("/api/search?" + props.searchParams.toString());
-
+  const { petData, error, isLoading } = fetchPets("/api/search?" + props.searchParams.toString());
   const petType = props.searchParams.get("petType") as string;
   const location = props.searchParams.get("location") as string;
-  const totalPages = pets.pets?.pagination.total_pages || 1;
 
-  if (!pets || !pets.pets) {
+  if (error) {
+    return <Alert severity="error">Failed to retrieve pet data...</Alert>;
+  }
+  if (isLoading || !petData) {
     return (
       <>
         <PetSearchHeader petType={petType} zipCode={location} />
@@ -20,6 +23,8 @@ export default function DisplaySearch(props: Props) {
       </>
     );
   }
+
+  const totalPages = petData.pagination.total_pages;
   return (
     <>
       <PetSearchHeader petType={petType} zipCode={location} />

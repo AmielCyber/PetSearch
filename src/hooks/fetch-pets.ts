@@ -42,8 +42,8 @@ export default function FetchPets(url: string) {
   );
 
   return {
-    pets: data,
+    petData: data,
+    error: error,
     isLoading: isLoading,
-    isError: error,
   };
 }
