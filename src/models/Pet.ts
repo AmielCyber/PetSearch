@@ -16,4 +16,5 @@ export default interface Pet {
   photos: PhotoSize[];
   primary_photo_cropped: PhotoSize | null; // Null if photos is an empty array.
   status: string;
+  distance: number;
 }
