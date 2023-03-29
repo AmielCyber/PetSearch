@@ -54,7 +54,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       result = await response.json();
-      console.log(result);
       // Removes sensitive data so we do not handle sensitive data
       // We will use the URL for a person to find more about getting a pet.
       const filteredPets: Pet[] = result.animals.map((pet: any) => ({
