@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { useRef } from "react";
 // Our imports.
 import type AccessToken from "@/types/AccessToken";
 import type PetResponse from "@/models/PetResponse";
@@ -33,6 +34,8 @@ const revalidateOptions = {
 
 export default function FetchPets(url: string) {
   const { accessToken } = useToken(); // Get access token.
+  const currentPageRef = useRef(1);
+  const totalPagesRef = useRef(1);
   // Only fetch data if we have an access token.
   // Will pass a conditional function later to handle tokens stored in browser.
   const { data, error, isLoading } = useSWR(
@@ -41,9 +44,21 @@ export default function FetchPets(url: string) {
     revalidateOptions
   );
 
+  // Adjust current page or total pages if they had changed.
+  if (data?.pagination) {
+    if (totalPagesRef.current !== data.pagination.total_pages) {
+      totalPagesRef.current = data.pagination.total_pages;
+    }
+    if (currentPageRef.current !== data.pagination.current_page) {
+      currentPageRef.current = data.pagination.current_page;
+    }
+  }
+
   return {
-    petData: data,
+    petData: data?.pets,
     error: error,
     isLoading: isLoading,
+    currentPage: currentPageRef.current,
+    totalPages: totalPagesRef.current,
   };
 }
