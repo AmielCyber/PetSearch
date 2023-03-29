@@ -37,6 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     petFinderURL.searchParams.set("type", petType);
     petFinderURL.searchParams.set("page", page);
     petFinderURL.searchParams.set("location", location);
+    petFinderURL.searchParams.set("distance", "50");
+    petFinderURL.searchParams.set("sort", "distance");
 
     let response, result;
     let petResponse: PetResponse | null = null;
@@ -52,6 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       result = await response.json();
+      console.log(result);
       // Removes sensitive data so we do not handle sensitive data
       // We will use the URL for a person to find more about getting a pet.
       const filteredPets: Pet[] = result.animals.map((pet: any) => ({
@@ -66,6 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         photos: pet.photos,
         primary_photo_cropped: pet.primary_photo_cropped,
         status: pet.status,
+        distance: pet.distance,
       }));
       petResponse = {
         pets: filteredPets,
