@@ -1,7 +1,9 @@
-import { GetServerSideProps, InferGetStaticPropsType } from "next";
+import type { ParsedUrlQuery } from "querystring";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import { useRouter } from "next/router";
+// Our component.
 import DisplaySearch from "@/components/pet-search/DisplaySearch";
-
-const petSet = new Set(["dogs", "cats"]);
 
 type Props = {
   petTypePlural: string;
@@ -11,42 +13,69 @@ type Props = {
   location: string;
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const petTypePlural = context.params?.petTypePlural as string;
-  const page = context.query.page ? (context.query.page as string) : "1";
-  const location = context.query.location ? (context.query.location as string) : "92101";
+const petSet = new Set(["dogs", "cats"]);
+
+// Validate query parameters and return custom queryProperties
+function getQueryProperties(query: ParsedUrlQuery): Props {
+  const petTypePlural = query.petTypePlural ? (query.petTypePlural as string) : "unknown";
+
   if (!petSet.has(petTypePlural)) {
     return {
-      props: {
-        petTypePlural: petTypePlural,
-        petType: petTypePlural,
-        invalidPetType: true,
-        page: "1",
-        location: location,
-      },
+      petTypePlural: petTypePlural,
+      petType: petTypePlural,
+      invalidPetType: true,
+      location: "92101",
+      page: "1",
     };
   }
 
+  const page = query.page ? (query.page as string) : "1";
+  const location = query.location ? (query.location as string) : "92101";
   return {
-    props: {
-      petTypePlural: petTypePlural,
-      petType: petTypePlural.slice(0, petTypePlural.length - 1),
-      invalidPetType: false,
-      page,
-      location: location,
-    },
+    petTypePlural: petTypePlural,
+    petType: petTypePlural.slice(0, petTypePlural.length - 1),
+    invalidPetType: false,
+    location: location,
+    page,
   };
-};
+}
 
-export default function PetSearchPage(props: Props) {
+export default function PetSearchPage() {
+  const router = useRouter();
+  const props: Props = getQueryProperties(router.query);
+
+  // Invalid petType entered.
   if (props.invalidPetType) {
-    return <p>Pet Type: {props.petType} not supported.</p>;
+    return (
+      <Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        Pet Type: {props.petTypePlural} not supported.
+      </Alert>
+    );
   }
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    // For pagination change.
+    router.push({
+      query: {
+        ...router.query,
+        page: value,
+      },
+    });
+  };
 
   const params = new URLSearchParams();
   params.append("petType", props.petType);
-  params.append("page", props.page);
   params.append("location", props.location);
+  params.append("page", props.page);
+  const searchQueryURL = "/api/search?" + params.toString();
 
-  return <DisplaySearch petTypePlural={props.petTypePlural} searchParams={params} />;
+  return (
+    <DisplaySearch
+      petTypePlural={props.petTypePlural}
+      searchParams={params}
+      searchQueryURL={searchQueryURL}
+      onPageChange={handlePageChange}
+    />
+  );
 }
