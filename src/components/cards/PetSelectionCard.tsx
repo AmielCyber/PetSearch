@@ -32,8 +32,8 @@ export default function PetSelectionCard(props: Props) {
     <Link
       style={{ textDecoration: "none" }}
       href={{
-        pathname: "/search/",
-        query: { petType: props.petType, location: props.location },
+        pathname: `/search/${props.petType}`,
+        query: { location: props.location },
       }}
     >
       <Paper sx={petCards} elevation={10}>
