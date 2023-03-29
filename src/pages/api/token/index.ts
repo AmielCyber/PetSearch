@@ -7,7 +7,7 @@ const PET_OATH_URL = "https://api.petfinder.com/v2/oauth2/token";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     if (!CLIENT_ID || !CLIENT_SECRET) {
-      console.log("Process env variable not set up!");
+      console.error("Process env variable not set up!");
       res.status(500).json({ message: "Server can not process request at the moment." });
       return;
     }
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(result);
     return;
   } else {
-    res.status(403).json({ message: "Forbidden" });
+    res.status(400).json({ message: "HTTP method not supported." });
     return;
   }
 }
