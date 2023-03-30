@@ -3,14 +3,14 @@ import { Inter } from "next/font/google";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 // Our imports.
+import type { LocationContextType } from "@/hooks/LocationContext";
+import { useContext } from "react";
+import { LocationContext } from "@/hooks/LocationContext";
+import PetSelectionCard from "@/components/cards/PetSelectionCard";
 import CatIcon from "@/components/icons/CatIcon";
 import DogIcon from "@/components/icons/DogIcon";
-import PetSelectionCard from "@/components/cards/PetSelectionCard";
 
 const inter = Inter({ subsets: ["latin"] });
-
-// Will implement location with useContext later.
-const LOCATION = "92101";
 
 // Styles
 const petIcons = {
@@ -28,11 +28,13 @@ const petCardBox = {
 const titleStyles = {
   color: "#212427",
   textAlign: "center",
-  "margin-bottom": "40px",
+  marginBottom: "40px",
   marginTop: "40px",
 };
 
 export default function Home() {
+  const { zipCode } = useContext(LocationContext) as LocationContextType;
+
   return (
     <>
       <Head>
@@ -46,10 +48,10 @@ export default function Home() {
           Find Your Fur Ever Friend!
         </Typography>
         <Box sx={petCardBox}>
-          <PetSelectionCard petType="cats" location={LOCATION}>
+          <PetSelectionCard petType="cats" location={zipCode}>
             <CatIcon sx={petIcons} />
           </PetSelectionCard>
-          <PetSelectionCard petType="dogs" location={LOCATION}>
+          <PetSelectionCard petType="dogs" location={zipCode}>
             <DogIcon sx={petIcons} />
           </PetSelectionCard>
         </Box>
