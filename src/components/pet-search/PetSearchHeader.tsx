@@ -2,12 +2,12 @@ import Typography from "@mui/material/Typography";
 
 const titleStyles = {
   textAlign: "center",
-  "margin-bottom": "1rem",
+  marginBottom: "1rem",
   marginTop: "2rem",
 };
 const zipStyles = {
   textAlign: "center",
-  "margin-bottom": "20px",
+  marginBottom: "20px",
 };
 
 type Props = {
