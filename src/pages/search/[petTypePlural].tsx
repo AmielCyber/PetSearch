@@ -71,7 +71,7 @@ export default function PetSearchPage() {
   params.append("petType", props.petType);
   params.append("location", props.location);
   params.append("page", props.page);
-  const searchQueryURL = "/api/search?" + params.toString();
+  const searchQueryURL = "/api/pets?" + params.toString();
 
   return (
     <DisplaySearch
