@@ -5,6 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import fetchPets from "@/hooks/fetch-pets";
 import PetSearchHeader from "./PetSearchHeader";
 import PetPageNavigation from "./PetPageNavigation";
+import PetList from "./PetList";
 
 type Props = {
   petTypePlural: string;
@@ -14,7 +15,9 @@ type Props = {
 };
 
 export default function DisplaySearch(props: Props) {
-  const { petData, error, isLoading, currentPage, totalPages } = fetchPets(props.searchQueryURL);
+  const { petData, error, isLoading, currentPage, totalPages } = fetchPets(
+    props.searchQueryURL
+  );
   const petType = props.searchParams.get("petType") as string;
   const location = props.searchParams.get("location") as string;
 
@@ -31,7 +34,9 @@ export default function DisplaySearch(props: Props) {
           <LinearProgress />
         </Box>
       ) : (
-        <h3 style={{ textAlign: "center" }}>Pet List Component Goes Here</h3>
+        <h3 style={{ textAlign: "center" }}>
+          <PetList petData={petData} />
+        </h3>
       )}
       <PetPageNavigation
         currentPage={currentPage}
