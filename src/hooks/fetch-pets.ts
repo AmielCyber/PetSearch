@@ -5,6 +5,8 @@ import type AccessToken from "@/types/AccessToken";
 import type PetResponse from "@/models/PetResponse";
 import useToken from "./useToken";
 
+const ITEMS_PER_PAGE = 20;
+
 const fetcher = async (url: string, accessToken: AccessToken) => {
   if (!accessToken) {
     throw new Error("Failed to validate token");
@@ -60,5 +62,6 @@ export default function FetchPets(url: string) {
     isLoading: isLoading,
     currentPage: currentPageRef.current,
     totalPages: totalPagesRef.current,
+    itemsPerPage: ITEMS_PER_PAGE,
   };
 }

@@ -1,19 +1,26 @@
 //import type Pet from "@/models/Pet";
-import { Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import PetListCard from "../cards/PetListCard";
 
 // type Props = {
 //   petData: Pet[];
 // };
 
-export default function PetSelectionCard({ petData }) {
+export default function PetSelectionCard({ petData, isLoading, itemsPerPage }) {
   return (
     <Grid container spacing={2} justifyContent="center">
-      {petData.map((pet) => (
-        <Grid item key={pet.id} xs>
-          <PetListCard pet={pet} />
-        </Grid>
-      ))}
+      {!petData || isLoading
+        ? [...Array(itemsPerPage)].map((e, i) => (
+            <Grid item key={i} xs>
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                width={200}
+                height={250}
+              />
+            </Grid>
+          ))
+        : petData.map((pet) => <PetListCard pet={pet} />)}
     </Grid>
   );
 }

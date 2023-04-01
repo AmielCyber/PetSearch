@@ -15,9 +15,8 @@ type Props = {
 };
 
 export default function DisplaySearch(props: Props) {
-  const { petData, error, isLoading, currentPage, totalPages } = fetchPets(
-    props.searchQueryURL
-  );
+  const { petData, error, isLoading, currentPage, totalPages, itemsPerPage } =
+    fetchPets(props.searchQueryURL);
   const petType = props.searchParams.get("petType") as string;
   const location = props.searchParams.get("location") as string;
 
@@ -29,15 +28,13 @@ export default function DisplaySearch(props: Props) {
   return (
     <>
       <PetSearchHeader petType={petType} zipCode={location} />
-      {isLoading || !petData ? (
-        <Box sx={{ width: "100%" }}>
-          <LinearProgress />
-        </Box>
-      ) : (
-        <h3 style={{ textAlign: "center" }}>
-          <PetList petData={petData} />
-        </h3>
-      )}
+      <h3 style={{ textAlign: "center" }}>
+        <PetList
+          petData={petData}
+          isLoading={isLoading}
+          itemsPerPage={itemsPerPage}
+        />
+      </h3>
       <PetPageNavigation
         currentPage={currentPage}
         totalPages={totalPages}
