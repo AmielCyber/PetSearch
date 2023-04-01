@@ -11,8 +11,9 @@ export default function PetSelectionCard({ petData, isLoading, itemsPerPage }) {
     <Grid container spacing={2} justifyContent="center">
       {!petData || isLoading
         ? [...Array(itemsPerPage)].map((e, i) => (
-            <Grid item key={i} xs>
+            <Grid item key={"grid-item-key-" + i} xs>
               <Skeleton
+                key={"skeleton-item-key-" + i}
                 variant="rectangular"
                 animation="wave"
                 width={200}
@@ -20,7 +21,9 @@ export default function PetSelectionCard({ petData, isLoading, itemsPerPage }) {
               />
             </Grid>
           ))
-        : petData.map((pet) => <PetListCard pet={pet} />)}
+        : petData.map((pet, i) => (
+            <PetListCard key={"pet-id-" + i} pet={pet} />
+          ))}
     </Grid>
   );
 }
