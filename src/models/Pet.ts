@@ -1,7 +1,7 @@
-interface PhotoSize {
+export interface PhotoSize {
   small: string;
   medium: string;
-  large: string;
+  large: string; // &width=600
   full: string;
 }
 export default interface Pet {
@@ -16,5 +16,5 @@ export default interface Pet {
   photos: PhotoSize[];
   primary_photo_cropped: PhotoSize | null; // Null if photos is an empty array.
   status: string;
-  distance: number;
+  distance: number | null;
 }
