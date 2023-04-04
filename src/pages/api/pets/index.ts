@@ -5,6 +5,8 @@ import type Pet from "@/models/Pet";
 import type PetResponse from "@/models/PetResponse";
 import { petQuery, validateQuery } from "@/utils/db/query-validation";
 
+const MILE_RADIUS = "50";
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     // Check for client's token
@@ -15,16 +17,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Get search query params.
-    let petType = req.query.petType as string;
+    const petType = req.query.petType as string;
+    const location = req.query.location as string;
     let page = req.query.page as string;
-    let location = req.query.location as string;
     // Pre-defined undefined types right now until we have our front-end done.
-    petType = petType ? petType : "cat";
     page = page ? page : "1";
-    location = location ? location : "92101";
 
     // Validate search params
-    const searchQueryValidation: SafeParseReturnType<petQuery, petQuery> = validateQuery(petType, page);
+    const searchQueryValidation: SafeParseReturnType<petQuery, petQuery> = validateQuery(petType, location, page);
     if (!searchQueryValidation.success) {
       res.status(400).json({
         message: searchQueryValidation.error.issues.map((issue) => issue.path + ": " + issue.message).join(" "),
@@ -35,9 +35,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Set our url with our search params
     const petFinderURL = new URL("https://api.petfinder.com/v2/animals");
     petFinderURL.searchParams.set("type", petType);
-    petFinderURL.searchParams.set("page", page);
     petFinderURL.searchParams.set("location", location);
-    petFinderURL.searchParams.set("distance", "50");
+    petFinderURL.searchParams.set("page", page);
+    petFinderURL.searchParams.set("distance", MILE_RADIUS);
     petFinderURL.searchParams.set("sort", "distance");
 
     let response, result;
@@ -49,9 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           Authorization: accessToken,
         },
       });
-      console.log(response.statusText);
       result = await response.json();
-      console.log(result);
       if (!response.ok) {
         throw new Error();
       }
