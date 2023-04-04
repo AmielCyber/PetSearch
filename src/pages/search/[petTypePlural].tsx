@@ -7,7 +7,7 @@ import DisplaySearch from "@/components/pet-search/DisplaySearch";
 import { useContext } from "react";
 import { LocationContext, LocationContextType } from "@/hooks/LocationContext";
 
-type Props = {
+type QueryProps = {
   petTypePlural: string;
   petType: string;
   invalidPetType: boolean;
@@ -18,7 +18,7 @@ type Props = {
 const petSet = new Set(["dogs", "cats"]);
 
 // Validate query parameters and return custom queryProperties
-function getQueryProperties(query: ParsedUrlQuery, currentZipCode: string): Props {
+function getQueryProperties(query: ParsedUrlQuery, currentZipCode: string): QueryProps {
   const petTypePlural = query.petTypePlural ? (query.petTypePlural as string) : "unknown";
 
   if (!petSet.has(petTypePlural)) {
@@ -26,8 +26,8 @@ function getQueryProperties(query: ParsedUrlQuery, currentZipCode: string): Prop
       petTypePlural: petTypePlural,
       petType: petTypePlural,
       invalidPetType: true,
-      location: "92101",
-      page: "1",
+      location: "",
+      page: "",
     };
   }
 
@@ -45,7 +45,7 @@ function getQueryProperties(query: ParsedUrlQuery, currentZipCode: string): Prop
 export default function PetSearchPage() {
   const { zipCode } = useContext(LocationContext) as LocationContextType;
   const router = useRouter();
-  const props: Props = getQueryProperties(router.query, zipCode);
+  const props: QueryProps = getQueryProperties(router.query, zipCode);
 
   // Invalid petType entered.
   if (props.invalidPetType) {
