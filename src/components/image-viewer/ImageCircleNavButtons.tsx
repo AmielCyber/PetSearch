@@ -1,6 +1,7 @@
 import IconButton from "@mui/material/IconButton";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+// Our import.
 import styles from "@/styles/image-container/ImageNavDots.module.css";
 
 function getNavDotList(
@@ -12,22 +13,21 @@ function getNavDotList(
   for (let index = 0; index < list.length; index++) {
     if (index === currentIndex) {
       list[index] = (
-        <li>
-          <IconButton key={index} aria-label={`Select image ${index + 1}`} disabled>
+        <li key={index}>
+          <IconButton aria-label={`Select image ${index + 1}`} disabled>
             <CircleIcon fontSize="medium" color="primary" />
           </IconButton>
         </li>
       );
     } else {
       list[index] = (
-        <li>
+        <li key={index}>
           <IconButton
-            key={index}
             aria-label={`Select image ${index + 1}`}
             onClick={() => onSelectDotNav(index)}
             sx={outlinedCircleStyle}
           >
-            <CircleOutlinedIcon key={index} fontSize="medium" color="primary" />
+            <CircleOutlinedIcon fontSize="medium" color="primary" />
           </IconButton>
         </li>
       );

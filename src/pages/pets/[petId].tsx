@@ -1,6 +1,6 @@
 import { NextRouter, useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
-// Our component.
+// Our import.
 import DisplayInfo from "@/components/pet/DisplayInfo";
 
 function getId(router: NextRouter): string {

@@ -6,8 +6,8 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 // Our imports.
 import type { PhotoSize } from "@/models/Pet";
-import ImagePointerNavButton from "../image-viewer/ImagePointerNavButton";
-import ImageCircleNavButtons from "../image-viewer/ImageCircleNavButtons";
+import ImagePointerNavButton from "@/components/image-viewer/ImagePointerNavButton";
+import ImageCircleNavButtons from "@/components/image-viewer/ImageCircleNavButtons";
 import styles from "@/styles/image-container/PetImageContainer.module.css";
 
 // Image loader so Next.js does not pass invalid args.

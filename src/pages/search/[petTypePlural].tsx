@@ -2,9 +2,9 @@ import type { ParsedUrlQuery } from "querystring";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { useRouter } from "next/router";
-// Our component.
-import DisplaySearch from "@/components/pet-search/DisplaySearch";
 import { useContext } from "react";
+// My imports.
+import DisplaySearch from "@/components/pet-search/DisplaySearch";
 import { LocationContext, LocationContextType } from "@/hooks/LocationContext";
 
 type QueryProps = {
