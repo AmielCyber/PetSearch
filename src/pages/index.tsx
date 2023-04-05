@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 // Our imports.
@@ -10,12 +9,9 @@ import PetSelectionCard from "@/components/cards/PetSelectionCard";
 import CatIcon from "@/components/icons/CatIcon";
 import DogIcon from "@/components/icons/DogIcon";
 
-const inter = Inter({ subsets: ["latin"] });
-
 // Styles
 const petIcons = {
   fontSize: "150px",
-  color: "#212427",
 };
 
 const petCardBox = {
@@ -26,7 +22,6 @@ const petCardBox = {
 };
 
 const titleStyles = {
-  color: "#212427",
   textAlign: "center",
   marginBottom: "40px",
   marginTop: "40px",

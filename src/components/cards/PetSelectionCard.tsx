@@ -12,14 +12,16 @@ type Props = {
 const petCards = {
   padding: "3rem",
   borderRadius: "30px",
+  borderStyle: "solid",
+  borderColor: "transparent",
+  borderWidth: "4px",
   "&:hover": {
-    outlineColor: "#00a693",
-    outlineStyle: "solid",
+    borderColor: "#00a693",
   },
 };
 const petTextLabels = {
   fontSize: "2rem",
-  color: "#00a693",
+  color: "primary",
   textAlign: "center",
   paddingTop: "10px",
   textTransform: "capitalize",
