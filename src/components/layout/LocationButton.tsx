@@ -20,10 +20,8 @@ export default function LocationButton(props: Props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <Typography variant="button" component="text" color="white">
-          ZIP Code: {props.currentZip}
-        </Typography>
+      <Button onClick={handleOpen} color="inherit">
+        <Typography>ZIP Code: {props.currentZip}</Typography>
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title">
         <div>
