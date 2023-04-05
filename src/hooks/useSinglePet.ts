@@ -1,9 +1,8 @@
-// Our imports.
 import useSWR from "swr";
+// Our imports.
 import type AccessToken from "@/types/AccessToken";
 import type Pet from "@/models/Pet";
 import useToken from "./useToken";
-import { useSWRConfig } from "swr";
 
 // All errors are handled by swr.
 const fetcher = async (url: string, accessToken: AccessToken | undefined) => {
@@ -40,11 +39,11 @@ const revalidateOptions = {
   revalidateOnReconnect: false,
 };
 
-export default function FetchSinglePet(id: string) {
+export default function useSinglePet(id: string) {
   const { accessToken } = useToken(); // Get access token.
   const { data, error, isLoading } = useSWR(
-    accessToken !== undefined ? [`/api/pets/${id}`, accessToken] : null,
-    ([url, accessToken]) => fetcher(url, accessToken),
+    accessToken ? `/api/pets/${id}` : null,
+    (url) => fetcher(url, accessToken),
     revalidateOptions
   );
 

@@ -1,7 +1,7 @@
 import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
-// Our Components.
-import FetchSinglePet from "@/hooks/fetchSinglePet";
+// Our imports.
+import useSinglePet from "@/hooks/useSinglePet";
 import DisplayInfoSkeleton from "@/components/pet/DisplayInfoSkeleton";
 import PageTitle from "@/components/pet/PageTitle";
 import PetImageContainer from "@/components/pet/PetImageContainer";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function DisplayInfo(props: Props) {
-  const { petData, error, isLoading } = FetchSinglePet(props.id);
+  const { petData, error, isLoading } = useSinglePet(props.id);
 
   if (error && !isLoading) {
     return <Alert severity="error">{error.message ? error.message : "Could not fetch pet data."}</Alert>;
