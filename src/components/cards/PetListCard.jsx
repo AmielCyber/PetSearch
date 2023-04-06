@@ -5,12 +5,12 @@ import DogIcon from "@/components/icons/DogIcon";
 
 const petIcons = {
   fontSize: "200px",
-  color: "#212427",
+  color: "primary",
 };
 const textStyles = {
   marginTop: "5px",
   marginBottom: "16px",
-  color: "#212427",
+  color: "primary",
 };
 
 export default function PetListCard({ pet }) {
