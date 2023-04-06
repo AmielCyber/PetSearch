@@ -5,12 +5,19 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import IconButton from "@mui/material/IconButton";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 // Our components.
 import type { LocationContextType } from "@/hooks/LocationContext";
 import { LocationContext } from "@/hooks/LocationContext";
 import LocationButton from "./LocationButton";
 
-export default function MainNavigation() {
+type Props = {
+  isDarkMode: boolean;
+  onToggleDarkMode: VoidFunction;
+};
+export default function MainNavigation(props: Props) {
   const router = useRouter();
   const { zipCode, setZipCode } = useContext(LocationContext) as LocationContextType;
 
@@ -48,6 +55,9 @@ export default function MainNavigation() {
             </Link>
           </Typography>
           <LocationButton onZipCodeChange={handleZipCodeChange} currentZip={zipCode} />
+          <IconButton onClick={props.onToggleDarkMode} color="inherit">
+            {props.isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Box>
