@@ -2,8 +2,8 @@ import Image, { ImageLoader } from "next/image";
 import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import HideImageTwoToneIcon from "@mui/icons-material/HideImageTwoTone";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 // Our imports.
 import type { PhotoSize } from "@/models/Pet";
 import ImagePointerNavButton from "@/components/image-viewer/ImagePointerNavButton";
@@ -13,6 +13,14 @@ import styles from "@/styles/image-container/PetImageContainer.module.css";
 // Image loader so Next.js does not pass invalid args.
 const myLoader: ImageLoader = ({ src, width }) => {
   return `${src}&width=${width}`;
+};
+
+const emptyImageStyle = {
+  width: "300",
+  height: "300",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 type Props = {
@@ -26,7 +34,7 @@ export default function PetImageContainer(props: Props) {
   if (props.photos.length < 1) {
     // No photos.
     return (
-      <Paper elevation={1}>
+      <Paper elevation={4}>
         <div className={styles.blankImage}>
           <HideImageTwoToneIcon fontSize="large" />
         </div>
@@ -58,7 +66,7 @@ export default function PetImageContainer(props: Props) {
   };
 
   return (
-    <Paper elevation={1}>
+    <Paper elevation={4}>
       <section className={styles.imageContainer}>
         <Image
           loader={myLoader}
@@ -70,10 +78,10 @@ export default function PetImageContainer(props: Props) {
         />
         <div className={styles.imgNavButtons}>
           <ImagePointerNavButton onClickNavigation={handlePrevClick}>
-            <NavigateBeforeIcon />
+            <ArrowCircleLeftOutlinedIcon fontSize="large" />
           </ImagePointerNavButton>
           <ImagePointerNavButton onClickNavigation={handleNextClick}>
-            <NavigateNextIcon />
+            <ArrowCircleRightOutlinedIcon fontSize="large" />
           </ImagePointerNavButton>
         </div>
         <ImageCircleNavButtons

@@ -5,11 +5,9 @@ type Props = {
   children: React.ReactNode;
 };
 const iconButtonStyles = {
-  backgroundColor: "ButtonShadow",
-  opacity: "0.4",
+  opacity: "0.7",
   "&:hover": {
-    opacity: "0.7",
-    backgroundColor: "ButtonShadow",
+    opacity: "0.9",
   },
 };
 
