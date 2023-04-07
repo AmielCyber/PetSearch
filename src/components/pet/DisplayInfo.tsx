@@ -1,12 +1,16 @@
+import dynamic from "next/dynamic";
+import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
 // Our imports.
 import useSinglePet from "@/hooks/useSinglePet";
 import DisplayInfoSkeleton from "@/components/pet/DisplayInfoSkeleton";
 import PageTitle from "@/components/pet/PageTitle";
-import PetImageContainer from "@/components/pet/PetImageContainer";
 import PetAttributes from "@/components/pet/PetAttributes";
 import Description from "@/components/pet/Description";
+const PetImageContainer = dynamic(() => import("@/components/pet/PetImageContainer"), {
+  loading: () => <CircularProgress />,
+});
 
 type Props = {
   id: string;
