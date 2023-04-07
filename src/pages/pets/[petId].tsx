@@ -1,6 +1,7 @@
 import { NextRouter, useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 // Our import.
+import PetPageMeta from "@/components/meta/PetPageMeta";
 import DisplayInfo from "@/components/pet/DisplayInfo";
 
 function getId(router: NextRouter): string {
@@ -20,10 +21,18 @@ export default function PetPage() {
 
   if (id === "error") {
     return (
-      <main>
-        <Alert severity="error">Invalid pet id entered.</Alert>
-      </main>
+      <>
+        <PetPageMeta />
+        <main>
+          <Alert severity="error">Invalid pet id entered.</Alert>
+        </main>
+      </>
     );
   }
-  return <main>{id !== "" ? <DisplayInfo id={id} /> : null}</main>;
+  return (
+    <>
+      <PetPageMeta />
+      <main>{id !== "" ? <DisplayInfo id={id} /> : null}</main>
+    </>
+  );
 }

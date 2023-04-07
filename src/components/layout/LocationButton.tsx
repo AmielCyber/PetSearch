@@ -1,7 +1,11 @@
+import dynamic from "next/dynamic";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import { Button, Modal, Typography } from "@mui/material";
 // Our component.
-import LocationModal from "./LocationModal";
+const LocationModal = dynamic(() => import("@/components/layout/LocationModal"), {
+  loading: () => <CircularProgress />,
+});
 
 type Props = {
   onZipCodeChange: (newZipCode: string) => void;

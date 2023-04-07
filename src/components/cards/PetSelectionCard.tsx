@@ -1,14 +1,8 @@
-import Paper from "@mui/material/Paper";
 import Link from "next/link";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-type Props = {
-  petType: string;
-  location: string;
-  children: React.ReactNode;
-};
-
-// Styles
+// Mui Styles
 const petCards = {
   padding: "3rem",
   borderRadius: "30px",
@@ -27,8 +21,11 @@ const petTextLabels = {
   textTransform: "capitalize",
 };
 
-// May change the pathname to support dynamic routing: /search/cats?.... /search/dogs?....
-
+type Props = {
+  petType: string;
+  location: string;
+  children: React.ReactNode;
+};
 export default function PetSelectionCard(props: Props) {
   return (
     <Link

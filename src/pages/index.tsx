@@ -1,9 +1,9 @@
+import { useContext } from "react";
 import Head from "next/head";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 // Our imports.
 import type { LocationContextType } from "@/hooks/LocationContext";
-import { useContext } from "react";
 import { LocationContext } from "@/hooks/LocationContext";
 import PetSelectionCard from "@/components/cards/PetSelectionCard";
 import CatIcon from "@/components/icons/CatIcon";
@@ -33,10 +33,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Search a pet to adopt!" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Pet Search</title>
+        <meta name="description" content="Search a pet in your area to adopt!" />
       </Head>
       <main>
         <Typography sx={titleStyles} variant="h2">

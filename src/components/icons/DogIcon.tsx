@@ -1,8 +1,9 @@
-import SvgIcon from "@mui/material/SvgIcon";
 import type { SvgIconProps } from "@mui/material/";
+import SvgIcon from "@mui/material/SvgIcon";
 
+// Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools
+// Source: https://www.svgrepo.com/svg/176724/siberian-husky-dog
 export default function DogIcon(props: SvgIconProps) {
-  // Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools
   return (
     <SvgIcon version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" {...props}>
       <g>

@@ -22,7 +22,7 @@ export default function PetSearchHeader(props: Props) {
         {upperCasePetType}s within a 50 mile radius.
       </Typography>
       <Typography sx={zipStyles} variant="subtitle1">
-        Zip Code: {props.zipCode}
+        Adoptable pets around Zip Code: {props.zipCode}
       </Typography>
     </>
   );

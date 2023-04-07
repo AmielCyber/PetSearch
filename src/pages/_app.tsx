@@ -1,5 +1,4 @@
 import type { AppProps } from "next/app";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { useMemo, useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,6 +7,7 @@ import Container from "@mui/material/Container";
 import { darkModeTheme, lightModeTheme } from "@/utils/theme/material-theme";
 import { LocationProvider } from "@/hooks/LocationContext";
 import NavBar from "@/components/layout/NavBar";
+import HeadMeta from "@/components/meta/HeadMeta";
 import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -23,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <LocationProvider>
+        <HeadMeta />
         <NavBar isDarkMode={isDarkMode} onToggleDarkMode={handleToggleDarkMode} />
         <Container maxWidth="lg">
           <Component {...pageProps} />

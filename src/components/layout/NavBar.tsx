@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-// Our components.
+// Our imports.
 import type { LocationContextType } from "@/hooks/LocationContext";
 import { LocationContext } from "@/hooks/LocationContext";
 import LocationButton from "./LocationButton";

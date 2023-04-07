@@ -1,11 +1,13 @@
 import type { ParsedUrlQuery } from "querystring";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { useRouter } from "next/router";
 import { useContext } from "react";
-// My imports.
+import { useRouter } from "next/router";
+// Our imports.
+import type { LocationContextType } from "@/hooks/LocationContext";
+import { LocationContext } from "@/hooks/LocationContext";
+import SearchPageMeta from "@/components/meta/SearchPageMeta";
 import DisplaySearch from "@/components/pet-search/DisplaySearch";
-import { LocationContext, LocationContextType } from "@/hooks/LocationContext";
 
 type QueryProps = {
   petTypePlural: string;
@@ -50,10 +52,13 @@ export default function PetSearchPage() {
   // Invalid petType entered.
   if (props.invalidPetType) {
     return (
-      <Alert severity="error">
-        <AlertTitle>Error</AlertTitle>
-        Pet Type: {props.petTypePlural} not supported.
-      </Alert>
+      <>
+        <SearchPageMeta />
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          Pet Type: {props.petTypePlural} not supported.
+        </Alert>
+      </>
     );
   }
 
@@ -74,11 +79,14 @@ export default function PetSearchPage() {
   const searchQueryURL = "/api/pets?" + params.toString();
 
   return (
-    <DisplaySearch
-      petTypePlural={props.petTypePlural}
-      searchParams={params}
-      searchQueryURL={searchQueryURL}
-      onPageChange={handlePageChange}
-    />
+    <>
+      <SearchPageMeta />
+      <DisplaySearch
+        petTypePlural={props.petTypePlural}
+        searchParams={params}
+        searchQueryURL={searchQueryURL}
+        onPageChange={handlePageChange}
+      />
+    </>
   );
 }
