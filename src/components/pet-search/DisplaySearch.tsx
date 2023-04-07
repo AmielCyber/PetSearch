@@ -1,9 +1,9 @@
 import Alert from "@mui/material/Alert";
 // Our imports.
-import fetchPets from "@/hooks/fetch-pets";
-import PetSearchHeader from "./PetSearchHeader";
-import PetPageNavigation from "./PetPageNavigation";
-import PetList from "./PetList";
+import usePetList from "@/hooks/usePetList";
+import PetSearchHeader from "@/components/pet-search/PetSearchHeader";
+import PetPageNavigation from "@/components/pet-search/PetPageNavigation";
+import PetList from "@/components/pet-search/PetList";
 
 type Props = {
   petTypePlural: string;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function DisplaySearch(props: Props) {
-  const { petData, error, isLoading, currentPage, totalPages, itemsPerPage } = fetchPets(props.searchQueryURL);
+  const { petListData, error, isLoading, currentPage, totalPages, itemsPerPage } = usePetList(props.searchQueryURL);
   const petType = props.searchParams.get("petType") as string;
   const location = props.searchParams.get("location") as string;
 
@@ -26,7 +26,7 @@ export default function DisplaySearch(props: Props) {
     <>
       <PetSearchHeader petType={petType} zipCode={location} />
       <h3 style={{ textAlign: "center" }}>
-        <PetList petData={petData} isLoading={isLoading} itemsPerPage={itemsPerPage} />
+        <PetList petData={petListData} isLoading={isLoading} itemsPerPage={itemsPerPage} />
       </h3>
       <PetPageNavigation
         currentPage={currentPage}
