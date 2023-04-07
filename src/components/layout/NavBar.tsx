@@ -56,7 +56,7 @@ export default function MainNavigation(props: Props) {
           </Typography>
           <LocationButton onZipCodeChange={handleZipCodeChange} currentZip={zipCode} />
           <IconButton onClick={props.onToggleDarkMode} color="inherit">
-            {props.isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
+            {props.isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
         </Toolbar>
       </AppBar>
