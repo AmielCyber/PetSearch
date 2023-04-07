@@ -2,13 +2,12 @@ import { Card, Typography, Grid, CardActionArea } from "@mui/material";
 import Image from "next/image";
 import CatIcon from "@/components/icons/CatIcon";
 import DogIcon from "@/components/icons/DogIcon";
-import useSinglePet from "@/hooks/useSinglePet";
 import { useSWRConfig } from "swr";
 import Link from "next/link";
 import type Pet from "@/models/Pet";
 
 type Props = {
-  pet: Pet,
+  pet: Pet;
 };
 
 // Styles
@@ -37,7 +36,7 @@ export default function PetListCard(props: Props) {
       <Link
         style={{ textDecoration: "none" }}
         href={{
-          pathname: `/api/pets/${props.pet.id}`,
+          pathname: `/pets/${props.pet.id}`,
         }}
       >
         <CardActionArea onClick={handleClick}>
