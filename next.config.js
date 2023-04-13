@@ -5,12 +5,6 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "dl5zpyw5k3jeb.cloudfront.net",
-        port: "",
-      },
-    ],
+    unoptimized: true,
   },
 };

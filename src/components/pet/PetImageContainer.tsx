@@ -10,11 +10,6 @@ import ImagePointerNavButton from "@/components/image-viewer/ImagePointerNavButt
 import ImageCircleNavButtons from "@/components/image-viewer/ImageCircleNavButtons";
 import styles from "@/styles/image-container/PetImageContainer.module.css";
 
-// Image loader so Next.js does not pass invalid args.
-const myLoader: ImageLoader = ({ src, width }) => {
-  return `${src}&width=${width}`;
-};
-
 const emptyImageStyle = {
   width: "300",
   height: "300",
@@ -69,7 +64,6 @@ export default function PetImageContainer(props: Props) {
     <Paper elevation={4}>
       <section className={styles.imageContainer}>
         <Image
-          loader={myLoader}
           src={props.photos[imgIndex].large}
           alt={props.name}
           sizes="600px"
