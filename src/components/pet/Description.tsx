@@ -1,4 +1,5 @@
 import Typography from "@mui/material/Typography";
+import MaterialLink from "@mui/material/Link";
 import Link from "next/link";
 
 type Props = {
@@ -21,7 +22,10 @@ export default function Description(props: Props) {
     <section>
       <Typography variant="h4">Description</Typography>
       <Typography variant="body1">{decodedDescription}</Typography>
-      <Link href={props.url}>Click Here For More Info at PetFinder.</Link>
+
+      <MaterialLink component={Link} href={props.url}>
+        Click Here For More Info at PetFinder.
+      </MaterialLink>
     </section>
   );
 }
