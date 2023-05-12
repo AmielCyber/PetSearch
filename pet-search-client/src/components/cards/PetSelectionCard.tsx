@@ -1,6 +1,5 @@
-import Link from "next/link";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
+import { Link as MuiLink, Paper, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 // Mui Styles
 const petCards = {
@@ -26,19 +25,16 @@ type Props = {
   location: string;
   children: React.ReactNode;
 };
+
 export default function PetSelectionCard(props: Props) {
+  const linkPath = `/search/${props.petType}?location=${props.location}`;
+
   return (
-    <Link
-      style={{ textDecoration: "none" }}
-      href={{
-        pathname: `/search/${props.petType}`,
-        query: { location: props.location },
-      }}
-    >
+    <MuiLink sx={{ textDecoration: "none" }} component={Link} to={linkPath}>
       <Paper sx={petCards} elevation={10}>
         {props.children}
         <Typography sx={petTextLabels}>{props.petType}</Typography>
       </Paper>
-    </Link>
+    </MuiLink>
   );
 }

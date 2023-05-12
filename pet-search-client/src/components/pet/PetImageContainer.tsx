@@ -1,22 +1,13 @@
-import Image, { ImageLoader } from "next/image";
 import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import HideImageTwoToneIcon from "@mui/icons-material/HideImageTwoTone";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 // Our imports.
-import type { PhotoSize } from "@/models/Pet";
-import ImagePointerNavButton from "@/components/image-viewer/ImagePointerNavButton";
-import ImageCircleNavButtons from "@/components/image-viewer/ImageCircleNavButtons";
-import styles from "@/styles/image-container/PetImageContainer.module.css";
-
-const emptyImageStyle = {
-  width: "300",
-  height: "300",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
+import type { PhotoSize } from "../../models/pet";
+import ImagePointerNavButton from "../image-viewer/ImagePointerNavButton";
+import ImageCircleNavButtons from "../image-viewer/ImageCircleNavButtons";
+import styles from "../../styles/image-container/PetImageContainer.module.css";
 
 type Props = {
   name: string;
@@ -63,13 +54,7 @@ export default function PetImageContainer(props: Props) {
   return (
     <Paper elevation={4}>
       <section className={styles.imageContainer}>
-        <Image
-          src={props.photos[imgIndex].large}
-          alt={props.name}
-          sizes="600px"
-          blurDataURL="/blur/grayBlur.png"
-          fill
-        />
+        <img src={props.photos[imgIndex].large} alt={props.name} sizes="600px" style={{ objectFit: "fill" }} />
         <div className={styles.imgNavButtons}>
           <ImagePointerNavButton onClickNavigation={handlePrevClick}>
             <ArrowCircleLeftOutlinedIcon fontSize="large" />

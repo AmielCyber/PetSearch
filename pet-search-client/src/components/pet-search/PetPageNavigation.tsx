@@ -1,5 +1,4 @@
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import { Pagination, Stack } from "@mui/material";
 
 type Props = {
   currentPage: number;
@@ -7,6 +6,7 @@ type Props = {
   isLoading: boolean;
   onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 };
+
 export default function PetPageNavigation(props: Props) {
   return (
     <Stack spacing={2} direction="row" justifyContent="center" alignItems="center">

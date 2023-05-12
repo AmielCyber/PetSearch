@@ -1,7 +1,7 @@
 import useSWR from "swr";
 // Our imports.
-import type AccessToken from "@/types/AccessToken";
-import type Pet from "@/models/Pet";
+import type AccessToken from "../models/accessToken";
+import type Pet from "../models/pet";
 import useToken from "./useToken";
 
 // All errors are handled by swr.

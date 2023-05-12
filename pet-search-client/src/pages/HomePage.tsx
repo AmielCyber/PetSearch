@@ -1,13 +1,11 @@
 import { useContext } from "react";
-import Head from "next/head";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { Box, Typography } from "@mui/material";
 // Our imports.
-import type { LocationContextType } from "@/hooks/LocationContext";
-import { LocationContext } from "@/hooks/LocationContext";
-import PetSelectionCard from "@/components/cards/PetSelectionCard";
-import CatIcon from "@/components/icons/CatIcon";
-import DogIcon from "@/components/icons/DogIcon";
+import type { LocationContextType } from "../hooks/LocationContext";
+import { LocationContext } from "../hooks/LocationContext";
+import PetSelectionCard from "../components/cards/PetSelectionCard";
+import CatIcon from "../components/icons/CatIcon";
+import DogIcon from "../components/icons/DogIcon";
 
 // Styles
 const petIcons = {
@@ -31,14 +29,6 @@ export default function Home() {
   const { zipCode } = useContext(LocationContext) as LocationContextType;
 
   return (
-    <>
-      <Head>
-        <title>Pet Search</title>
-        <meta
-          name="description"
-          content="Search adoptable pets in your area!"
-        />
-      </Head>
       <main>
         <Typography sx={titleStyles} variant="h2">
           Find your perfect furry companion!
@@ -52,6 +42,5 @@ export default function Home() {
           </PetSelectionCard>
         </Box>
       </main>
-    </>
   );
 }

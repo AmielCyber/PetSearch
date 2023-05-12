@@ -1,8 +1,8 @@
 import useSWR from "swr";
 import { useRef } from "react";
 // Our imports.
-import type AccessToken from "@/types/AccessToken";
-import type PetResponse from "@/models/PetResponse";
+import type AccessToken from "../models/accessToken";
+import type PetResponse from "../models/petResponse";
 import useToken from "./useToken";
 
 const ITEMS_PER_PAGE = 20;
@@ -22,12 +22,12 @@ const fetcher = async (url: string, accessToken: AccessToken | undefined) => {
       "Content-Type": "application/json",
     },
   });
+
   if (!response.ok) {
     const responseData = await response.json();
     // Make SWR catch the failed response.
     throw new Error(responseData?.message || response.statusText);
   }
-
   // Return result.
   const responseData: Promise<PetResponse> = await response.json();
   return responseData;

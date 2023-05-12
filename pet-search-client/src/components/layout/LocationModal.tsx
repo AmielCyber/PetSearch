@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
+import { Typography, TextField, Button, Paper, InputAdornment } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Typography, TextField, Button, Paper, InputAdornment } from "@mui/material";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "25%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -12,6 +12,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 const buttonGroupStyle = {
   display: "flex",
   justifyContent: "space-between",

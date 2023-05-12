@@ -4,6 +4,7 @@ export interface PhotoSize {
   large: string; // &width=600
   full: string;
 }
+
 export default interface Pet {
   id: number;
   url: string;

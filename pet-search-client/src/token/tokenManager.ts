@@ -1,5 +1,6 @@
-import type AccessToken from "@/types/AccessToken";
-import type { StoredAccessToken } from "@/types/AccessToken";
+import type AccessToken from "../models/accessToken";
+import type { StoredAccessToken } from "../models/accessToken";
+
 const CACHE_NAME = "app-cache";
 
 export function tokenIsExpired(accessToken: AccessToken): boolean {

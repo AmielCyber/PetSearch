@@ -1,8 +1,11 @@
-import type Pet from "@/models/Pet";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
+// Our import.
+import type Pet from "../../models/pet";
+
 type Props = {
   petData: Pet;
 };
+
 export default function PetAttributes(props: Props) {
   return (
     <Typography variant="body1" component="section">

@@ -1,7 +1,7 @@
 import useSWR from "swr";
 // Our imports.
-import type AccessToken from "@/types/AccessToken";
-import { getStoredToken, storeAccessToken, tokenIsExpired } from "@/utils/token/token-manager";
+import type AccessToken from "../models/accessToken";
+import { getStoredToken, storeAccessToken, tokenIsExpired } from "../token/tokenManager";
 
 const TOKEN_URL = "/api/token";
 

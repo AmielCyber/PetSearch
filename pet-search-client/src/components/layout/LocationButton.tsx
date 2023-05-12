@@ -1,16 +1,14 @@
-import dynamic from "next/dynamic";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
-import { Button, Modal, Typography } from "@mui/material";
+import { Suspense, lazy, useState } from "react";
+import { Button, Modal, Typography, CircularProgress } from "@mui/material";
+
 // Our component.
-const LocationModal = dynamic(() => import("@/components/layout/LocationModal"), {
-  loading: () => <CircularProgress />,
-});
+const LocationModal = lazy(() => import("./LocationModal"));
 
 type Props = {
   onZipCodeChange: (newZipCode: string) => void;
   currentZip: string;
 };
+
 export default function LocationButton(props: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -29,7 +27,9 @@ export default function LocationButton(props: Props) {
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title">
         <div>
-          <LocationModal onSubmit={handleLocationChange} onClose={handleClose} />
+          <Suspense fallback={<CircularProgress />}>
+            <LocationModal onSubmit={handleLocationChange} onClose={handleClose} />
+          </Suspense>
         </div>
       </Modal>
     </div>

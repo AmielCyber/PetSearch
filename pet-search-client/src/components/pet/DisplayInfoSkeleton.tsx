@@ -1,6 +1,4 @@
-import Grid from "@mui/material/Grid";
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
+import { Grid, Skeleton, Typography } from "@mui/material";
 
 export default function DisplayInfoSkeleton() {
   return (

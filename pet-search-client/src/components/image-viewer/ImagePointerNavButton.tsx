@@ -1,14 +1,15 @@
 import IconButton from "@mui/material/IconButton";
 
-type Props = {
-  onClickNavigation: VoidFunction;
-  children: React.ReactNode;
-};
 const iconButtonStyles = {
   opacity: "0.7",
   "&:hover": {
     opacity: "0.9",
   },
+};
+
+type Props = {
+  onClickNavigation: VoidFunction;
+  children: React.ReactNode;
 };
 
 export default function ImagePointerNavButton(props: Props) {

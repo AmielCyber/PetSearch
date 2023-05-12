@@ -1,10 +1,10 @@
-import { Card, Typography, Grid, CardActionArea } from "@mui/material";
-import Image from "next/image";
-import CatIcon from "@/components/icons/CatIcon";
-import DogIcon from "@/components/icons/DogIcon";
+import { Card, Typography, Grid, CardActionArea, Link as MuiLink } from "@mui/material";
 import { useSWRConfig } from "swr";
-import Link from "next/link";
-import type Pet from "@/models/Pet";
+import { Link } from "react-router-dom";
+// Our imports.
+import type Pet from "../../models/pet";
+import CatIcon from "../icons/CatIcon";
+import DogIcon from "../icons/DogIcon";
 
 type Props = {
   pet: Pet;
@@ -23,6 +23,7 @@ const textStyles = {
 
 export default function PetListCard(props: Props) {
   const { mutate } = useSWRConfig();
+
   function handleClick() {
     mutate(`/api/pets/${props.pet.id}`, props.pet);
   }
@@ -33,16 +34,15 @@ export default function PetListCard(props: Props) {
 
   return (
     <Grid item key={props.pet.id}>
-      <Link
+      <MuiLink
+      component={Link}
         style={{ textDecoration: "none" }}
-        href={{
-          pathname: `/pets/${props.pet.id}`,
-        }}
+        to={`/pets/${props.pet.id}`}
       >
         <CardActionArea onClick={handleClick}>
           <Card sx={{ maxWidth: "200px" }}>
             {img ? (
-              <Image src={img} width={200} height={200} alt="Picture of pet" />
+              <img src={img} width={200} height={200} alt="Picture of pet" />
             ) : props.pet.type == "Cat" ? (
               <CatIcon sx={petIcons} />
             ) : (
@@ -58,7 +58,7 @@ export default function PetListCard(props: Props) {
             </Typography>
           </Card>
         </CardActionArea>
-      </Link>
+      </MuiLink>
     </Grid>
   );
 }

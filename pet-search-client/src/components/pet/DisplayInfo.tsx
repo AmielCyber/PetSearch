@@ -1,11 +1,9 @@
-import dynamic from "next/dynamic";
-import Alert from "@mui/material/Alert";
+import { lazy, Suspense } from "react";
+import { CircularProgress, Alert } from "@mui/material";
 // Our imports.
-import useSinglePet from "@/hooks/useSinglePet";
-import DisplayInfoSkeleton from "@/components/pet/DisplayInfoSkeleton";
-const PetSummary = dynamic(() => import("@/components/pet/PetSummary"), {
-  loading: () => <DisplayInfoSkeleton />,
-});
+import useSinglePet from "../../hooks/useSinglePet";
+import DisplayInfoSkeleton from "./DisplayInfoSkeleton";
+const PetSummary = lazy(() => import("./PetSummary"));
 
 type Props = {
   id: string;
@@ -22,5 +20,9 @@ export default function DisplayInfo(props: Props) {
     return <DisplayInfoSkeleton />;
   }
 
-  return <PetSummary petData={petData} />;
+  return (
+    <Suspense fallback={<CircularProgress />}>
+      <PetSummary petData={petData} />;
+    </Suspense>
+  );
 }

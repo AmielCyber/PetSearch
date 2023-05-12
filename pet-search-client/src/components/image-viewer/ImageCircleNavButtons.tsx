@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 // Our import.
-import styles from "@/styles/image-container/ImageNavDots.module.css";
+import styles from "../../styles/image-container/ImageNavDots.module.css";
 
 function getNavDotList(
   totalNavDots: number,
@@ -41,11 +41,13 @@ const outlinedCircleStyle = {
     backgroundColor: "rgb(189,189,189,0.4)",
   },
 };
+
 type Props = {
   totalNavDots: number;
   currentIndex: number;
   onSelectDotNav: (index: number) => void;
 };
+
 export default function ImageCircleNavButtons(props: Props) {
   return (
     <div className={styles.navDots}>
