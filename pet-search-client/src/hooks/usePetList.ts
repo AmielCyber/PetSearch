@@ -5,6 +5,8 @@ import type AccessToken from "../models/accessToken";
 import type PetResponse from "../models/petResponse";
 import useToken from "./useToken";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const ITEMS_PER_PAGE = 20;
 
 // Let SWR handle all errors.
@@ -15,10 +17,10 @@ const fetcher = async (url: string, accessToken: AccessToken | undefined) => {
   }
 
   // Call our endpoint.
-  const response: Response = await fetch(url, {
+  const response: Response = await fetch(BASE_URL + url, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${accessToken.token}`,
+      Authorization: accessToken.token,
       "Content-Type": "application/json",
     },
   });

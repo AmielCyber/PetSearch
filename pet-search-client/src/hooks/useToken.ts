@@ -3,7 +3,8 @@ import useSWR from "swr";
 import type AccessToken from "../models/accessToken";
 import { getStoredToken, storeAccessToken, tokenIsExpired } from "../token/tokenManager";
 
-const TOKEN_URL = "/api/token";
+const BASE_URL = import.meta.env.VITE_API_URL;
+const TOKEN_URL = "token";
 
 async function fetcher(url: string): Promise<AccessToken> {
   // Fetch stored token if we have one from a previous session.
@@ -15,7 +16,7 @@ async function fetcher(url: string): Promise<AccessToken> {
   // Expire token in 55 minutes.
   const expirationTime = new Date(new Date().getTime() + 3300 * 1000);
 
-  const response = await fetch(url);
+  const response = await fetch(BASE_URL + url);
   const responseData = await response.json();
   if (!response.ok) {
     // Make SWR catch the failed response.

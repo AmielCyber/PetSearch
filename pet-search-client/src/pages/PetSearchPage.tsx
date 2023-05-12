@@ -6,7 +6,7 @@ import type { LocationContextType } from "../hooks/LocationContext";
 import { LocationContext } from "../hooks/LocationContext";
 const DisplaySearch = lazy(() => import("../components/pet-search/DisplaySearch"));
 
-const petSet = new Set(["dogs", "cats"]);
+const petMap = new Map().set("dogs","dog").set("cats","cat");
 
 export default function PetSearchPage() {
   const { zipCode } = useContext(LocationContext) as LocationContextType;
@@ -15,7 +15,7 @@ export default function PetSearchPage() {
 
   const petType = params.petType ?? "";
   // Invalid petType entered.
-  if (!petSet.has(petType)) {
+  if (!petMap.has(petType)) {
     return (
       <Alert severity="error">
         <AlertTitle>Error</AlertTitle>
@@ -36,15 +36,14 @@ export default function PetSearchPage() {
 
   // petType, location, page
   const apiSearchParams = new URLSearchParams();
-  apiSearchParams.append("petType", petType);
+  apiSearchParams.append("type", petMap.get(petType));
   apiSearchParams.append("location", location);
   apiSearchParams.append("page", page);
-  const searchQueryURL = "/api/pets?" + apiSearchParams.toString();
+  const searchQueryURL = "pets?" + apiSearchParams.toString();
 
   return (
     <Suspense fallback={<CircularProgress />}>
       <DisplaySearch
-        petTypePlural={petType}
         searchParams={apiSearchParams}
         searchQueryURL={searchQueryURL}
         onPageChange={handlePageChange}
