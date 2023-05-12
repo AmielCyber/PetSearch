@@ -23,7 +23,7 @@ export default function Description(props: Props) {
       <Typography variant="body1">{decodedDescription}</Typography>
 
       <MaterialLink href={props.url}>
-        Click Here For More Info at PetFinder.
+        More Info at PetFinder.
       </MaterialLink>
     </section>
   );

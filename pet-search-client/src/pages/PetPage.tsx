@@ -8,7 +8,7 @@ export default function PetPage() {
   const params = useParams();
   const id = params.id ?? "error";
 
-  if (id === "error" || Number.isNaN(parseInt(id))) {
+  if (id === "" || id === "error" || Number.isNaN(parseInt(id))) {
     return (
       <main>
         <Alert severity="error">Invalid pet id entered.</Alert>
@@ -17,11 +17,9 @@ export default function PetPage() {
   }
   return (
     <main>
-      {id !== "" ? (
-        <Suspense fallback={<CircularProgress />}>
-          <DisplayInfo id={id} />{" "}
-        </Suspense>
-      ) : null}
+      <Suspense fallback={<CircularProgress sx={{margin: "auto"}}/>}>
+        <DisplayInfo id={id} />
+      </Suspense>
     </main>
   );
 }

@@ -21,10 +21,10 @@ export default function PetSearchHeader(props: Props) {
   return (
     <>
       <Typography sx={titleStyles} variant="h2">
-        {upperCasePetType} within a 50 mile radius.
+        {upperCasePetType}s within a 50 mile radius.
       </Typography>
       <Typography sx={zipStyles} variant="subtitle1">
-        Adoptable {props.petType} around Zip Code: {props.zipCode}
+        Adoptable {props.petType}s by Zip Code: {props.zipCode}
       </Typography>
     </>
   );
