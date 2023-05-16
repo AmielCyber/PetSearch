@@ -1,5 +1,8 @@
 namespace PetSearchAPI.Models.PetFinderResponse;
 
+/// <summary>
+/// The url photo sizes of a particular pet.
+/// </summary>
 public class PhotoSizesUrl
 {
     public string Small { get; set; }

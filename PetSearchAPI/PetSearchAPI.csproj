@@ -5,13 +5,17 @@
         <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>ea64514f-ea5d-41b3-88f6-7fd4b96670d7</UserSecretsId>
-  </PropertyGroup>
+    </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="ErrorOr" Version="1.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
         <PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
 </Project>

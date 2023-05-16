@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PetSearchAPI.Controllers;
 
-// Base class for an MVC controller with view.
-// Effectively a view
-
+/// <summary>
+/// Base class for an MVC controller with view. Effectively a view for our client application. 
+/// </summary>
 // No authentication
 [AllowAnonymous]
 public class FallbackController : Controller

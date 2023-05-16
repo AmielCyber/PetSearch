@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace PetSearchAPI.Models.Token;
 
+/// <summary>
+/// The body properties needed to obtain a token for our client application.
+/// </summary>
 public class TokenRequestBody
 {
     [JsonPropertyName("grant_type")] 

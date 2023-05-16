@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace PetSearchAPI.Models.PetFinderResponse;
 
+/// <summary>
+/// Pet DTO describing all attributes of a pet to the client.
+/// </summary>
 public class PetDto
 {
     public int Id { get; set; }

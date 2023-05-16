@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace PetSearchAPI.Models.PetFinderResponse;
 
+/// <summary>
+/// Pagination object for our client app to navigate through the available pets in their area.
+/// </summary>
 public class Pagination
 {
     [JsonPropertyName("count_per_page")]
