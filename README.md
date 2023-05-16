@@ -4,6 +4,11 @@
 
 **Note:** *This set up assumes you have obtained keys from the PetFinder API*.
 
+### Required Dependencies
+
+* [Node.js](https://nodejs.org/en)
+* [.NET SDK](https://dotnet.microsoft.com/en-us/download)
+
 After cloning this repository, go to the repository directory: `cd PetSearch`
 
 ### React Setup
