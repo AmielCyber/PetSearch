@@ -23,7 +23,7 @@ async function fetcher(url: string): Promise<AccessToken> {
     throw new Error(responseData.message);
   }
   const accessToken: AccessToken = {
-    token: responseData.access_token,
+    token: "Bearer " + responseData.access_token,
     expirationDate: expirationTime,
   };
 
