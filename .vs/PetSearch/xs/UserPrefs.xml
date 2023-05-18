@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{A8364ACD-14EB-4109-A541-BCD6FB99CFEC}|https">
+  <MonoDevelop.Ide.ItemProperties.PetSearchAPI PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="PetSearchAPI/Program.cs">
+    <Files>
+      <File FileName="PetSearchAPI/appsettings.json" Line="1" Column="1" />
+      <File FileName="PetSearchAPI/Program.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PetSearch" expanded="True">
+            <Node name="PetSearchAPI" expanded="True" selected="True">
+              <Node name="Dependencies" expanded="True" />
+              <Node name="Clients" expanded="True" />
+              <Node name="Properties" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+</Properties>

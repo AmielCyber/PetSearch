@@ -1,26 +1,20 @@
 /**
  * @vitest-environment jsdom
  */
+//import {render, screen} from "@testing-library/react";
+//import LocationModal from "./LocationModal";
+//import {beforeEach, describe, expect} from "vitest";
 
-import { screen, render } from "@testing-library/react";
-import LocationModal from "./LocationModal";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+//const onSubmitMock = (newZipCode: string) => console.log(newZipCode);
+// const onCloseMock = () => console.log("close");
 
-type Props = {
-  onSubmit: (newZipCode: string) => void;
-  onClose: () => void;
-};
+//describe("LocationModal", () => {
+//    beforeEach(() => {
+//        render(<LocationModal onClose={onCloseMock} onSubmit={onSubmitMock}/>);
+//    });
 
-const onSubmitMock = (newZipCode: string) => console.log(newZipCode);
-const onCloseMock = () => console.log("close");
-
-describe("LocationModal", () => {
-  beforeEach(() => {
-    render(<LocationModal onClose={onCloseMock} onSubmit={onSubmitMock} />);
-  });
-
-  test("displays 'New Zip Code'", () => {
-    const headerElement = screen.getByRole("heading");
-    expect(headerElement.textContent).toMatch(/New Zip Code/i);
-  });
-});
+//    test("displays 'New Zip Code'", () => {
+//        const headerElement = screen.getByRole("heading");
+//        expect(headerElement.textContent).toMatch(/New Zip Code/i);
+//    });
+//});

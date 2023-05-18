@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 // Our imports.
-import type Pet from "../../models/pet";
+import type Pet from "../../models/pet.ts";
 import PageTitle from "./PageTitle";
 import PetImageContainer from "./PetImageContainer";
 import PetAttributes from "./PetAttributes";

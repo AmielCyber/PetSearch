@@ -1,7 +1,7 @@
 import useSWR from "swr";
 // Our imports.
 import type AccessToken from "../models/accessToken";
-import type Pet from "../models/pet";
+import type Pet from "../models/pet.ts";
 import useToken from "./useToken";
 
 const BASE_URL = import.meta.env.VITE_API_URL;

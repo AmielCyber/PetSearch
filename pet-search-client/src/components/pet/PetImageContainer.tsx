@@ -4,7 +4,7 @@ import HideImageTwoToneIcon from "@mui/icons-material/HideImageTwoTone";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 // Our imports.
-import type { PhotoSize } from "../../models/pet";
+import type { PhotoSize } from "../../models/pet.ts";
 import ImagePointerNavButton from "../image-viewer/ImagePointerNavButton";
 import ImageCircleNavButtons from "../image-viewer/ImageCircleNavButtons";
 import styles from "../../styles/image-container/PetImageContainer.module.css";
