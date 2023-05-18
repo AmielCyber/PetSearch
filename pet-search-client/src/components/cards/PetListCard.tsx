@@ -2,7 +2,7 @@ import { Card, Typography, Grid, CardActionArea, Link as MuiLink } from "@mui/ma
 import { useSWRConfig } from "swr";
 import { Link } from "react-router-dom";
 // Our imports.
-import type Pet from "../../models/pet";
+import type Pet from "../../models/pet.ts";
 import CatIcon from "../icons/CatIcon";
 import DogIcon from "../icons/DogIcon";
 

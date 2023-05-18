@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 // Our import.
-import type Pet from "../../models/pet";
+import type Pet from "../../models/pet.ts";
 
 type Props = {
   petData: Pet;

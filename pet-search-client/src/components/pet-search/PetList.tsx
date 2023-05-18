@@ -1,6 +1,6 @@
 import { Grid, Skeleton } from "@mui/material";
 // Out imports.
-import type Pet from "../../models/pet";
+import type Pet from "../../models/pet.ts";
 import PetListCard from "../cards/PetListCard";
 
 function getSkeletonItems(itemsPerPage: number): React.ReactNode[] {

@@ -1,4 +1,4 @@
-import Pet from "./pet";
+import Pet from "./pet.ts";
 
 export interface Pagination {
   count_per_page: number;
