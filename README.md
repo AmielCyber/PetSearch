@@ -26,6 +26,7 @@ After cloning this repository, go to the repository directory: `cd PetSearch`
     3. `dotnet user-secrets set "PetFinder:ClientSecret" "your_client_secret"`
 3. Build the .NET application: `dotnet build`
 4. Test the application: `dotnet run`
-    1. Open your browser and go to `http://localhost:5175/swagger/index.html` to test the endpoints.
-    2. Go to `http://localhost:5175` to interact with the React application
-5. Close the application by entering `ctrl c` on your terminal where you ran `dotnet run`
+    1. In the terminal check what port the application is using: `http://localhost:....`
+    2. Open your browser and go to `http://localhost:..../swagger/index.html` to test the endpoints.
+    3. Go to `http://localhost:....` to interact with the React application
+5. Close the application by entering <kbd>ctrl c</kbd> on your terminal where you ran `dotnet run`
