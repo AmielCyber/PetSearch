@@ -22,7 +22,7 @@ export default function DisplayInfo(props: Props) {
 
   return (
     <Suspense fallback={<CircularProgress />}>
-      <PetSummary petData={petData} />;
+      <PetSummary petData={petData} />
     </Suspense>
   );
 }
