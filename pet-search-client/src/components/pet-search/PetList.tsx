@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from "@mui/material";
+import {Grid, Skeleton} from "@mui/material";
 // Out imports.
 import type Pet from "../../models/pet.ts";
 import PetListCard from "../cards/PetListCard";
@@ -7,8 +7,8 @@ function getSkeletonItems(itemsPerPage: number): React.ReactNode[] {
   const skeletonList = new Array<React.ReactNode>(itemsPerPage);
   for (let i = 0; i < skeletonList.length; i++) {
     skeletonList[i] = (
-      <Grid item key={"grid-item-key-" + i} xs>
-        <Skeleton variant="rectangular" animation="wave" width={200} height={250} />
+      <Grid item key={"grid-item-key-" + i}>
+          <Skeleton variant="rectangular" animation="wave" width={300} height={300} />
       </Grid>
     );
   }

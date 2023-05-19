@@ -1,8 +1,9 @@
-import { Card, Typography, Grid, CardActionArea, Link as MuiLink } from "@mui/material";
+import {Card, Typography, Grid, CardActionArea, Link as MuiLink } from "@mui/material";
 import { useSWRConfig } from "swr";
 import { Link } from "react-router-dom";
 // Our imports.
 import type Pet from "../../models/pet.ts";
+import styles from "../../styles/cards/PetListCard.module.css";
 import CatIcon from "../icons/CatIcon";
 import DogIcon from "../icons/DogIcon";
 
@@ -12,7 +13,7 @@ type Props = {
 
 // Styles
 const petIcons = {
-  fontSize: "200px",
+  fontSize: "300px",
   color: "primary",
 };
 const textStyles = {
@@ -25,12 +26,10 @@ export default function PetListCard(props: Props) {
   const { mutate } = useSWRConfig();
 
   function handleClick() {
-    mutate(`/api/pets/${props.pet.id}`, props.pet);
+    mutate(`pets/${props.pet.id}`, props.pet);
   }
-  // Temporarily hardcoding to medium sized img, icon otherwise
-  const img = props.pet.primary_photo_cropped?.medium
-    ? props.pet.primary_photo_cropped.medium
-    : null;
+  // Temporarily hard coding to medium-sized img, icon otherwise
+  const img = props.pet.primary_photo_cropped?.small ?? null;
 
   return (
     <Grid item key={props.pet.id}>
@@ -40,9 +39,11 @@ export default function PetListCard(props: Props) {
         to={`/pets/${props.pet.id}`}
       >
         <CardActionArea onClick={handleClick}>
-          <Card sx={{ maxWidth: "200px" }}>
+          <Card sx={{ maxWidth: "300px" }}>
             {img ? (
-              <img src={img} width={200} height={200} alt="Picture of pet" />
+                <div className={styles.imageContainer}>
+                  <img src={img} alt={props.pet.name} loading="lazy" />
+                </div>
             ) : props.pet.type == "Cat" ? (
               <CatIcon sx={petIcons} />
             ) : (
