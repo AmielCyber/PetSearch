@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import {cleanup, fireEvent, render, screen} from "@testing-library/react";
-import LocationModal from "./LocationModal";
+import LocationModal from "../../../components/layout/LocationModal.tsx";
 import {afterEach, beforeEach, describe, expect} from "vitest";
 
 const onSubmit = (newZipCode: string) => console.log(newZipCode);
