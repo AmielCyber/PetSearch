@@ -7,3 +7,5 @@ riderModule.iml
 .idea/
 PetSearch.sln.DotSettings.user
 ./vs
+.vs/PetSearch/xs/project-cache/PetSearchAPI-Debug.json
+.vs/PetSearch/xs/UserPrefs.xml

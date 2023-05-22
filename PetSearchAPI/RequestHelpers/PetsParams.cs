@@ -26,5 +26,5 @@ public class PetsParams
     
     // recent, -recent, distance, -distance
     [RegularExpression(@"^-?(recent|distance)$", ErrorMessage = "Only location values: 'recent' and 'distance' with optional '-' prefix are accepted")]
-    public string Sort { get; set; } = "recent";    
+    public string Sort { get; set; } = "distance";    
 }
