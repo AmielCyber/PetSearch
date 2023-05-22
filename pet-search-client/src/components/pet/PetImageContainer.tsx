@@ -54,7 +54,7 @@ export default function PetImageContainer(props: Props) {
   return (
     <Paper elevation={4}>
       <section className={styles.imageContainer}>
-        <img src={props.photos[imgIndex].large} alt={props.name} sizes="600px" style={{ objectFit: "fill" }} />
+        <img src={props.photos[imgIndex].full} alt={props.name} sizes="600px" style={{ objectFit: "fill" }} />
         <div className={styles.imgNavButtons}>
           <ImagePointerNavButton onClickNavigation={handlePrevClick}>
             <ArrowCircleLeftOutlinedIcon fontSize="large" />
