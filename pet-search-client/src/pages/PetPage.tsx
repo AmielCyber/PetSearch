@@ -8,7 +8,7 @@ export default function PetPage() {
   const params = useParams();
   const id = params.id ?? "error";
 
-  if (id === "" || id === "error" || Number.isNaN(parseInt(id))) {
+  if (id === "error" || Number.isNaN(parseInt(id))) {
     return (
       <main>
         <Alert severity="error">Invalid pet id entered.</Alert>
