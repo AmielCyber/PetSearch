@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { CircularProgress, Alert } from "@mui/material";
+import { Alert } from "@mui/material";
 // Our imports.
 import useSinglePet from "../../hooks/useSinglePet";
 import DisplayInfoSkeleton from "./DisplayInfoSkeleton";
@@ -21,7 +21,7 @@ export default function DisplayInfo(props: Props) {
   }
 
   return (
-    <Suspense fallback={<CircularProgress />}>
+    <Suspense fallback={<DisplayInfoSkeleton />}>
       <PetSummary petData={petData} />
     </Suspense>
   );
