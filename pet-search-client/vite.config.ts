@@ -20,5 +20,6 @@ export default defineConfig({
   // Send build static files to our server to serve.
   build: {
     outDir: "../PetSearchAPI/wwwroot",
+    emptyOutDir: true,
   },
 });
