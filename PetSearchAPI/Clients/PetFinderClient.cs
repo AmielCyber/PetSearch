@@ -4,7 +4,6 @@ using ErrorOr;
 using PetSearchAPI.Common.Errors;
 using PetSearchAPI.Common.Exceptions;
 using PetSearchAPI.Models.PetFinderResponse;
-using PetSearchAPI.Models.Token;
 using PetSearchAPI.RequestHelpers;
 
 namespace PetSearchAPI.Clients;
@@ -13,11 +12,8 @@ namespace PetSearchAPI.Clients;
 /// PetFinderClient implementation to handle requests from the PetFinderAPI.
 /// Returns the appropriate response to our client app.
 /// </summary>
-public class PetFinderClient: IPetFinderClient
+public class PetFinderClient : IPetFinderClient
 {
-    private const string TokenUrl = "oauth2/token";
-    private const string PetsUrl = "animals";
-    
     private readonly IConfiguration _config;
     private readonly HttpClient _client;
 
@@ -28,33 +24,8 @@ public class PetFinderClient: IPetFinderClient
     /// <param name="client">Have access to the global HttpClient object to make requests.</param>
     public PetFinderClient(IConfiguration config, HttpClient client)
     {
-        _config = config;   // To get our keys.
-        _client = client;   // To use the http client with a base address.
-    }
-
-    /// <summary>
-    /// Gets token for the client application in order to call our endpoints.
-    /// </summary>
-    /// <returns>Token response body</returns>
-    /// <exception cref="TokenFetchException">Throws if we failed to obtain a token from PetFinder API</exception>
-    public async Task<TokenResponseDto> GetToken()
-    {
-        var requestBody = new TokenRequestBody
-        {
-            ClientId = _config["PetFinder:ClientId"],
-            ClientSecret = _config["PetFinder:ClientSecret"]
-        };
-        
-        using HttpResponseMessage response = await _client.PostAsJsonAsync(TokenUrl, requestBody);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            // Throw the exception since that is something that happened in our end or the api (500).
-            throw new TokenFetchException();
-        }
-        
-        TokenResponseDto petFinderToken = await response.Content.ReadFromJsonAsync<TokenResponseDto>();
-        return petFinderToken;
+        _config = config; // To get our keys.
+        _client = client; // To use the http client with a base address.
     }
 
     /// <summary>
@@ -71,11 +42,11 @@ public class PetFinderClient: IPetFinderClient
         {
             return Errors.Token.MissingToken;
         }
-        
+
         string petUriQuery = GetPetsQueryString(petsParams);
-        
+
         _client.DefaultRequestHeaders.Add("Authorization", accessToken);
-        using HttpResponseMessage response = await _client.GetAsync($"{PetsUrl}?{petUriQuery}");
+        using HttpResponseMessage response = await _client.GetAsync($"?{petUriQuery}");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -87,6 +58,7 @@ public class PetFinderClient: IPetFinderClient
         // Map PetResponse to 
         return MapPetResponseToPetsResponseDto(petResponse);
     }
+
     /// <summary>
     /// Gets a single pet by their id.
     /// </summary>
@@ -100,15 +72,15 @@ public class PetFinderClient: IPetFinderClient
         {
             return Errors.Token.MissingToken;
         }
-        
+
         _client.DefaultRequestHeaders.Add("Authorization", accessToken);
-        using HttpResponseMessage response = await _client.GetAsync($"{PetsUrl}/{id}");
+        using HttpResponseMessage response = await _client.GetAsync($"/{id}");
 
         if (!response.IsSuccessStatusCode)
         {
             return GetPetsError((int)response.StatusCode);
         }
-        
+
         SinglePetResponse petResponse = await response.Content.ReadFromJsonAsync<SinglePetResponse>();
         // Only return PetDto.
         return petResponse.Pet;
@@ -136,7 +108,7 @@ public class PetFinderClient: IPetFinderClient
     private static string GetPetsQueryString(PetsParams petsParams)
     {
         var queryStringBuilder = new StringBuilder();
-        
+
         // Required.
         queryStringBuilder.AppendFormat($"type={HttpUtility.UrlEncode(petsParams.Type)}");
         // Required.
@@ -165,13 +137,13 @@ public class PetFinderClient: IPetFinderClient
             // client app handles auto refresh token.
             throw new PetFinderForbidden();
         }
-        
+
         return statusCode switch
-            {
-                400 => Errors.Pets.BadRequest,
-                401 => Errors.Token.NotAuthorized,
-                404 => Errors.Pets.NotFound,
-                _ => Errors.Pets.ServerError,
-            };
+        {
+            400 => Errors.Pets.BadRequest,
+            401 => Errors.Token.NotAuthorized,
+            404 => Errors.Pets.NotFound,
+            _ => Errors.Pets.ServerError,
+        };
     }
 }

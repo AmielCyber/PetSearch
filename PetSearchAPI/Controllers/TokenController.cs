@@ -1,8 +1,7 @@
-using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using PetSearchAPI.Clients;
-using PetSearchAPI.Common.Errors;
 using PetSearchAPI.Models.Token;
+
 namespace PetSearchAPI.Controllers;
 
 /// <summary>
@@ -11,13 +10,13 @@ namespace PetSearchAPI.Controllers;
 [Produces("application/json")]
 public class TokenController : ApiController
 {
-    private readonly IPetFinderClient _petFinderClient;
+    private readonly ITokenClient _tokenClient;
 
-    public TokenController(IPetFinderClient petFinderClient)
+    public TokenController(ITokenClient tokenClient)
     {
-        _petFinderClient = petFinderClient;
+        _tokenClient = tokenClient;
     }
-    
+
     /// <summary>
     /// Get: /api/token
     /// Gets a token for our client app.
@@ -26,7 +25,7 @@ public class TokenController : ApiController
     [HttpGet]
     public async Task<ActionResult<TokenResponseDto>> GetToken()
     {
-        TokenResponseDto tokenResponseDto = await _petFinderClient.GetToken();
+        TokenResponseDto tokenResponseDto = await _tokenClient.GetToken();
         return tokenResponseDto;
     }
 }
