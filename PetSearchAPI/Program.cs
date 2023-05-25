@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using PetSearchAPI.Clients;
 using PetSearchAPI.Middleware;
 
-const string petFinderSearchPetsUrl = "https://api.petfinder.com/v2/animals";
+const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +47,7 @@ var builder = WebApplication.CreateBuilder(args);
     // Add HTTP factory into our dependency injection.
     builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
     {
-        client.BaseAddress = new Uri(petFinderSearchPetsUrl);
+        client.BaseAddress = new Uri(petFinderUrl);
     });
     builder.Services.AddHttpClient<ITokenClient, TokenClient>(client =>
     {

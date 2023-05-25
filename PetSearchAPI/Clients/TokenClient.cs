@@ -32,6 +32,7 @@ public class TokenClient: ITokenClient
         if (!response.IsSuccessStatusCode)
         {
             // Throw the exception since that is something that happened in our end or the api (500).
+            // Will log exception.
             throw new TokenFetchException();
         }
 
