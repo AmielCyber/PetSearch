@@ -4,6 +4,7 @@ using PetSearchAPI.Clients;
 using PetSearchAPI.Middleware;
 
 const string petFinderUrl = "https://api.petfinder.com/v2/";
+const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,12 +33,12 @@ var builder = WebApplication.CreateBuilder(args);
                 Type = ReferenceType.SecurityScheme
             }
         };
-        options.SwaggerDoc("v1", new OpenApiInfo{Title = "Pet Search API", Version = "v1"});
+        options.SwaggerDoc("v1", new OpenApiInfo { Title = "Pet Search API", Version = "v1" });
         options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
-                jwtSecurityScheme, 
+                jwtSecurityScheme,
                 Array.Empty<string>()
             }
         });
@@ -47,6 +48,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
     {
         client.BaseAddress = new Uri(petFinderUrl);
+    });
+    builder.Services.AddHttpClient<ITokenClient, TokenClient>(client =>
+    {
+        client.BaseAddress = new Uri(petFinderTokenUrl);
     });
     // Web API controller for routes.
     builder.Services.AddControllers();
@@ -68,9 +73,10 @@ var app = builder.Build();
             config.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
         });
     }
+
     // Set up middleware to serve static content (React)
     // Looks for an html in wwwroot.
-    app.UseDefaultFiles();   
+    app.UseDefaultFiles();
     // Tell our app to use static files to serve(React).
     app.UseStaticFiles();
 

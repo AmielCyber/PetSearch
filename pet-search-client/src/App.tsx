@@ -6,7 +6,7 @@ import { darkModeTheme, lightModeTheme } from "./theme/materialTheme";
 import { LocationProvider } from "./hooks/LocationContext";
 import NavBar from "./components/layout/NavBar";
 
-const containerSx: SxProps<Theme> ={
+const containerSx: SxProps<Theme> = {
   paddingBottom: "2rem"
 }
 

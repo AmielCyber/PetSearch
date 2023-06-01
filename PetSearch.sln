@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearchAPI", "PetSearchAPI\PetSearchAPI.csproj", "{A8364ACD-14EB-4109-A541-BCD6FB99CFEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearchAPI.Tests", "PetSearchAPI.Tests\PetSearchAPI.Tests.csproj", "{178E9E4B-6B56-42AB-9BB9-2B5326E11F3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A8364ACD-14EB-4109-A541-BCD6FB99CFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8364ACD-14EB-4109-A541-BCD6FB99CFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8364ACD-14EB-4109-A541-BCD6FB99CFEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{178E9E4B-6B56-42AB-9BB9-2B5326E11F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{178E9E4B-6B56-42AB-9BB9-2B5326E11F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{178E9E4B-6B56-42AB-9BB9-2B5326E11F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{178E9E4B-6B56-42AB-9BB9-2B5326E11F3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

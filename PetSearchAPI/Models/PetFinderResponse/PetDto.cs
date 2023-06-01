@@ -16,8 +16,10 @@ public class PetDto
     public string Name { get; set; }
     public string Description { get; set; }
     public PhotoSizesUrl[] Photos { get; set; }
+
     [JsonPropertyName("primary_photo_cropped")]
     public PhotoSizesUrl PrimaryPhotoSizesUrlCropped { get; set; }
+
     public string Status { get; set; }
     public double? Distance { get; set; }
 }

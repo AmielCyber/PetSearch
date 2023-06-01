@@ -9,7 +9,7 @@ namespace PetSearchAPI.Controllers;
 /// Pets controller endpoint that will fetch pet data and send it to the client.
 /// </summary>
 [Produces("application/json")]
-public class PetsController: ApiController
+public class PetsController : ApiController
 {
     private readonly IPetFinderClient _petFinderClient;
 
@@ -21,7 +21,7 @@ public class PetsController: ApiController
     {
         _petFinderClient = petFinderClient;
     }
-    
+
     /// <summary>
     /// GET: /api/pets.
     /// Gets a list of available pets based on the search query.
@@ -32,12 +32,12 @@ public class PetsController: ApiController
     /// problem detail.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(PetsResponseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPets([FromQuery]PetsParams petsParams, [FromHeader]string authorization)
+    public async Task<IActionResult> GetPets([FromQuery] PetsParams petsParams, [FromHeader] string authorization)
     {
         var petsResult = await _petFinderClient.GetPets(petsParams, authorization);
         return petsResult.Match(Ok, GetProblems);
     }
-    
+
     /// <summary>
     /// GET: /api/pets/{id}
     /// Gets a single pet object.
@@ -47,7 +47,7 @@ public class PetsController: ApiController
     /// <returns>A pet object if request was successful, else a problem detail.</returns>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(PetDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPets(int id, [FromHeader]string authorization)
+    public async Task<IActionResult> GetPets(int id, [FromHeader] string authorization)
     {
         var petResult = await _petFinderClient.GetSinglePet(id, authorization);
         return petResult.Match(Ok, GetProblems);
