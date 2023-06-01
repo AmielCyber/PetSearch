@@ -1,4 +1,3 @@
-
 namespace PetSearchAPI.Models.PetFinderResponse;
 
 /// <summary>

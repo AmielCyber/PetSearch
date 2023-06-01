@@ -1,12 +1,12 @@
 using ErrorOr;
 using PetSearchAPI.Models.PetFinderResponse;
-using PetSearchAPI.Models.Token;
 using PetSearchAPI.RequestHelpers;
 
 namespace PetSearchAPI.Clients;
 
 /// <summary>
 /// Pet Finder Client interface to handle PetFinder API requests.
+/// Such as getting a list of pets and a single pet object from the PetFinder API.
 /// </summary>
 public interface IPetFinderClient
 {

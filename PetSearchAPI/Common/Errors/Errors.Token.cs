@@ -13,6 +13,7 @@ public static partial class Errors
             code: "Token.MissingToken",
             description: "Authorization header missing."
         );
+
         public static Error NotAuthorized => Error.Custom(
             type: MyErrorTypes.Unauthorized,
             code: "Token.NotAuthorized",

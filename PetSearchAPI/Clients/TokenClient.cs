@@ -3,17 +3,25 @@ using PetSearchAPI.Models.Token;
 
 namespace PetSearchAPI.Clients;
 
-public class TokenClient: ITokenClient
+/// <summary>
+/// TokenClient implementation to request tokens from the PetFinderApi.
+/// </summary>
+public class TokenClient : ITokenClient
 {
     private readonly IConfiguration _configuration;
     private readonly HttpClient _client;
 
+    /// <summary>
+    /// Set up dependency injection.
+    /// </summary>
+    /// <param name="configuration">Configuration client that holds our keys.</param>
+    /// <param name="client">Global HttpClient we use to use external APIs</param>
     public TokenClient(IConfiguration configuration, HttpClient client)
     {
         _configuration = configuration;
         _client = client;
     }
-    
+
     /// <summary>
     /// Gets token for the client application in order to call our endpoints.
     /// </summary>
@@ -27,12 +35,12 @@ public class TokenClient: ITokenClient
             ClientSecret = _configuration["PetFinder:ClientSecret"]
         };
 
-        using HttpResponseMessage response = await _client.PostAsJsonAsync("",requestBody);
+        using HttpResponseMessage response = await _client.PostAsJsonAsync("", requestBody);
 
         if (!response.IsSuccessStatusCode)
         {
             // Throw the exception since that is something that happened in our end or the api (500).
-            // Will log exception.
+            // Is catch by our global error handler and will log exception.
             throw new TokenFetchException();
         }
 

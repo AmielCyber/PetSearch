@@ -30,7 +30,7 @@ public class ExceptionMiddleware
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
-            
+
             context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = 500;
 
@@ -41,8 +41,8 @@ public class ExceptionMiddleware
                 Detail = _env.IsDevelopment() ? e.StackTrace : "An error occurred while processing your request.",
                 Status = (int)HttpStatusCode.InternalServerError,
             };
-            
-            
+
+
             // We are outside of our api controller so we need to specify JsonNamingPolicy
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             var json = JsonSerializer.Serialize(response, options);
