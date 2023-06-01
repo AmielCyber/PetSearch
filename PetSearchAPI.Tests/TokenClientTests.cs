@@ -11,15 +11,17 @@ namespace PetSearchAPI.Tests;
 
 public class TokenClientTests
 {
-    private static readonly Uri PetFinderTokenUri = new Uri("https://api.petfinder.com/v2/oauth2/token");
+    private static readonly string TokenUrl = "https://api.petfinder.com/v2/oauth2/token";
+    private readonly Uri _petFinderTokenUri;
     private readonly MockHttpMessageHandler _handlerMock;
     private readonly Mock<IConfiguration> _configMock;
     private readonly TokenResponseDto _expectedResponseDto;
 
     public TokenClientTests()
     {
+        _petFinderTokenUri = new Uri(TokenUrl);
         _handlerMock = new MockHttpMessageHandler();
-        
+
         // Set up configuration mock.
         const string keyValueMock = "Key Value";
         _configMock = new Mock<IConfiguration>();
@@ -27,7 +29,7 @@ public class TokenClientTests
             .Returns(keyValueMock);
         _configMock.Setup(c => c["PetFinder:ClientSecret"])
             .Returns(keyValueMock);
-        
+
         // Expected GetToken Result.
         _expectedResponseDto = new TokenResponseDto
         {
@@ -43,7 +45,7 @@ public class TokenClientTests
         // Arrange.
         // Set up HttpMessageHandler mock for httpclient.
         var request = _handlerMock
-            .When("https://api.petfinder.com/v2/oauth2/token")
+            .When(TokenUrl)
             .Respond(HttpStatusCode.OK, JsonContent.Create(new
             {
                 token_type = "Bearer",
@@ -51,12 +53,12 @@ public class TokenClientTests
                 access_token = "TokenValue"
             }));
         // Arrange httpClient and tokenClient with mock objects.
-        using var httpClient = new HttpClient(_handlerMock) { BaseAddress = PetFinderTokenUri };
+        using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderTokenUri };
         var tokenClient = new TokenClient(_configMock.Object, httpClient);
-        
+
         // Act
         var result = await tokenClient.GetToken();
-        
+
         // Assert.
         Assert.NotNull(result);
         Assert.Equal(_expectedResponseDto.AccessToken, result.AccessToken);
@@ -78,14 +80,12 @@ public class TokenClientTests
         // Arrange.
         // Set up HttpMessageHandler mock for httpclient.
         var request = _handlerMock
-            .When("https://api.petfinder.com/v2/oauth2/token")
+            .When(TokenUrl)
             .Respond(httpStatusCode);
         // Arrange httpClient and tokenClient with mock objects.
-        using var httpClient = new HttpClient(_handlerMock) { BaseAddress = PetFinderTokenUri };
+        using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderTokenUri };
         var tokenClient = new TokenClient(_configMock.Object, httpClient);
-        // Set up configuration mock.
-        
-        
+
         // Assert
         TokenResponseDto? result = null;
         await Assert.ThrowsAsync<TokenFetchException>(async () =>
@@ -93,8 +93,7 @@ public class TokenClientTests
             // Act
             result = await tokenClient.GetToken();
         });
-        
-        
+
         // Assert
         Assert.Null(result);
         // Verify calls are made to get our keys.
@@ -103,5 +102,4 @@ public class TokenClientTests
         // Http client gets called only once.
         Assert.Equal(1, _handlerMock.GetMatchCount(request));
     }
-    
 }
