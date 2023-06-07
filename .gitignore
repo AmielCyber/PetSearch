@@ -1,11 +1,55 @@
 bin/
 obj/
-/packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# Mac stuff
 .DS_Store
+*.dmg
+*.app
+
+# JetBrains Rider
 .idea/
-PetSearch.sln.DotSettings.user
-./vs
-.vs/PetSearch/xs/project-cache/PetSearchAPI-Debug.json
-.vs/PetSearch/xs/UserPrefs.xml
+.sln.iml
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+# except build/, which is used as an MSBuild target.
+!**/[Pp]ackages/build/
+# Uncomment if necessary however generally it will be regenerated when nee
+#!**/[Pp]ackages/repositories.config
+# NuGet v3's project.json files produces more ignorable files
+*.nuget.props
+*.nuget.targets
+
+# Microsoft Azure Web App publish settings. Comment the next line if you want to
+# checkin your Azure Web App publish settings, but sensitive information contained
+# in these scripts will be unencrypted
+PublishScripts/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+# Note: Comment the next line if you want to checkin your web deploy settings,
+# but database connection strings (with potential passwords) will be unencrypted
+*.pubxml
+*.publishproj
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
