@@ -7,9 +7,7 @@ namespace PetSearchAPI.Models.Token;
 /// </summary>
 public class TokenRequestBody
 {
-    [JsonPropertyName("grant_type")] public string GrantType { get; set; } = "client_credentials";
-
-    [JsonPropertyName("client_id")] public string ClientId { get; set; }
-
-    [JsonPropertyName("client_secret")] public string ClientSecret { get; set; }
+    [JsonPropertyName("grant_type")] public string GrantType { get; } = "client_credentials";
+    [JsonPropertyName("client_id")] public required string ClientId { get; init; }
+    [JsonPropertyName("client_secret")] public required string ClientSecret { get; init; }
 }

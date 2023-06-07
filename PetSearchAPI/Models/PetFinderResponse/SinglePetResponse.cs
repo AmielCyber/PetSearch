@@ -7,5 +7,5 @@ namespace PetSearchAPI.Models.PetFinderResponse;
 /// </summary>
 public class SinglePetResponse
 {
-    [JsonPropertyName("animal")] public PetDto Pet { get; set; }
+    [JsonPropertyName("animal")] public required PetDto Pet { get; init; }
 }

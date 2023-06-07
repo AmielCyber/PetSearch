@@ -5,7 +5,7 @@ namespace PetSearchAPI.Common.Exceptions;
 /// </summary>
 public class TokenFetchException : Exception
 {
-    public TokenFetchException() : base("Failed to fetch token from our server.")
+    public TokenFetchException(string msg = "") : base($"Failed to fetch token from our server. {msg}")
     {
     }
 }
