@@ -6,6 +6,6 @@ namespace PetSearchAPI.Models.PetFinderResponse;
 /// </summary>
 public class PetResponse
 {
-    public PetDto[] Animals { get; set; }
-    public Pagination Pagination { get; set; }
+    public required PetDto[] Animals { get; init; }
+    public required Pagination Pagination { get; init; }
 }

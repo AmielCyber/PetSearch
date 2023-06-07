@@ -7,7 +7,7 @@ namespace PetSearchAPI.Models.Token;
 /// </summary>
 public class TokenResponseDto
 {
-    [JsonPropertyName("token_type")] public string TokenType { get; set; }
-    [JsonPropertyName("expires_in")] public int ExpiresIn { get; set; }
-    [JsonPropertyName("access_token")] public string AccessToken { get; set; }
+    [JsonPropertyName("token_type")] public required string TokenType { get; init; }
+    [JsonPropertyName("expires_in")] public int ExpiresIn { get; init; }
+    [JsonPropertyName("access_token")] public required string AccessToken { get; init; }
 }

@@ -51,7 +51,12 @@ public class PetFinderClient : IPetFinderClient
             return GetPetsError((int)response.StatusCode);
         }
 
-        PetResponse petResponse = await response.Content.ReadFromJsonAsync<PetResponse>();
+        PetResponse? petResponse = await response.Content.ReadFromJsonAsync<PetResponse>();
+
+        if (petResponse is null)
+        {
+            return GetPetsError(500);
+        }
 
         return MapPetResponseToPetsResponseDto(petResponse);
     }
@@ -79,7 +84,13 @@ public class PetFinderClient : IPetFinderClient
             return GetPetsError((int)response.StatusCode);
         }
 
-        SinglePetResponse petResponse = await response.Content.ReadFromJsonAsync<SinglePetResponse>();
+        SinglePetResponse? petResponse = await response.Content.ReadFromJsonAsync<SinglePetResponse>();
+
+        if (petResponse is null)
+        {
+            return GetPetsError(500);
+        }
+        
         // Only return PetDto.
         return petResponse.Pet;
     }

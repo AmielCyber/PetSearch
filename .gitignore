@@ -1,8 +1,5 @@
-# Build results
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-
+bin/
+obj/
 riderModule.iml
 /_ReSharper.Caches/
 
@@ -14,4 +11,3 @@ riderModule.iml
 # JetBrains Rider
 .idea/
 .sln.iml
-
