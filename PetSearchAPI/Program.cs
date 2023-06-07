@@ -76,9 +76,13 @@ var app = builder.Build();
 
     // Set up middleware to serve static content (React)
     // Looks for an html in wwwroot.
+    // Serve a default file from wwwroot without requiring the request URL to include the file's name
     app.UseDefaultFiles();
     // Tell our app to use static files to serve(React).
     app.UseStaticFiles();
+    
+    // Move default middleware below the client-app middleware to short-circuit client-app routes. 
+    app.UseRouting();
 
     // Global error handling middleware.
     app.UseMiddleware<ExceptionMiddleware>();
