@@ -53,22 +53,26 @@ export default function PetImageContainer(props: Props) {
 
   return (
     <Paper elevation={4}>
-      <section className={styles.imageContainer}>
-        <img src={props.photos[imgIndex].full} alt={props.name} sizes="600px" style={{ objectFit: "fill" }} />
-        <div className={styles.imgNavButtons}>
-          <ImagePointerNavButton onClickNavigation={handlePrevClick}>
-            <ArrowCircleLeftOutlinedIcon fontSize="large" />
-          </ImagePointerNavButton>
-          <ImagePointerNavButton onClickNavigation={handleNextClick}>
-            <ArrowCircleRightOutlinedIcon fontSize="large" />
-          </ImagePointerNavButton>
-        </div>
-        <ImageCircleNavButtons
-          totalNavDots={props.photos.length}
-          currentIndex={imgIndex}
-          onSelectDotNav={handleDotNavigation}
-        />
-      </section>
+      <div className={styles.imageContainer}>
+        <img src={props.photos[imgIndex].full} alt={props.name} sizes="500px" />
+          {props.photos.length > 1 && (
+              <>
+                <div className={styles.imgNavButtons}>
+                  <ImagePointerNavButton onClickNavigation={handlePrevClick}>
+                    <ArrowCircleLeftOutlinedIcon fontSize="large" />
+                  </ImagePointerNavButton>
+                  <ImagePointerNavButton onClickNavigation={handleNextClick}>
+                    <ArrowCircleRightOutlinedIcon fontSize="large" />
+                  </ImagePointerNavButton>
+                </div>
+                <ImageCircleNavButtons
+                    totalNavDots={props.photos.length}
+                    currentIndex={imgIndex}
+                    onSelectDotNav={handleDotNavigation}
+                />
+              </>
+          )}
+      </div>
     </Paper>
   );
 }
