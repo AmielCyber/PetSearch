@@ -1,10 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Moq;
 using PetSearchAPI.Clients;
 using PetSearchAPI.Common.Exceptions;
 using PetSearchAPI.Models.Token;
+using PetSearchAPI.StronglyTypedConfigurations;
 using RichardSzalay.MockHttp;
 
 namespace PetSearchAPI.Tests;
@@ -13,8 +14,9 @@ public class TokenClientTests
 {
     private static readonly string TokenUrl = "https://api.petfinder.com/v2/oauth2/token";
     private readonly Uri _petFinderTokenUri;
+    private readonly PetFinderConfiguration _petFinderConfiguration;
+    private readonly Mock<IOptions<PetFinderConfiguration>> _petFinderOptionsMock;
     private readonly MockHttpMessageHandler _handlerMock;
-    private readonly Mock<IConfiguration> _configMock;
     private readonly TokenResponseDto _expectedResponseDto;
 
     public TokenClientTests()
@@ -24,12 +26,13 @@ public class TokenClientTests
 
         // Set up configuration mock.
         const string keyValueMock = "Key Value";
-        _configMock = new Mock<IConfiguration>();
-        _configMock.Setup(c => c["PetFinder:ClientId"])
-            .Returns(keyValueMock);
-        _configMock.Setup(c => c["PetFinder:ClientSecret"])
-            .Returns(keyValueMock);
-
+        _petFinderConfiguration = new PetFinderConfiguration
+        {
+            ClientId = keyValueMock,
+            ClientSecret = keyValueMock
+        };
+        _petFinderOptionsMock = new Mock<IOptions<PetFinderConfiguration>>();
+        
         // Expected GetToken Result.
         _expectedResponseDto = new TokenResponseDto("Bearer", 3600, "TokenValue");
     }
@@ -49,7 +52,8 @@ public class TokenClientTests
             }));
         // Arrange httpClient and tokenClient with mock objects.
         using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderTokenUri };
-        var tokenClient = new TokenClient(_configMock.Object, httpClient);
+        _petFinderOptionsMock.Setup(options => options.Value).Returns(_petFinderConfiguration);
+        var tokenClient = new TokenClient(httpClient, _petFinderOptionsMock.Object);
 
         // Act
         var result = await tokenClient.GetToken();
@@ -60,8 +64,7 @@ public class TokenClientTests
         Assert.Equal(_expectedResponseDto.ExpiresIn, result.ExpiresIn);
         Assert.Equal(_expectedResponseDto.TokenType, result.TokenType);
         // Verify calls are made to get our keys.
-        _configMock.Verify(c => c["PetFinder:ClientId"], Times.Exactly(1));
-        _configMock.Verify(c => c["PetFinder:ClientSecret"], Times.Exactly(1));
+        _petFinderOptionsMock.Verify(options => options.Value, Times.Exactly(1));
         // Http client gets called only once.
         Assert.Equal(1, _handlerMock.GetMatchCount(request));
     }
@@ -79,7 +82,8 @@ public class TokenClientTests
             .Respond(httpStatusCode);
         // Arrange httpClient and tokenClient with mock objects.
         using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderTokenUri };
-        var tokenClient = new TokenClient(_configMock.Object, httpClient);
+        _petFinderOptionsMock.Setup(options => options.Value).Returns(_petFinderConfiguration);
+        var tokenClient = new TokenClient(httpClient, _petFinderOptionsMock.Object);
 
         // Assert
         TokenResponseDto? result = null;
@@ -92,8 +96,7 @@ public class TokenClientTests
         // Assert
         Assert.Null(result);
         // Verify calls are made to get our keys.
-        _configMock.Verify(c => c["PetFinder:ClientId"], Times.Exactly(1));
-        _configMock.Verify(c => c["PetFinder:ClientSecret"], Times.Exactly(1));
+        _petFinderOptionsMock.Verify(options => options.Value, Times.Exactly(1));
         // Http client gets called only once.
         Assert.Equal(1, _handlerMock.GetMatchCount(request));
     }

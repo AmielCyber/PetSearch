@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using PetSearchAPI.Clients;
 using PetSearchAPI.Middleware;
+using PetSearchAPI.StronglyTypedConfigurations;
 
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
@@ -48,6 +49,8 @@ builder.Services.AddCors(options =>
             policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173");
         });
 });
+// Add Strongly type configuration.
+builder.Services.Configure<PetFinderConfiguration>(builder.Configuration.GetSection("PetFinder"));
 builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
     client.BaseAddress = new Uri(petFinderUrl);

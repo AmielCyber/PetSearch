@@ -1,5 +1,7 @@
+using Microsoft.Extensions.Options;
 using PetSearchAPI.Common.Exceptions;
 using PetSearchAPI.Models.Token;
+using PetSearchAPI.StronglyTypedConfigurations;
 
 namespace PetSearchAPI.Clients;
 
@@ -14,13 +16,14 @@ public class TokenClient : ITokenClient
     /// <summary>
     /// Set up dependency injection.
     /// </summary>
-    /// <param name="configuration">Configuration client that holds our keys.</param>
-    /// <param name="client">Global HttpClient we use to use external APIs</param>
-    public TokenClient(IConfiguration configuration, HttpClient client)
+    /// <param name="client">Global HttpClient we use to use external APIs.</param>
+    /// <param name="options">Key values container PetFinder configuration.</param>
+    public TokenClient(HttpClient client, IOptions<PetFinderConfiguration> options)
     {
+        PetFinderConfiguration keys = options.Value;
         _client = client;
-        string? clientId = configuration["PetFinder:ClientId"];
-        string? clientSecret = configuration["PetFinder:ClientSecret"];
+        string? clientId = keys.ClientId;
+        string? clientSecret = keys.ClientSecret;
 
         if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
         {
