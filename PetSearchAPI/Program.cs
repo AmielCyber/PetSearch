@@ -1,6 +1,8 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
 using PetSearchAPI.Clients;
 using PetSearchAPI.Middleware;
+using PetSearchAPI.StronglyTypedConfigurations;
 
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
@@ -13,13 +15,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    // Read generated XML document
+    var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, file));
     // Set up Swagger to use a token in our header.
     var jwtSecurityScheme = new OpenApiSecurityScheme
     {
         BearerFormat = "JWT",
         Description = @"JWT Authorization header using the Bearer scheme.
-                        Enter the bearer token value below:
-                        Example: `87f6a729ee3e4d0f849f6a8992cd2e0a`",
+                        You can get a token by running the React Application,
+                        then go on dev tools on your browser and head to storage
+                        ,then local storage.
+                        The token is stored in the 'app-cache' storage key.
+
+        Enter the bearer token value below:
+        Example: `Bearer 87f6a729ee3e4d0f849f6a8992cd2e0a`",
+        
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -48,6 +59,8 @@ builder.Services.AddCors(options =>
             policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173");
         });
 });
+// Add Strongly type configuration.
+builder.Services.Configure<PetFinderConfiguration>(builder.Configuration.GetSection("PetFinder"));
 builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
     client.BaseAddress = new Uri(petFinderUrl);
@@ -65,7 +78,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(config =>
+    {
+        config.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
+    });
 }
 
 app.UseHttpsRedirection();

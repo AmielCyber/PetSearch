@@ -7,7 +7,7 @@ namespace PetSearchAPI.Controllers;
 /// <summary>
 /// Token Client to fetch a token for our client app.
 /// </summary>
-[Produces("application/json")]
+[Produces("application/json", "application/json+problem")]
 public class TokenController : ApiController
 {
     private readonly ITokenClient _tokenClient;
@@ -22,10 +22,13 @@ public class TokenController : ApiController
     /// Gets a token for our client app.
     /// </summary>
     /// <returns>A Token Response DTO</returns>
+    /// <response code="200">Returns the token object.</response>
     [HttpGet]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<TokenResponseDto>> GetToken()
     {
         TokenResponseDto tokenResponseDto = await _tokenClient.GetToken();
-        return tokenResponseDto;
+        return Ok(tokenResponseDto);
     }
 }
