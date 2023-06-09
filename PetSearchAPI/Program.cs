@@ -4,7 +4,6 @@ using PetSearchAPI.Middleware;
 
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
-const string myAllowSpecificOrigins = "myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,14 +39,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: myAllowSpecificOrigins,
-        policy =>
-        {
-            policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173");
-        });
-});
+builder.Services.AddCors();
 builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
     client.BaseAddress = new Uri(petFinderUrl);
@@ -68,19 +60,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 // Set up middleware to serve static content (React)
-// Global error handling middleware.
-app.UseMiddleware<ExceptionMiddleware>();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 // Move default middleware below the client-app middleware to short-circuit client-app routes. 
 app.UseRouting();
-if (app.Environment.IsDevelopment())
+// Global error handling middleware.
+app.UseMiddleware<ExceptionMiddleware>();
+// Use cors configuration.
+app.UseCors(policy =>
 {
-    // Use cors configuration to develop with our client app.
-    app.UseCors(myAllowSpecificOrigins);
-}
+    // Allow all headers, any controller method. Allow client to pass cookies with allow credentials.
+    policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173");
+});
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 // Tell our server how to handle paths that it doesnt know of but React does.

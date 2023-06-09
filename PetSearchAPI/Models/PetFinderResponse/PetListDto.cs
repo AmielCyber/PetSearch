@@ -1,9 +1,10 @@
 namespace PetSearchAPI.Models.PetFinderResponse;
 
 /// <summary>
-/// Class that will be sent to the client after we map the PetResponse object to this.
+/// PetListDto to return to client containing the list available pets in their area and the pagination object in order
+/// to navigate the list.
 /// </summary>
-public class PetsResponseDto
+public class PetListDto
 {
     public required PetDto[] Pets { get; init; }
     public required Pagination Pagination { get; init; }

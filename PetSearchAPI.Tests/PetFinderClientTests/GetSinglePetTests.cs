@@ -33,12 +33,15 @@ public class GetSinglePetTests
             Size = "Small",
             Name = "Apocalypse",
             Description = "...",
-            Photos = Array.Empty<PhotoSizesUrl>(),
+            Photos = null,
             PrimaryPhotoSizesUrlCropped = null,
             Status = "Adoptable",
             Distance = null,
         };
-        _expectedSinglePetResponse = new SinglePetResponse(_expectedPetDto);
+        _expectedSinglePetResponse = new SinglePetResponse
+        {
+            Pet = _expectedPetDto
+        };
     }
 
     [Fact]

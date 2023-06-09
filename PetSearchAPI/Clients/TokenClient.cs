@@ -21,13 +21,17 @@ public class TokenClient : ITokenClient
         _client = client;
         string? clientId = configuration["PetFinder:ClientId"];
         string? clientSecret = configuration["PetFinder:ClientSecret"];
-
+        
         if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
         {
             throw new TokenFetchException("User secrets not set up!");
         }
 
-        _requestBody = new TokenRequestBody(clientId, clientSecret);
+        _requestBody = new TokenRequestBody
+        {
+            ClientId = clientId,
+            ClientSecret = clientSecret
+        };
     }
 
     /// <summary>
@@ -52,7 +56,7 @@ public class TokenClient : ITokenClient
         {
             throw new TokenFetchException("Failed to return a TokenResponseDto object.");
         }
-
+        
         return petFinderToken;
     }
 }

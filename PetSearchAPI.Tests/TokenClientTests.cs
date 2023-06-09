@@ -31,7 +31,12 @@ public class TokenClientTests
             .Returns(keyValueMock);
 
         // Expected GetToken Result.
-        _expectedResponseDto = new TokenResponseDto("Bearer", 3600, "TokenValue");
+        _expectedResponseDto = new TokenResponseDto
+        {
+            TokenType = "Bearer",
+            ExpiresIn = 3600,
+            AccessToken = "TokenValue"
+        };
     }
 
     [Fact]
