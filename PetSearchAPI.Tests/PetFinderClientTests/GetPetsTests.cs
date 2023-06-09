@@ -24,15 +24,8 @@ public class GetPetsTests
         _petFinderUri = new Uri(PetFinderUrl);
         _handlerMock = new MockHttpMessageHandler();
         _expectedPetResponse = new PetResponse
-        {
-            Pagination = new Pagination
-            {
-                CountPerPage = 20,
-                TotalCount = 100,
-                CurrentPage = 1,
-                TotalPages = 5
-            },
-            Animals = new[]
+        (
+            new[]
             {
                 new PetDto
                 {
@@ -44,20 +37,21 @@ public class GetPetsTests
                     Size = "Large",
                     Name = "Vanilla",
                     Description = "...",
-                    Photos = null,
+                    Photos = Array.Empty<PhotoSizesUrl>(),
                     PrimaryPhotoSizesUrlCropped = null,
                     Status = "Adoptable",
                     Distance = 5
                 }
-            }
-        };
-        _petsParamsMock = new PetsParams { Type = "dog", Location = "92101" };
+            },
+            new Pagination(20, 100, 1, 5)
+        );
+        _petsParamsMock = new PetsParams("dog", "92101");
     }
 
     public static IEnumerable<object[]> GetValidPetsParams()
     {
-        yield return new object[] { new PetsParams { Type = "dog", Location = "92101" } };
-        yield return new object[] { new PetsParams { Type = "cat", Location = "92101" } };
+        yield return new object[] { new PetsParams("dog", "92101") };
+        yield return new object[] { new PetsParams("cat", "92101") };
     }
 
     [Fact]
