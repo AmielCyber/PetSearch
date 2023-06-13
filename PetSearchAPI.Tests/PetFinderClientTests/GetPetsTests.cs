@@ -45,13 +45,13 @@ public class GetPetsTests
             },
             new Pagination(20, 100, 1, 5)
         );
-        _petsParamsMock = new PetsParams("dog", "92101");
+        _petsParamsMock = new PetsParams{Type = "dog", Location = "92101"};
     }
 
     public static IEnumerable<object[]> GetValidPetsParams()
     {
-        yield return new object[] { new PetsParams("dog", "92101") };
-        yield return new object[] { new PetsParams("cat", "92101") };
+        yield return new object[] { new PetsParams{Type = "dog", Location = "92101"} };
+        yield return new object[] { new PetsParams{Type = "cat", Location = "92101"} };
     }
 
     [Fact]

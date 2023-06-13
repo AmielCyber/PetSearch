@@ -32,7 +32,7 @@ public class TokenClientTests
             ClientSecret = keyValueMock
         };
         _petFinderOptionsMock = new Mock<IOptions<PetFinderConfiguration>>();
-        
+
         // Expected GetToken Result.
         _expectedResponseDto = new TokenResponseDto("Bearer", 3600, "TokenValue");
     }

@@ -30,7 +30,7 @@ builder.Services.AddSwaggerGen(options =>
 
         Enter the bearer token value below:
         Example: `Bearer 87f6a729ee3e4d0f849f6a8992cd2e0a`",
-        
+
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -78,16 +78,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(config =>
-    {
-        config.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
-    });
+    app.UseSwaggerUI(config => { config.ConfigObject.AdditionalItems.Add("persistAuthorization", "true"); });
 }
 
 app.UseHttpsRedirection();
-// Set up middleware to serve static content (React)
 // Global error handling middleware.
 app.UseMiddleware<ExceptionMiddleware>();
+// Set up middleware to serve static content (React)
 app.UseDefaultFiles();
 app.UseStaticFiles();
 // Move default middleware below the client-app middleware to short-circuit client-app routes. 
@@ -97,6 +94,7 @@ if (app.Environment.IsDevelopment())
     // Use cors configuration to develop with our client app.
     app.UseCors(myAllowSpecificOrigins);
 }
+
 app.UseAuthorization();
 app.MapControllers();
 // Tell our server how to handle paths that it doesnt know of but React does.

@@ -6,7 +6,7 @@ namespace PetSearchAPI.Models.PetFinderResponse;
 /// <summary>
 /// Single Pet DTO containing attributes for a particular pet.
 /// </summary>
-public record PetDto()
+public record PetDto
 {
     /// <summary>Id number</summary>
     [Required]
