@@ -37,7 +37,7 @@ public class PetsController : ApiController
     [ProducesResponseType(typeof(PetsResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetPets([FromQuery] PetsParams petsParams, [FromHeader] string authorization)
+    public async Task<IActionResult> GetPets([FromQuery] PetsParams petsParams, [FromHeader] string? authorization)
     {
         var petsResult = await _petFinderClient.GetPets(petsParams, authorization);
         return petsResult.Match(Ok, GetProblems);

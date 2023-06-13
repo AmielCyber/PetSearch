@@ -20,16 +20,22 @@ const textStyles = {
   marginTop: "5px",
   marginBottom: "16px",
   color: "primary",
+  textAlign: "center"
 };
 
 export default function PetListCard(props: Props) {
   const { mutate } = useSWRConfig();
 
-  function handleClick() {
-    mutate(`pets/${props.pet.id}`, props.pet);
+  async function handleClick() {
+    await mutate(`pets/${props.pet.id}`, props.pet);
   }
   // Temporarily hard coding to medium-sized img, icon otherwise
   const img = props.pet.primary_photo_cropped?.small ?? null;
+  const distance = props.pet.distance? props.pet.distance.toFixed(1) : "0";
+  let distanceMsg = "";
+  if(distance !== "0"){
+    distanceMsg = `${distance} miles away`;
+  }
 
   return (
     <Grid item key={props.pet.id}>
@@ -37,6 +43,8 @@ export default function PetListCard(props: Props) {
       component={Link}
         style={{ textDecoration: "none" }}
         to={`/pets/${props.pet.id}`}
+        state={{fromSearch: true}}
+        preventScrollReset={false}
       >
         <CardActionArea onClick={handleClick}>
           <Card sx={{ maxWidth: "300px" }}>
@@ -53,9 +61,11 @@ export default function PetListCard(props: Props) {
               <b>{props.pet.name}</b>
               <br />
               <br />
-              <b>Gender:</b> {props.pet.gender}
+              {props.pet.gender}
               <br />
-              <b>Age:</b> {props.pet.age}
+              {props.pet.age}
+              <br />
+              {distanceMsg}
             </Typography>
           </Card>
         </CardActionArea>

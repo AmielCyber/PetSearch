@@ -31,7 +31,7 @@ export default function Home() {
   return (
       <main>
         <Typography sx={titleStyles} variant="h2">
-          Find your perfect furry companion!
+          Find your next companion!
         </Typography>
         <Box sx={petCardBox}>
           <PetSelectionCard petType="cats" location={zipCode}>

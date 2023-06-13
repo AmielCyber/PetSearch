@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import {CssBaseline, Container, ThemeProvider, SxProps, Theme} from "@mui/material";
-import { Outlet } from "react-router-dom";
+import {CssBaseline, Container, ThemeProvider, SxProps, Theme, responsiveFontSizes} from "@mui/material";
+import {Outlet, ScrollRestoration} from "react-router-dom";
 // Our imports.
 import { darkModeTheme, lightModeTheme } from "./theme/materialTheme";
 import { LocationProvider } from "./hooks/LocationContext";
@@ -17,7 +17,8 @@ export default function App() {
     setIsDarkMode((currIsDarkMode) => !currIsDarkMode);
   };
 
-  const theme = useMemo(() => (isDarkMode ? darkModeTheme : lightModeTheme), [isDarkMode]);
+  const theme =
+      useMemo(() => isDarkMode? responsiveFontSizes(darkModeTheme) : responsiveFontSizes(lightModeTheme), [isDarkMode]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -25,6 +26,7 @@ export default function App() {
       <LocationProvider>
         <NavBar isDarkMode={isDarkMode} onToggleDarkMode={handleToggleDarkMode} />
         <Container maxWidth="xl" sx={containerSx}>
+          <ScrollRestoration />
           <Outlet />
         </Container>
       </LocationProvider>

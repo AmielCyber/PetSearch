@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import {Grid} from "@mui/material";
 // Our imports.
 import type Pet from "../../models/pet.ts";
 import PageTitle from "./PageTitle";
