@@ -22,5 +22,10 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
+    
+    <Target Name="CompileClientApp" BeforeTargets="Publish">
+        <Exec WorkingDirectory="../pet-search-client" Command="npm install"/>
+        <Exec WorkingDirectory="../pet-search-client" Command="npm run build"/>
+    </Target>
 
 </Project>
