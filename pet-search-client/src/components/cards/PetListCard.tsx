@@ -17,9 +17,11 @@ const petIcons = {
   color: "primary",
 };
 const textStyles = {
-  marginTop: "5px",
   marginBottom: "16px",
-  color: "primary",
+  textAlign: "center"
+};
+const headingStyles = {
+  marginBottom: "6px",
   textAlign: "center"
 };
 
@@ -47,7 +49,7 @@ export default function PetListCard(props: Props) {
         preventScrollReset={false}
       >
         <CardActionArea onClick={handleClick}>
-          <Card sx={{ maxWidth: "300px" }}>
+          <Card sx={{ maxWidth: "300px" }} elevation={3}>
             {img ? (
                 <div className={styles.imageContainer}>
                   <img src={img} alt={props.pet.name} loading="lazy" />
@@ -57,13 +59,9 @@ export default function PetListCard(props: Props) {
             ) : (
               <DogIcon sx={petIcons} />
             )}
+            <Typography variant="h6" noWrap sx={headingStyles}>{props.pet.name}</Typography>
             <Typography sx={textStyles}>
-              <b>{props.pet.name}</b>
-              <br />
-              <br />
-              {props.pet.gender}
-              <br />
-              {props.pet.age}
+              {props.pet.age} {props.pet.gender}
               <br />
               {distanceMsg}
             </Typography>

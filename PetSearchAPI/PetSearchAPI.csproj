@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\" />
-    </ItemGroup>
-    
-    <ItemGroup>
         <Content Include="wwwroot\*" />
     </ItemGroup>
 

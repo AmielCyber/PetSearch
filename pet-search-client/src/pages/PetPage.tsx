@@ -21,7 +21,7 @@ export default function PetPage() {
   return (
     <main>
       <Suspense fallback={<CircularProgress sx={{margin: "auto"}}/>}>
-        {state?.fromSearch &&  <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)}>Back to search results</Button>}
+        {state?.fromSearch &&  <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} size="large">Back to search results</Button>}
         <DisplayInfo id={id} />
       </Suspense>
     </main>
