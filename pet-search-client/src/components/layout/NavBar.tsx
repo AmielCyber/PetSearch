@@ -30,6 +30,8 @@ export default function MainNavigation(props: Props) {
     setSearchParams(newParams);
   };
 
+  const toggleDarkModeTitle = props.isDarkMode? "Light Mode" : "Dark Mode";
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -40,7 +42,7 @@ export default function MainNavigation(props: Props) {
             </Button>
           </Typography>
           <LocationButton onZipCodeChange={handleZipCodeChange} currentZip={zipCode} />
-          <IconButton onClick={props.onToggleDarkMode} color="inherit">
+          <IconButton onClick={props.onToggleDarkMode} color="inherit" title={toggleDarkModeTitle}>
             {props.isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
         </Toolbar>

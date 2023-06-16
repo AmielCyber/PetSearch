@@ -52,7 +52,7 @@ export default function PetListCard(props: Props) {
           <Card sx={{ maxWidth: "300px" }} elevation={3}>
             {img ? (
                 <div className={styles.imageContainer}>
-                  <img src={img} alt={props.pet.name} loading="lazy" />
+                  <img src={img} alt={props.pet.name} loading="lazy" decoding="async" />
                 </div>
             ) : props.pet.type == "Cat" ? (
               <CatIcon sx={petIcons} />
