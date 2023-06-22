@@ -22,8 +22,8 @@
 
     <!-- Build Client App -->
     <Target Name="CompileClientApp" BeforeTargets="Publish">
-        <Exec WorkingDirectory="../pet-search-client" Command="npm install"/>
-        <Exec WorkingDirectory="../pet-search-client" Command="npm run build"/>
+        <Exec WorkingDirectory="../pet-search-client" Command="npm install" />
+        <Exec WorkingDirectory="../pet-search-client" Command="npm run build" />
     </Target>
     
     <!-- Include static files from a React build -->

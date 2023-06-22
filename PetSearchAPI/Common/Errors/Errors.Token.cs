@@ -9,11 +9,6 @@ public static partial class Errors
     /// </summary>
     public static class Token
     {
-        public static Error MissingToken => Error.Validation(
-            code: "Token.MissingToken",
-            description: "Authorization header missing."
-        );
-
         public static Error NotAuthorized => Error.Custom(
             type: MyErrorTypes.Unauthorized,
             code: "Token.NotAuthorized",

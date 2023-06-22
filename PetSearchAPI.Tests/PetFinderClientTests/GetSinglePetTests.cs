@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using ErrorOr;
 using PetSearchAPI.Clients;
-using PetSearchAPI.Common.Errors;
 using PetSearchAPI.Common.Exceptions;
 using PetSearchAPI.Models.PetFinderResponse;
 using RichardSzalay.MockHttp;
@@ -39,20 +38,6 @@ public class GetSinglePetTests
             Distance = null,
         };
         _expectedSinglePetResponse = new SinglePetResponse(_expectedPetDto);
-    }
-
-    [Fact]
-    public async Task GetSinglePet_ShouldReturnMissingTokenError_IfTokenIsMissing()
-    {
-        // Arrange
-        using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderUri };
-        var petFinderClient = new PetFinderClient(httpClient);
-
-        // Act
-        ErrorOr<PetDto> request = await petFinderClient.GetSinglePet(MockId, null);
-
-        // Assert.
-        Assert.Contains(request.Errors, error => error == Errors.Token.MissingToken);
     }
 
     [Fact]
