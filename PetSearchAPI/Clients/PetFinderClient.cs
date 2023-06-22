@@ -34,13 +34,8 @@ public class PetFinderClient : IPetFinderClient
     /// <returns>A PetsResponseDto with a list of available pets and the pagination object if the object
     /// was successfully fetched. Else, returns a custom error type.</returns>
     /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    public async Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams, string? accessToken)
+    public async Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams, string accessToken)
     {
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            return Errors.Token.MissingToken;
-        }
-
         string petUriQuery = GetPetsQueryString(petsParams);
 
         _client.DefaultRequestHeaders.Add("Authorization", accessToken);
@@ -69,13 +64,8 @@ public class PetFinderClient : IPetFinderClient
     /// <returns>A PetDto if the request was successful, else returns an ErrorOr Error if request return without a 200
     /// response code.</returns>
     /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    public async Task<ErrorOr<PetDto>> GetSinglePet(int id, string? accessToken)
+    public async Task<ErrorOr<PetDto>> GetSinglePet(int id, string accessToken)
     {
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            return Errors.Token.MissingToken;
-        }
-
         _client.DefaultRequestHeaders.Add("Authorization", accessToken);
         using HttpResponseMessage response = await _client.GetAsync($"animals/{id}");
 

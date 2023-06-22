@@ -10,6 +10,6 @@ namespace PetSearchAPI.Clients;
 /// </summary>
 public interface IPetFinderClient
 {
-    public Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams, string? accessToken);
+    public Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams, string accessToken);
     public Task<ErrorOr<PetDto>> GetSinglePet(int id, string accessToken);
 }

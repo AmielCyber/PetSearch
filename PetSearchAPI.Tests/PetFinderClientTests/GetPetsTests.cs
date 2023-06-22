@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using ErrorOr;
 using PetSearchAPI.Clients;
-using PetSearchAPI.Common.Errors;
 using PetSearchAPI.Common.Exceptions;
 using PetSearchAPI.Models.PetFinderResponse;
 using PetSearchAPI.RequestHelpers;
@@ -52,20 +51,6 @@ public class GetPetsTests
     {
         yield return new object[] { new PetsParams{Type = "dog", Location = "92101"} };
         yield return new object[] { new PetsParams{Type = "cat", Location = "92101"} };
-    }
-
-    [Fact]
-    public async Task GetPets_ShouldReturn_MissingTokenError_IfTokenIsMissing()
-    {
-        // Arrange
-        using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderUri };
-        var petFinderClient = new PetFinderClient(httpClient);
-
-        // Act
-        ErrorOr<PetsResponseDto> response = await petFinderClient.GetPets(_petsParamsMock, null);
-
-        // Assert
-        Assert.Contains(response.Errors, error => error == Errors.Token.MissingToken);
     }
 
     [Theory]
