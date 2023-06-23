@@ -23,6 +23,7 @@ export default function PetPageNavigation(props: Props) {
         disabled={props.isLoading}
         size="large"
         sx={paginationSx}
+        variant="outlined"
       />
     </Stack>
   );
