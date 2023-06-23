@@ -30,28 +30,5 @@
     <ItemGroup>
         <Folder Include="wwwroot\" />
     </ItemGroup>
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\assets\index-f01f7c47.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\LocationModal-afaf3f34.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\PetPage-1b157a38.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\PetPage-5b81f285.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\PetSearchPage-3243c130.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\PetSearchPage-f7f4102a.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\useToken-f9026729.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\android-chrome-192x192.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\android-chrome-512x512.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\apple-touch-icon.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\browserconfig.xml" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\favicon-16x16.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\favicon-32x32.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\favicon.ico" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\mstile-144x144.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\mstile-150x150.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\mstile-310x150.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\mstile-310x310.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\mstile-70x70.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\safari-pinned-tab.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\meta\site.webmanifest" />
-    </ItemGroup>
 
 </Project>
