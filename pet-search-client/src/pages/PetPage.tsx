@@ -1,9 +1,8 @@
-import { Suspense, lazy } from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {CircularProgress, Alert, Button} from "@mui/material";
+import {Alert, Button} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DisplayInfo from "../components/pet/DisplayInfo.tsx";
 // Our import.
-const DisplayInfo = lazy(() => import("../components/pet/DisplayInfo"));
 
 export default function PetPage() {
   const params = useParams();
@@ -20,10 +19,8 @@ export default function PetPage() {
   }
   return (
     <main>
-      <Suspense fallback={<CircularProgress sx={{margin: "auto"}}/>}>
         {state?.fromSearch &&  <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} size="large">Back to search results</Button>}
         <DisplayInfo id={id} />
-      </Suspense>
     </main>
   );
 }

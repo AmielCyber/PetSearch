@@ -22,7 +22,7 @@ export default function PetImageContainer(props: Props) {
     return (
       <Paper elevation={4}>
         <div className={styles.blankImage}>
-          <HideImageTwoToneIcon fontSize="large" />
+          <HideImageTwoToneIcon fontSize="large" color="primary" />
         </div>
       </Paper>
     );

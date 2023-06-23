@@ -1,10 +1,10 @@
-import { Suspense, lazy, useContext } from "react";
+import {  useContext } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Alert, AlertTitle, CircularProgress } from "@mui/material";
+import { Alert, AlertTitle } from "@mui/material";
 // Our imports.
+import DisplaySearch from "../components/pet-search/DisplaySearch.tsx";
 import type { LocationContextType } from "../hooks/LocationContext";
 import { LocationContext } from "../hooks/LocationContext";
-const DisplaySearch = lazy(() => import("../components/pet-search/DisplaySearch"));
 
 const petMap = new Map().set("dogs","dog").set("cats","cat");
 
@@ -42,12 +42,10 @@ export default function PetSearchPage() {
   const searchQueryURL = "pets?" + apiSearchParams.toString();
 
   return (
-    <Suspense fallback={<CircularProgress />}>
       <DisplaySearch
         searchParams={apiSearchParams}
         searchQueryURL={searchQueryURL}
         onPageChange={handlePageChange}
       />
-    </Suspense>
   );
 }

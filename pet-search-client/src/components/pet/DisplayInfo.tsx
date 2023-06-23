@@ -1,9 +1,8 @@
-import { lazy, Suspense } from "react";
 import { Alert } from "@mui/material";
 // Our imports.
 import useSinglePet from "../../hooks/useSinglePet";
 import DisplayInfoSkeleton from "./DisplayInfoSkeleton";
-const PetSummary = lazy(() => import("./PetSummary"));
+import PetSummary from "./PetSummary.tsx";
 
 type Props = {
   id: string;
@@ -21,8 +20,6 @@ export default function DisplayInfo(props: Props) {
   }
 
   return (
-    <Suspense fallback={<DisplayInfoSkeleton />}>
       <PetSummary petData={petData} />
-    </Suspense>
   );
 }
