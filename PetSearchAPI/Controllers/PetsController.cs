@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using PetSearchAPI.Clients;
 using PetSearchAPI.Filters;
@@ -9,7 +10,9 @@ namespace PetSearchAPI.Controllers;
 /// <summary>
 /// Pets controller endpoint that will fetch pet data and send it to the client.
 /// </summary>
-[Produces("application/json", "application/json+problem")]
+/// <response code="401">If token is missing, expired, or invalid.</response>
+[Produces(MediaTypeNames.Application.Json, "application/json+problem")]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [PetAuthorizationFilter]
 public class PetsController : ApiController
 {
@@ -34,11 +37,9 @@ public class PetsController : ApiController
     /// problem detail.</returns>
     /// <response code="200">Returns the pet list and pagination metadata.</response>
     /// <response code="400">If search params has invalid values.</response>
-    /// <response code="401">If missing, expired, or invalid token header.</response>
     [HttpGet]
     [ProducesResponseType(typeof(PetsResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetPets([FromQuery] PetsParams petsParams, [FromHeader] string authorization)
     {
         var petsResult = await _petFinderClient.GetPets(petsParams, authorization);
@@ -54,12 +55,10 @@ public class PetsController : ApiController
     /// <returns>A pet object if request was successful, else a problem detail.</returns>
     /// <response code="200">Returns the pet object.</response>
     /// <response code="400">If id is not an integer.</response>
-    /// <response code="401">If missing, expired, or invalid token header.</response>
     /// <response code="404">If pet with passed id is not found or has been adopted.</response>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(PetDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPets(int id, [FromHeader] string authorization)
     {

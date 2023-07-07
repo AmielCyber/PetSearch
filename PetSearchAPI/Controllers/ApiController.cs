@@ -30,6 +30,6 @@ public class ApiController : ControllerBase
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return Problem(statusCode: statusCode, title: firstError.Description);
+        return Problem(statusCode: statusCode, detail: firstError.Description);
     }
 }
