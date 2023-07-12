@@ -1,7 +1,14 @@
 # Pet Search
+A website to find available pets for adaption within a zip code.
+Website was made with React and ASP.NET.
 
 ## Demo
 [Live Demo Hosted at Azure](https://pet-search.azurewebsites.net)
+
+*Note:* Swagger UI is also available by going to `/swagger/index.html` at the website.
+
+## Preview
+![Desktop Preview](/Assets/DesktopPreview.gif)
 
 ## Set Up
 
