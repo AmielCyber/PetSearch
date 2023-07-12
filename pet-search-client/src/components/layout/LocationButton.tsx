@@ -1,5 +1,5 @@
 import { Suspense, lazy, useState } from "react";
-import { Button, Modal, Typography, CircularProgress } from "@mui/material";
+import {Button, Modal, Typography, CircularProgress, Box} from "@mui/material";
 
 // Our component.
 const LocationModal = lazy(() => import("./LocationModal"));
@@ -26,11 +26,11 @@ export default function LocationButton(props: Props) {
         <Typography>ZIP Code: {props.currentZip}</Typography>
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title">
-        <div>
+        <Box display="flex" justifyContent="center" marginTop={7}>
           <Suspense fallback={<CircularProgress />}>
             <LocationModal onSubmit={handleLocationChange} onClose={handleClose} />
           </Suspense>
-        </div>
+        </Box>
       </Modal>
     </div>
   );
