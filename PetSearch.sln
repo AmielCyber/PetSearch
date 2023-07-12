@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearchAPI", "PetSearchAPI\PetSearchAPI.csproj", "{459C0ED5-B4B4-4773-A99E-32EA14F8FA7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearch.API", "PetSearch.API\PetSearch.API.csproj", "{459C0ED5-B4B4-4773-A99E-32EA14F8FA7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearchAPI.Tests", "PetSearchAPI.Tests\PetSearchAPI.Tests.csproj", "{302C1FCD-9E0B-4F66-8BA8-DED5D8EDD3A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearch.API.Tests", "PetSearch.API.Tests\PetSearch.API.Tests.csproj", "{302C1FCD-9E0B-4F66-8BA8-DED5D8EDD3A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearch.Data", "PetSearch.Data\PetSearch.Data.csproj", "{AF100FD9-A22A-4069-BEB9-A7921B56B38D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetSearch.Data.Tests", "PetSearch.Data.Tests\PetSearch.Data.Tests.csproj", "{0EAFDB8E-E1F4-47A6-A8E7-DF7B78B97F29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +22,13 @@ Global
 		{302C1FCD-9E0B-4F66-8BA8-DED5D8EDD3A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{302C1FCD-9E0B-4F66-8BA8-DED5D8EDD3A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{302C1FCD-9E0B-4F66-8BA8-DED5D8EDD3A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF100FD9-A22A-4069-BEB9-A7921B56B38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF100FD9-A22A-4069-BEB9-A7921B56B38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF100FD9-A22A-4069-BEB9-A7921B56B38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF100FD9-A22A-4069-BEB9-A7921B56B38D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EAFDB8E-E1F4-47A6-A8E7-DF7B78B97F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EAFDB8E-E1F4-47A6-A8E7-DF7B78B97F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EAFDB8E-E1F4-47A6-A8E7-DF7B78B97F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EAFDB8E-E1F4-47A6-A8E7-DF7B78B97F29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
