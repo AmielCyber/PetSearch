@@ -1,25 +1,14 @@
 import useSWR from "swr";
 // Our imports.
-import type AccessToken from "../models/accessToken";
 import type Pet from "../models/pet.ts";
-import useToken from "./useToken";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // All errors are handled by swr.
-const fetcher = async (url: string, accessToken: AccessToken | undefined) => {
-  // Check if we have an access token.
-  if (!accessToken) {
-    throw new Error("Failed to validate token.");
-  }
-
+const fetcher = async (url: string) => {
   // Call our api to fetch a pet with the passed id.
   const response: Response = await fetch(BASE_URL + url, {
     method: "GET",
-    headers: {
-      Authorization: accessToken.token,
-      "Content-Type": "application/json",
-    },
   });
 
   // Check if response is successful.
@@ -42,10 +31,9 @@ const revalidateOptions = {
 };
 
 export default function useSinglePet(id: string) {
-  const { accessToken } = useToken(); // Get access token.
   const { data, error, isLoading } = useSWR(
-    accessToken ? `pets/${id}` : null,
-    (url) => fetcher(url, accessToken),
+    `pets/${id}`,
+    (url) => fetcher(url),
     revalidateOptions
   );
 

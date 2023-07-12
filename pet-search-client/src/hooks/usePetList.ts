@@ -1,28 +1,17 @@
 import useSWR from "swr";
 import { useRef } from "react";
 // Our imports.
-import type AccessToken from "../models/accessToken";
 import type PetResponse from "../models/petResponse.ts";
-import useToken from "./useToken";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ITEMS_PER_PAGE = 20;
 
 // Let SWR handle all errors.
-const fetcher = async (url: string, accessToken: AccessToken | undefined) => {
-  // Check for access token.
-  if (!accessToken) {
-    throw new Error("Failed to validate token");
-  }
-
+const fetcher = async (url: string) => {
   // Call our endpoint.
   const response: Response = await fetch(BASE_URL + url, {
     method: "GET",
-    headers: {
-      Authorization: accessToken.token,
-      "Content-Type": "application/json",
-    },
   });
 
   if (!response.ok) {
@@ -43,13 +32,12 @@ const revalidateOptions = {
 };
 
 export default function usePetList(url: string) {
-  const { accessToken } = useToken(); // Get access token.
   const currentPageRef = useRef(1); // Maintain current page while fetching data.
   const totalPagesRef = useRef(1); // Maintain total pages while fetching data.
   // Only fetch data if we have an access token.
   const { data, error, isLoading } = useSWR(
-    accessToken ? url : null,
-    (url) => fetcher(url, accessToken),
+    url,
+    (url) => fetcher(url),
     revalidateOptions
   );
 
