@@ -1,12 +1,16 @@
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using ErrorOr;
-using PetSearchAPI.Common.Errors;
-using PetSearchAPI.Common.Exceptions;
-using PetSearchAPI.Models.PetFinderResponse;
-using PetSearchAPI.RequestHelpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using PetSearch.API.Common.Errors;
+using PetSearch.API.Common.Exceptions;
+using PetSearch.API.Models.PetFinderResponse;
+using PetSearch.API.RequestHelpers;
+using PetSearch.Data.Entity;
+using PetSearch.Data.Services;
 
-namespace PetSearchAPI.Clients;
+namespace PetSearch.API.Clients;
 
 /// <summary>
 /// PetFinderClient implementation to handle requests from the PetFinderAPI.
@@ -15,14 +19,17 @@ namespace PetSearchAPI.Clients;
 public class PetFinderClient : IPetFinderClient
 {
     private readonly HttpClient _client;
+    private readonly ITokenService _tokenService;
 
     /// <summary>
     /// Set up dependency injection. 
     /// </summary>
     /// <param name="client">Have access to the global HttpClient object to make external API requests.</param>
-    public PetFinderClient(HttpClient client)
+    /// <param name="tokenService"></param>
+    public PetFinderClient(HttpClient client, ITokenService tokenService)
     {
         _client = client; // To use the http client with a base address.
+        _tokenService = tokenService;
     }
 
     /// <summary>
@@ -30,15 +37,17 @@ public class PetFinderClient : IPetFinderClient
     /// </summary>
     /// <param name="petsParams">Search Query object with its properties as the accepted parameters to use
     /// in the search query.</param>
-    /// <param name="accessToken">Header access token we gave to the client to access this endpoint.</param>
     /// <returns>A PetsResponseDto with a list of available pets and the pagination object if the object
     /// was successfully fetched. Else, returns a custom error type.</returns>
     /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    public async Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams, string accessToken)
+    public async Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams)
     {
+        Token token = await _tokenService.GetToken();
         string petUriQuery = GetPetsQueryString(petsParams);
 
-        _client.DefaultRequestHeaders.Add("Authorization", accessToken);
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token.AccessToken);
+
         using HttpResponseMessage response = await _client.GetAsync($"animals?{petUriQuery}");
 
         if (!response.IsSuccessStatusCode)
@@ -60,13 +69,15 @@ public class PetFinderClient : IPetFinderClient
     /// Gets a single pet object by their id.
     /// </summary>
     /// <param name="id">The id of the pet.</param>
-    /// <param name="accessToken">Header access token we gave to the client to access this endpoint.</param>
     /// <returns>A PetDto if the request was successful, else returns an ErrorOr Error if request return without a 200
     /// response code.</returns>
     /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    public async Task<ErrorOr<PetDto>> GetSinglePet(int id, string accessToken)
+    public async Task<ErrorOr<PetDto>> GetSinglePet(int id)
     {
-        _client.DefaultRequestHeaders.Add("Authorization", accessToken);
+        Token token = await _tokenService.GetToken();
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token.AccessToken);
+
         using HttpResponseMessage response = await _client.GetAsync($"animals/{id}");
 
         if (!response.IsSuccessStatusCode)

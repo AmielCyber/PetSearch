@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace PetSearchAPI.Models.PetFinderResponse;
+namespace PetSearch.API.Models.PetFinderResponse;
 
 /// <summary>
 /// Pet object containing the pet's attributes.

@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0"/>
         <PackageReference Include="Moq" Version="4.18.4"/>
         <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0"/>
@@ -25,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PetSearch.API\PetSearch.API.csproj"/>
+        <ProjectReference Include="..\PetSearch.Data\PetSearch.Data.csproj"/>
     </ItemGroup>
 
 </Project>

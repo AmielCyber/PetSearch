@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace PetSearchAPI.Models.Token;
+namespace PetSearch.Data.Models;
 
 /// <summary>
 /// Token Request Body when we request a token from the PetFinderApi.

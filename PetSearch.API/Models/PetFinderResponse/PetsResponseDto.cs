@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PetSearchAPI.Models.PetFinderResponse;
+namespace PetSearch.API.Models.PetFinderResponse;
 
 /// <summary>
 /// Pet Response Dto will be sent to the client after mapping PetResponse object.

@@ -1,17 +1,18 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace PetSearchAPI.RequestHelpers;
+namespace PetSearch.API.RequestHelpers;
 
 /// <summary>
 /// Pets parameters to search for a pet.
 /// </summary>
 public record PetsParams
 {
-    /// <summary>Search for either 'dogs' or 'cats'. Only support for cats and dogs for now...</summary>
+    /// <summary>Search for either 'dog' or 'cat'. Only support for cats and dogs for now...</summary>
     [Required]
     [RegularExpression(@"(?:dog|cat)$", ErrorMessage = "Only types: 'cat' and 'dog' are supported")]
     public required string Type { get; init; }
+
     /// <summary>Zip code to look for pets. Only 5 digit zip codes for now...</summary>
     [Required]
     [RegularExpression(@"^\d{5}$", ErrorMessage = "Zip Code must be 5 digits.")]

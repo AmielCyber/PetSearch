@@ -1,4 +1,4 @@
-namespace PetSearchAPI.Common.Exceptions;
+namespace PetSearch.Data.Common.Exceptions;
 
 /// <summary>
 /// Exception when the server failed to obtain a token from PetFinder API.

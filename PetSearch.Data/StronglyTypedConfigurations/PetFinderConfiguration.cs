@@ -1,4 +1,4 @@
-namespace PetSearchAPI.StronglyTypedConfigurations;
+namespace PetSearch.Data.StronglyTypedConfigurations;
 
 public class PetFinderConfiguration
 {

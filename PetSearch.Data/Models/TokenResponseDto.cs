@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace PetSearchAPI.Models.Token;
+namespace PetSearch.Data.Models;
 
 /// <summary>
 /// Token Response DTO for client. Tells client when that their token will expired.

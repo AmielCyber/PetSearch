@@ -1,22 +1,25 @@
 using System.Net;
 using System.Net.Http.Json;
 using ErrorOr;
-using PetSearchAPI.Clients;
-using PetSearchAPI.Common.Exceptions;
-using PetSearchAPI.Models.PetFinderResponse;
-using PetSearchAPI.RequestHelpers;
+using Moq;
+using PetSearch.API.Common.Exceptions;
+using PetSearch.API.Models.PetFinderResponse;
+using PetSearch.API.RequestHelpers;
+using PetSearch.Data.Entity;
+using PetSearch.Data.Services;
 using RichardSzalay.MockHttp;
 
-namespace PetSearchAPI.Tests.PetFinderClientTests;
+namespace PetSearch.API.Tests.PetFinderClientTests;
 
 public class GetPetsTests
 {
     private const string PetFinderUrl = "https://api.petfinder.com/v2/";
-    private const string TokenMock = "Token";
     private readonly Uri _petFinderUri;
     private readonly MockHttpMessageHandler _handlerMock;
     private readonly PetResponse _expectedPetResponse;
     private readonly PetsParams _petsParamsMock;
+    private readonly Mock<ITokenService> _mockTokenService;
+    private readonly Token _mockToken;
 
     public GetPetsTests()
     {
@@ -44,13 +47,19 @@ public class GetPetsTests
             },
             new Pagination(20, 100, 1, 5)
         );
-        _petsParamsMock = new PetsParams{Type = "dog", Location = "92101"};
+        _petsParamsMock = new PetsParams { Type = "dog", Location = "92101" };
+        _mockTokenService = new Mock<ITokenService>();
+        _mockToken = new Token
+        {
+            Id = 1,
+            AccessToken = "Access Token",
+        };
     }
 
     public static IEnumerable<object[]> GetValidPetsParams()
     {
-        yield return new object[] { new PetsParams{Type = "dog", Location = "92101"} };
-        yield return new object[] { new PetsParams{Type = "cat", Location = "92101"} };
+        yield return new object[] { new PetsParams { Type = "dog", Location = "92101" } };
+        yield return new object[] { new PetsParams { Type = "cat", Location = "92101" } };
     }
 
     [Theory]
@@ -59,14 +68,16 @@ public class GetPetsTests
     {
         // Arrange
         var request = _handlerMock
-            .When($"{PetFinderUrl}animals?{PetFinderClient.GetPetsQueryString(petsParams)}")
+            .When($"{PetFinderUrl}animals?{Clients.PetFinderClient.GetPetsQueryString(petsParams)}")
             .Respond(HttpStatusCode.OK, JsonContent.Create(_expectedPetResponse));
 
         using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderUri };
-        var petFinderClient = new PetFinderClient(httpClient);
+        // Set up mock token
+        _mockTokenService.Setup(tokenClient => tokenClient.GetToken()).ReturnsAsync(_mockToken);
+        var petFinderClient = new Clients.PetFinderClient(httpClient, _mockTokenService.Object);
 
         // Act
-        ErrorOr<PetsResponseDto> response = await petFinderClient.GetPets(petsParams, TokenMock);
+        ErrorOr<PetsResponseDto> response = await petFinderClient.GetPets(petsParams);
         var pets = response.Value;
 
         // Assert that we get the pagination and pet list result.
@@ -81,6 +92,7 @@ public class GetPetsTests
         Assert.InRange(pets.Pagination.CountPerPage, 10, int.MaxValue);
         Assert.InRange(pets.Pagination.TotalPages, 1, int.MaxValue);
         Assert.Equal(1, _handlerMock.GetMatchCount(request));
+        _mockTokenService.Verify(tokenClient => tokenClient.GetToken(), Times.Once());
     }
 
     [Theory]
@@ -92,18 +104,21 @@ public class GetPetsTests
     {
         // Arrange
         var request = _handlerMock
-            .When($"{PetFinderUrl}animals?{PetFinderClient.GetPetsQueryString(_petsParamsMock)}")
+            .When($"{PetFinderUrl}animals?{Clients.PetFinderClient.GetPetsQueryString(_petsParamsMock)}")
             .Respond(responseStatusCode);
         using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderUri };
-        var petFinderClient = new PetFinderClient(httpClient);
+        // Set up mock token
+        _mockTokenService.Setup(tokenClient => tokenClient.GetToken()).ReturnsAsync(_mockToken);
+        var petFinderClient = new Clients.PetFinderClient(httpClient, _mockTokenService.Object);
 
         // Act
-        ErrorOr<PetsResponseDto> response = await petFinderClient.GetPets(_petsParamsMock, TokenMock);
+        ErrorOr<PetsResponseDto> response = await petFinderClient.GetPets(_petsParamsMock);
 
         // Assert
         var expectedErrorType = PetFinderTestHelper.GetExpectedErrorType(responseStatusCode);
         Assert.Contains(response.Errors, error => error == expectedErrorType);
         Assert.Equal(1, _handlerMock.GetMatchCount(request));
+        _mockTokenService.Verify(tokenClient => tokenClient.GetToken(), Times.Once());
     }
 
     [Fact]
@@ -111,18 +126,21 @@ public class GetPetsTests
     {
         // Arrange
         var request = _handlerMock
-            .When($"{PetFinderUrl}animals?{PetFinderClient.GetPetsQueryString(_petsParamsMock)}")
+            .When($"{PetFinderUrl}animals?{Clients.PetFinderClient.GetPetsQueryString(_petsParamsMock)}")
             .Respond(HttpStatusCode.Forbidden);
         using var httpClient = new HttpClient(_handlerMock) { BaseAddress = _petFinderUri };
-        var petFinderClient = new PetFinderClient(httpClient);
+        // Set up mock token
+        _mockTokenService.Setup(tokenClient => tokenClient.GetToken()).ReturnsAsync(_mockToken);
+        var petFinderClient = new Clients.PetFinderClient(httpClient, _mockTokenService.Object);
 
         // Act and Assert.
         ErrorOr<PetsResponseDto>? result = null;
         await Assert.ThrowsAsync<PetFinderForbidden>(async () =>
         {
-            result = await petFinderClient.GetPets(_petsParamsMock, TokenMock);
+            result = await petFinderClient.GetPets(_petsParamsMock);
         });
         Assert.Null(result);
         Assert.Equal(1, _handlerMock.GetMatchCount(request));
+        _mockTokenService.Verify(tokenClient => tokenClient.GetToken(), Times.Once());
     }
 }

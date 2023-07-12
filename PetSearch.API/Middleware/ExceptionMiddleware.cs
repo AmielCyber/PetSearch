@@ -2,7 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PetSearchAPI.Middleware;
+namespace PetSearch.API.Middleware;
 
 /// <summary>
 /// Our global middleware that will catch errors and logged them.

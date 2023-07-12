@@ -1,8 +1,8 @@
 using System.Net;
 using ErrorOr;
-using PetSearchAPI.Common.Errors;
+using PetSearch.API.Common.Errors;
 
-namespace PetSearchAPI.Tests.PetFinderClientTests;
+namespace PetSearch.API.Tests.PetFinderClientTests;
 
 public static class PetFinderTestHelper
 {
