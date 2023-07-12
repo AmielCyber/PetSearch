@@ -1,4 +1,4 @@
-namespace PetSearchAPI.Common.Exceptions;
+namespace PetSearch.API.Common.Exceptions;
 
 /// <summary>
 /// Exception in case we get forbidden error from PetFinder Api.

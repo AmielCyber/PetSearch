@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace PetSearchAPI.Models.PetFinderResponse;
+namespace PetSearch.API.Models.PetFinderResponse;
 
 /// <summary>
 /// The response the server will get when we call the PetFinder api.

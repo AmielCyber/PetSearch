@@ -1,4 +1,4 @@
-namespace PetSearchAPI.Common.Errors;
+namespace PetSearch.API.Common.Errors;
 
 /// <summary>
 /// Custom error types for our ErrorOr Error types.

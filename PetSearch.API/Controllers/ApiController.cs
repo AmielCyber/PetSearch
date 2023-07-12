@@ -1,8 +1,8 @@
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
-using PetSearchAPI.Common.Errors;
+using PetSearch.API.Common.Errors;
 
-namespace PetSearchAPI.Controllers;
+namespace PetSearch.API.Controllers;
 
 /// <summary>
 /// Base controller for all controller in our API.

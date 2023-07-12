@@ -1,8 +1,8 @@
 using ErrorOr;
-using PetSearchAPI.Models.PetFinderResponse;
-using PetSearchAPI.RequestHelpers;
+using PetSearch.API.Models.PetFinderResponse;
+using PetSearch.API.RequestHelpers;
 
-namespace PetSearchAPI.Clients;
+namespace PetSearch.API.Clients;
 
 /// <summary>
 /// Pet Finder Client interface to handle PetFinder API requests.
@@ -10,6 +10,6 @@ namespace PetSearchAPI.Clients;
 /// </summary>
 public interface IPetFinderClient
 {
-    public Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams, string accessToken);
-    public Task<ErrorOr<PetDto>> GetSinglePet(int id, string accessToken);
+    public Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams);
+    public Task<ErrorOr<PetDto>> GetSinglePet(int id);
 }

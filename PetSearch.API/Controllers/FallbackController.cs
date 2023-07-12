@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PetSearchAPI.Controllers;
+namespace PetSearch.API.Controllers;
 
 /// <summary>
 /// Base class for an MVC controller with view. Effectively a view for our client application (React App). 
