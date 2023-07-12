@@ -54,7 +54,12 @@ builder.Services.AddHttpClient<ITokenService, TokenService>(client =>
 
 var app = builder.Build();
 
-// Register middleware.
+// Ensure Database is created.
+{
+    using var scope = app.Services.CreateScope();
+    using var context = scope.ServiceProvider.GetRequiredService<PetSearchContext>();
+    context.Database.EnsureCreated();
+}
 
 if (app.Environment.IsDevelopment())
 {
