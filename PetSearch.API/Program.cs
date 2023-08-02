@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PetSearch.API.Clients;
 using PetSearch.API.Middleware;
+using PetSearch.API.StronglyTypedConfigurations;
 using PetSearch.Data;
 using PetSearch.Data.Services;
 using PetSearch.Data.StronglyTypedConfigurations;
 
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
+const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
 const string myAllowSpecificOrigins = "myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +46,7 @@ builder.Services.AddCors(options =>
 });
 // Add Strongly type configuration.
 builder.Services.Configure<PetFinderConfiguration>(builder.Configuration.GetSection("PetFinder"));
+builder.Services.Configure<MapBoxConfiguration>(builder.Configuration.GetSection("MapBox"));
 // Add HTTPClient to DI container.
 builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
@@ -53,6 +56,7 @@ builder.Services.AddHttpClient<ITokenService, TokenService>(client =>
 {
     client.BaseAddress = new Uri(petFinderTokenUrl);
 });
+builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client => { client.BaseAddress = new Uri(mapBoxUrl); });
 // End of Services configuration.
 
 var app = builder.Build();
