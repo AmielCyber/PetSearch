@@ -1,19 +1,28 @@
-import type { Dispatch, SetStateAction } from "react";
+import type {Dispatch, ReactNode, SetStateAction} from "react";
 import { createContext, useState } from "react";
 
+export type Location = {
+  zipcode: string;
+  locationName: string;
+}
+
 export type LocationContextType = {
-  zipCode: string;
-  setZipCode: Dispatch<SetStateAction<string>>;
+  location: Location;
+  setLocation: Dispatch<SetStateAction<Location>>;
 };
 
 export const LocationContext = createContext<LocationContextType | null>(null);
-const defaultZipCode = "92101";
+
+const defaultLocation: Location = {
+  zipcode: "92101",
+  locationName: "San Diego, California 92101, United States",
+};
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 export function LocationProvider(props: Props) {
-  const [zipCode, setZipCode] = useState(defaultZipCode);
+  const [location, setLocation] = useState(defaultLocation);
 
-  return <LocationContext.Provider value={{ zipCode, setZipCode }}>{props.children}</LocationContext.Provider>;
+  return <LocationContext.Provider value={{ location, setLocation}}>{props.children}</LocationContext.Provider>;
 }

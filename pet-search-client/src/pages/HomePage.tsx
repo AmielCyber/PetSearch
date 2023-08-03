@@ -26,7 +26,7 @@ const titleStyles = {
 };
 
 export default function Home() {
-  const { zipCode } = useContext(LocationContext) as LocationContextType;
+  const { location } = useContext(LocationContext) as LocationContextType;
 
   return (
       <main>
@@ -34,10 +34,10 @@ export default function Home() {
           Find your next companion!
         </Typography>
         <Box sx={petCardBox}>
-          <PetSelectionCard petType="cats" location={zipCode}>
+          <PetSelectionCard petType="cats" location={location.zipcode}>
             <CatIcon sx={petIcons} />
           </PetSelectionCard>
-          <PetSelectionCard petType="dogs" location={zipCode}>
+          <PetSelectionCard petType="dogs" location={location.zipcode}>
             <DogIcon sx={petIcons} />
           </PetSelectionCard>
         </Box>

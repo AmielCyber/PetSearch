@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import type {FormEvent} from "react";
+import {useState, useRef} from "react";
 import { Typography, TextField, Button, Paper, InputAdornment } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -16,6 +17,7 @@ const style = {
 const buttonGroupStyle = {
   display: "flex",
   justifyContent: "space-between",
+  gap: "4px",
   marginTop: "4px",
 };
 
@@ -24,30 +26,32 @@ function getAdornmentIcon(isError: boolean) {
 }
 
 type Props = {
-  onSubmit: (newZipCode: string) => void;
   onClose: () => void;
+  onZipcodeChange: (newZipcode: string) => void;
 };
 
 export default function LocationModal(props: Props) {
-  const [isError, setIsError] = useState(false); // To give the input field an error style.
+  const [error, setError] = useState<string>();
   const locationRef = useRef<HTMLInputElement>(null); // Get the value of the input tag.
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = async (event: FormEvent) => {
     event.preventDefault();
+
     // Verify entered zip code. We could verify with an api provider in the future.
     const enteredZipCode = locationRef.current ? locationRef.current.value : "";
     const isValidZipCode = /\d{5}$/.test(enteredZipCode);
     if (!isValidZipCode) {
       // Give the input an error style.
-      setIsError(true);
+      setError("Enter a valid 5 digit zipcode.")
     } else {
       // Close modal and handle new input of zip code.
-      setIsError(false);
-      props.onSubmit(enteredZipCode);
+      props.onZipcodeChange(enteredZipCode);
+      props.onClose();
     }
   };
 
-  const adornmentInputIcon = getAdornmentIcon(isError);
+  const hasError = !!error;
+  const adornmentInputIcon = getAdornmentIcon(hasError);
 
   return (
     <Paper sx={style} variant="outlined">
@@ -70,9 +74,9 @@ export default function LocationModal(props: Props) {
           InputProps={{
             endAdornment: adornmentInputIcon,
           }}
-          error={isError}
+          error={hasError}
           inputRef={locationRef}
-          helperText="Enter a 5 digit zip code"
+          helperText={error ?? "Enter a 5 digit zip code."}
           size="small"
         />
         <div style={buttonGroupStyle}>
