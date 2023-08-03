@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import {CssBaseline, Container, ThemeProvider, SxProps, Theme, responsiveFontSizes} from "@mui/material";
+import {SnackbarProvider} from "notistack";
 import {Outlet, ScrollRestoration} from "react-router-dom";
 // Our imports.
 import { darkModeTheme, lightModeTheme } from "./theme/materialTheme";
@@ -23,6 +24,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <SnackbarProvider autoHideDuration={3000} dense={true} maxSnack={2}/>
       <LocationProvider>
         <NavBar isDarkMode={isDarkMode} onToggleDarkMode={handleToggleDarkMode} />
         <Container maxWidth="xl" sx={containerSx}>

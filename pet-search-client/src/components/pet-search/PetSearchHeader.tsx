@@ -11,8 +11,8 @@ const zipStyles = {
 };
 
 type Props = {
+  locationName: string;
   petType: string;
-  zipCode: string;
 };
 
 export default function PetSearchHeader(props: Props) {
@@ -23,7 +23,7 @@ export default function PetSearchHeader(props: Props) {
         Adoptable {props.petType}s within 50 mile{props.petType.length > 1? "s" : ""}.
       </Typography>
       <Typography sx={zipStyles} variant="subtitle1">
-        Zip Code: {props.zipCode}
+          {props.locationName}
       </Typography>
     </>
   );

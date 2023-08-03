@@ -6,6 +6,7 @@ import PetPageNavigation from "./PetPageNavigation";
 import PetList from "./PetList";
 
 type Props = {
+  locationName: string;
   searchParams: URLSearchParams;
   searchQueryURL: string;
   onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
@@ -14,7 +15,6 @@ type Props = {
 export default function DisplaySearch(props: Props) {
   const { petListData, error, isLoading, currentPage, totalPages, itemsPerPage } = usePetList(props.searchQueryURL);
   const petType = props.searchParams.get("type") as string;
-  const location = props.searchParams.get("location") as string;
 
   // Handle error.
   if (error) {
@@ -23,7 +23,7 @@ export default function DisplaySearch(props: Props) {
 
   return (
     <>
-      <PetSearchHeader petType={petType} zipCode={location} />
+      <PetSearchHeader petType={petType} locationName={props.locationName} />
       <PetList petData={petListData} isLoading={isLoading} itemsPerPage={itemsPerPage} />
       <PetPageNavigation
         currentPage={currentPage}

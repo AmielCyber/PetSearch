@@ -32,7 +32,7 @@ public class LocationController : ApiController
     /// <response code="200">Returns the location object.</response>
     /// <response code="400">If the zipcode is invalid.</response>
     /// <response code="404">No location found with the given zipcode.</response>
-    [HttpGet("Zipcode")]
+    [HttpGet("Zipcode/{zipcode}")]
     [ProducesResponseType(typeof(LocationDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

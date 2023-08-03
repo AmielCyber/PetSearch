@@ -15,7 +15,7 @@ const propsOnCloseMock = vi.fn(onClose);
 const propsOnSubmitMock = vi.fn(onSubmit);
 describe("LocationModal", () => {
     beforeEach(() => {
-        render(<LocationModal onClose={propsOnCloseMock} onSubmit={propsOnSubmitMock}/>);
+        render(<LocationModal onClose={propsOnCloseMock} onZipcodeChange={() => console.log()} />);
     });
     afterEach(() => {
         propsOnCloseMock.mockClear();
