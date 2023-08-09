@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.OpenApi.Models;
 using PetSearch.API.Clients;
 using PetSearch.API.Middleware;
@@ -52,10 +53,14 @@ builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
     client.BaseAddress = new Uri(petFinderUrl);
 });
-builder.Services.AddHttpClient<ITokenService, TokenService>(client =>
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient<TokenService>(client =>
 {
     client.BaseAddress = new Uri(petFinderTokenUrl);
 });
+builder.Services.AddTransient<ITokenService>(
+    s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>()) 
+);
 builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client => { client.BaseAddress = new Uri(mapBoxUrl); });
 // End of Services configuration.
 

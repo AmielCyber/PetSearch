@@ -1,6 +1,7 @@
 import {useContext, useState} from "react";
 import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import {Link, useSearchParams} from "react-router-dom";
+import PetsIcon from '@mui/icons-material/Pets';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import NearMeIcon from "@mui/icons-material/NearMe";
@@ -77,8 +78,8 @@ export default function MainNavigation(props: Props) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Button component={Link} to="/" color="inherit" sx={{ textDecoration: "none" }}>
-              PetSearch
+            <Button component={Link} to="/" color="inherit" startIcon={<PetsIcon />}>
+              Pet Search
             </Button>
           </Typography>
           <LocationButton location={location} loadingNewZipcode={loadingNewLocation} onZipcodeChange={handleZipCodeChange}/>
