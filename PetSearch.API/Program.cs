@@ -27,7 +27,12 @@ builder.Services.AddSwaggerGen(opts =>
     {
         Title = "Pet Search",
         Description = "An API to search available pets around a local area.",
-        Version = "1.0"
+        Version = "1.0",
+        Contact = new OpenApiContact
+        {
+            Name = "Amiel",
+            Url = new Uri("https://github.com/AmielCyber")
+        }
     });
     var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, file));
