@@ -1,15 +1,12 @@
 using ErrorOr;
-using Microsoft.AspNetCore.Mvc;
 using PetSearch.API.Common.Errors;
 
-namespace PetSearch.API.Controllers;
+namespace PetSearch.API.Handlers;
 
 /// <summary>
-/// Base controller for all controller in our API.
+/// Base handler function for getting problem details for every handler that inherits this class.
 /// </summary>
-[ApiController]
-[Route("api/[controller]")]
-public class ApiController : ControllerBase
+public class BaseHandler
 {
     /// <summary>
     /// Returns a problem detail that is rfc7807 compliant based on the list of custom Errors
@@ -17,8 +14,7 @@ public class ApiController : ControllerBase
     /// </summary>
     /// <param name="errors">List of custom ErrorOr Errors</param>
     /// <returns>A problem details object</returns>
-    [NonAction]
-    protected IActionResult GetProblems(List<Error> errors)
+    protected static IResult GetProblems(List<Error> errors)
     {
         var firstError = errors[0];
 
@@ -30,6 +26,6 @@ public class ApiController : ControllerBase
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return Problem(statusCode: statusCode, detail: firstError.Description);
+        return Results.Problem(statusCode: statusCode, detail: firstError.Description);
     }
 }
