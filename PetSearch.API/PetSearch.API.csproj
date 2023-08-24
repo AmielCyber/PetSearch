@@ -29,12 +29,6 @@
         <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
-    <!-- Build Client App -->
-    <Target Name="CompileClientApp" BeforeTargets="Publish">
-        <Exec WorkingDirectory="../pet-search-client" Command="npm install"/>
-        <Exec WorkingDirectory="../pet-search-client" Command="npm run build"/>
-    </Target>
-
     <!-- Include static files from a React build -->
     <ItemGroup>
         <Folder Include="wwwroot\"/>
