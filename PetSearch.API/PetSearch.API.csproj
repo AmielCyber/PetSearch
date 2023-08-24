@@ -8,19 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ErrorOr" Version="1.2.1"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10"/>
+        <PackageReference Include="ErrorOr" Version="1.2.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0"/>
-        <PackageReference Include="MinimalApis.Extensions" Version="0.11.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\PetSearch.Data\PetSearch.Data.csproj"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+        <PackageReference Include="MinimalApis.Extensions" Version="0.11.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <!-- Ignore warnings for non controller methods without xml -->
@@ -31,10 +28,10 @@
 
     <!-- Include static files from a React build -->
     <ItemGroup>
-        <Folder Include="wwwroot\"/>
+        <Folder Include="wwwroot\" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\PetSearch.Data\PetSearch.Data.csproj"/>
+      <ProjectReference Include="..\PetSearch.Data\PetSearch.Data.csproj" />
     </ItemGroup>
 
 </Project>
