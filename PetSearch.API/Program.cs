@@ -108,7 +108,6 @@ app.UseStatusCodePages(); // Add a problem details that have no response body an
 app.UseSwagger(); // Expose swagger.
 app.UseSwaggerUI(); // Show swagger UI @ /swagger/index.html
 app.UseRouting(); // Move default middleware below the client-app middleware to short-circuit client-app routes. 
-app.UseCors();
 if (app.Environment.IsDevelopment()) // Use cors configuration to develop with our client app.
 {
     app.UseCors(allowLocalDevelopment);
