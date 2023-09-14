@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -16,7 +15,7 @@ const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
 const string myAllowSpecificOrigins = "myAllowSpecificOrigins";
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddProblemDetails();
@@ -38,11 +37,14 @@ builder.Services.AddSwaggerGen(opts =>
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, file));
 });
 // Set up database connection.
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                          throw new InvalidOperationException("Connection string 'Default Connection not found!");
 // Set up for EF service
 MySqlServerVersion serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
-builder.Services.AddDbContext<PetSearchContext>(options => options.UseMySql(connectionString, serverVersion));
+builder.Services.AddDbContext<PetSearchContext>(options =>
+{
+    string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                          throw new InvalidOperationException("Connection string 'Default Connection not found!");
+    options.UseMySql(connectionString, serverVersion);
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: myAllowSpecificOrigins,
@@ -63,20 +65,29 @@ builder.Services.AddTransient<ITokenService>(
     s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>())
 );
 builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client => { client.BaseAddress = new Uri(mapBoxUrl); });
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromHours(1);
+});
 // End of Services configuration.
 
 var app = builder.Build();
 
+if (app.Environment.IsProduction())
+{
+    // Add HTTP Strict Transport Security. Sends the browser this header. 
+    app.UseHsts();
+}
+app.UseHttpsRedirection(); // Configure the HTTP request pipeline.
 // Ensure Database is created.
 {
     using var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<PetSearchContext>();
     context.Database.EnsureCreated();
 }
-app.UseHttpsRedirection(); // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>(); // Global error handling middleware.
-app.UseDefaultFiles(); // Serve default file from wwwroot w/o requesting URL file name.
-app.UseStaticFiles(); // Set up middleware to serve static content (React).
 app.UseStatusCodePages(); // Add a problem details that have no response body and an error status code.
 app.UseSwagger(); // Expose swagger.
 app.UseSwaggerUI(); // Show swagger UI @ /swagger/index.html
@@ -85,9 +96,6 @@ if (app.Environment.IsDevelopment()) // Use cors configuration to develop with o
 {
     app.UseCors(myAllowSpecificOrigins);
 }
-// Fallback handler for 
-app.MapFallback(() =>
-    Results.File(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"), MediaTypeNames.Text.Html));
 
 // Register endpoint groups.
 RouteGroupBuilder petsApi = app.MapGroup("/api/pets").WithParameterValidation();
