@@ -13,7 +13,8 @@ using PetSearch.Data.StronglyTypedConfigurations;
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
-const string myAllowSpecificOrigins = "myAllowSpecificOrigins";
+const string allowReactApplication = "AllowReactApplication";
+const string allowLocalDevelopment = "AllowLocalDevelopment";
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -47,8 +48,23 @@ builder.Services.AddDbContext<PetSearchContext>(options =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: myAllowSpecificOrigins,
-        policy => { policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173"); }
+    options.AddPolicy(name: allowReactApplication,
+        policy =>
+        {
+            policy.WithOrigins("https://pet-search-react.netlify.app")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    );
+    options.AddPolicy(name: allowLocalDevelopment,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
     );
 });
 // Add Strongly type configuration.
@@ -92,9 +108,15 @@ app.UseStatusCodePages(); // Add a problem details that have no response body an
 app.UseSwagger(); // Expose swagger.
 app.UseSwaggerUI(); // Show swagger UI @ /swagger/index.html
 app.UseRouting(); // Move default middleware below the client-app middleware to short-circuit client-app routes. 
+app.UseCors();
 if (app.Environment.IsDevelopment()) // Use cors configuration to develop with our client app.
 {
-    app.UseCors(myAllowSpecificOrigins);
+    app.UseCors(allowLocalDevelopment);
+}
+
+if (app.Environment.IsProduction())
+{
+    app.UseCors(allowReactApplication);
 }
 
 // Register endpoint groups.
