@@ -1,5 +1,4 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.OpenApi.Models;
@@ -28,7 +27,7 @@ builder.Services.AddSwaggerGen(opts =>
     {
         Title = "Pet Search",
         Description = "An ASP.NET Core Web API for searching available pets within a local area.",
-        Version = "1.0",
+        Version = "1.1",
         Contact = new OpenApiContact
         {
             Name = "Amiel",
@@ -124,9 +123,9 @@ RouteGroupBuilder locationApi = app.MapGroup("/api/location").WithParameterValid
 
 if (app.Environment.IsProduction())
 {
-    // Redirect user to the new React application URL as our server does not serve React files anymore.
-    app.MapGet("/", [ApiExplorerSettings(IgnoreApi = true)]() => 
-        Results.Redirect("https://pet-search-react.netlify.app", true));
+    // Redirect to the new React application URL, since we are not serving React files anymore.
+    app.MapGet("/", () => Results.Redirect("https://pet-search-react.netlify.app", true))
+        .ExcludeFromDescription();
 }
 // Register endpoints with their handlers.
 petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
