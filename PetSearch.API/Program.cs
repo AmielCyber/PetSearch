@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.OpenApi.Models;
@@ -14,7 +15,7 @@ const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
 const string allowReactApplication = "AllowReactApplication";
-const string allowLocalDevelopment = "AllowLocalDevelopment";
+const string allowLocalClientDevelopment = "AllowLocalClientDevelopment";
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -26,13 +27,13 @@ builder.Services.AddSwaggerGen(opts =>
     opts.SwaggerDoc("v1", new OpenApiInfo()
     {
         Title = "Pet Search",
-        Description = "An API to search available pets around a local area.",
+        Description = "An ASP.NET Core Web API for searching available pets within a local area.",
         Version = "1.0",
         Contact = new OpenApiContact
         {
             Name = "Amiel",
             Url = new Uri("https://github.com/AmielCyber")
-        }
+        },
     });
     var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, file));
@@ -56,7 +57,7 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         }
     );
-    options.AddPolicy(name: allowLocalDevelopment,
+    options.AddPolicy(name: allowLocalClientDevelopment,
         policy =>
         {
             policy.WithOrigins("http://localhost:5173")
@@ -109,7 +110,7 @@ app.UseSwaggerUI(); // Show swagger UI @ /swagger/index.html
 app.UseRouting(); // Move default middleware below the client-app middleware to short-circuit client-app routes. 
 if (app.Environment.IsDevelopment()) // Use cors configuration to develop with our client app.
 {
-    app.UseCors(allowLocalDevelopment);
+    app.UseCors(allowLocalClientDevelopment);
 }
 
 if (app.Environment.IsProduction())
@@ -121,6 +122,12 @@ if (app.Environment.IsProduction())
 RouteGroupBuilder petsApi = app.MapGroup("/api/pets").WithParameterValidation();
 RouteGroupBuilder locationApi = app.MapGroup("/api/location").WithParameterValidation();
 
+if (app.Environment.IsProduction())
+{
+    // Redirect user to the new React application URL as our server does not serve React files anymore.
+    app.MapGet("/", [ApiExplorerSettings(IgnoreApi = true)]() => 
+        Results.Redirect("https://pet-search-react.netlify.app", true));
+}
 // Register endpoints with their handlers.
 petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
 {
