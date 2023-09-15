@@ -39,12 +39,11 @@ builder.Services.AddSwaggerGen(opts =>
 });
 // Set up database connection.
 // Set up for EF service
-MySqlServerVersion serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
 builder.Services.AddDbContext<PetSearchContext>(options =>
 {
     string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                           throw new InvalidOperationException("Connection string 'Default Connection not found!");
-    options.UseMySql(connectionString, serverVersion);
+    options.UseMySQL(connectionString);
 });
 builder.Services.AddCors(options =>
 {
