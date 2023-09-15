@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,9 +13,10 @@ using PetSearch.Data.StronglyTypedConfigurations;
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
-const string myAllowSpecificOrigins = "myAllowSpecificOrigins";
+const string allowReactApplication = "AllowReactApplication";
+const string allowLocalClientDevelopment = "AllowLocalClientDevelopment";
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddProblemDetails();
@@ -26,27 +26,44 @@ builder.Services.AddSwaggerGen(opts =>
     opts.SwaggerDoc("v1", new OpenApiInfo()
     {
         Title = "Pet Search",
-        Description = "An API to search available pets around a local area.",
-        Version = "1.0",
+        Description = "An ASP.NET Core Web API for searching available pets within a local area.",
+        Version = "1.1",
         Contact = new OpenApiContact
         {
             Name = "Amiel",
             Url = new Uri("https://github.com/AmielCyber")
-        }
+        },
     });
     var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, file));
 });
 // Set up database connection.
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                          throw new InvalidOperationException("Connection string 'Default Connection not found!");
 // Set up for EF service
-MySqlServerVersion serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
-builder.Services.AddDbContext<PetSearchContext>(options => options.UseMySql(connectionString, serverVersion));
+builder.Services.AddDbContext<PetSearchContext>(options =>
+{
+    string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                          throw new InvalidOperationException("Connection string 'Default Connection not found!");
+    options.UseMySQL(connectionString);
+});
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: myAllowSpecificOrigins,
-        policy => { policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173"); }
+    options.AddPolicy(name: allowReactApplication,
+        policy =>
+        {
+            policy.WithOrigins("https://pet-search-react.netlify.app")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    );
+    options.AddPolicy(name: allowLocalClientDevelopment,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
     );
 });
 // Add Strongly type configuration.
@@ -63,36 +80,53 @@ builder.Services.AddTransient<ITokenService>(
     s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>())
 );
 builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client => { client.BaseAddress = new Uri(mapBoxUrl); });
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromHours(1);
+});
 // End of Services configuration.
 
 var app = builder.Build();
 
+if (app.Environment.IsProduction())
+{
+    // Add HTTP Strict Transport Security. Sends the browser this header. 
+    app.UseHsts();
+}
+app.UseHttpsRedirection(); // Configure the HTTP request pipeline.
 // Ensure Database is created.
 {
     using var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<PetSearchContext>();
     context.Database.EnsureCreated();
 }
-app.UseHttpsRedirection(); // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>(); // Global error handling middleware.
-app.UseDefaultFiles(); // Serve default file from wwwroot w/o requesting URL file name.
-app.UseStaticFiles(); // Set up middleware to serve static content (React).
 app.UseStatusCodePages(); // Add a problem details that have no response body and an error status code.
 app.UseSwagger(); // Expose swagger.
 app.UseSwaggerUI(); // Show swagger UI @ /swagger/index.html
 app.UseRouting(); // Move default middleware below the client-app middleware to short-circuit client-app routes. 
 if (app.Environment.IsDevelopment()) // Use cors configuration to develop with our client app.
 {
-    app.UseCors(myAllowSpecificOrigins);
+    app.UseCors(allowLocalClientDevelopment);
 }
-// Fallback handler for 
-app.MapFallback(() =>
-    Results.File(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"), MediaTypeNames.Text.Html));
+
+if (app.Environment.IsProduction())
+{
+    app.UseCors(allowReactApplication);
+}
 
 // Register endpoint groups.
 RouteGroupBuilder petsApi = app.MapGroup("/api/pets").WithParameterValidation();
 RouteGroupBuilder locationApi = app.MapGroup("/api/location").WithParameterValidation();
 
+if (app.Environment.IsProduction())
+{
+    // Redirect to the new React application URL, since we are not serving React files anymore.
+    app.MapGet("/", () => Results.Redirect("https://pet-search-react.netlify.app", true))
+        .ExcludeFromDescription();
+}
 // Register endpoints with their handlers.
 petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
 {

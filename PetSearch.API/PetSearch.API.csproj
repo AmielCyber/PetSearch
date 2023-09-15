@@ -1,17 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>3a19a5dc-6f5b-4a6e-b65d-339b69b3f041</UserSecretsId>
-    </PropertyGroup>
+      <UserSecretsId>45638085-c152-4ea7-9d4a-111e15b2baa2</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="ErrorOr" Version="1.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -27,9 +27,6 @@
     </PropertyGroup>
 
     <!-- Include static files from a React build -->
-    <ItemGroup>
-        <Folder Include="wwwroot\" />
-    </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\PetSearch.Data\PetSearch.Data.csproj" />
     </ItemGroup>
