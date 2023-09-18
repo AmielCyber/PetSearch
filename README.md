@@ -2,7 +2,7 @@
 A website to find available pets for adaption within a zip code.
 Website was made with React and ASP.NET. 
 
-ASP.NET hosted at Azure and React hosted at Netifly.
+ASP.NET hosted at Azure and React hosted at Netlify.
 
 ## Live Demo
 
@@ -32,7 +32,7 @@ I may upgrade in the future to have the server "always on" at Azure.
 * Material UI
 
 ## React Application
-I am no longer serving the React files from ASP.NET. I have decided to host the React application at Netifly instead for
+I am no longer serving the React files from ASP.NET. I have decided to host the React application at Netlify instead for
 a better user experience and separation of concerns.
 
 [React GitHub Source Code](https://github.com/AmielCyber/pet-search-react)
