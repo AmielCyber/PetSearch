@@ -13,7 +13,8 @@ using PetSearch.Data.StronglyTypedConfigurations;
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
-const string allowReactApplication = "AllowReactApplication";
+const string allowReactProduction = "AllowReactProduction";
+const string allowReactPreview = "AllowReactPreview";
 const string allowLocalClientDevelopment = "AllowLocalClientDevelopment";
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -47,10 +48,19 @@ builder.Services.AddDbContext<PetSearchContext>(options =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: allowReactApplication,
+    options.AddPolicy(name: allowReactProduction,
         policy =>
         {
             policy.WithOrigins("https://pet-search-react.netlify.app")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    );
+    options.AddPolicy(name: allowReactPreview,
+        policy =>
+        {
+            policy.WithOrigins("https://dev--pet-search-react.netlify.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -114,7 +124,7 @@ if (app.Environment.IsDevelopment()) // Use cors configuration to develop with o
 
 if (app.Environment.IsProduction())
 {
-    app.UseCors(allowReactApplication);
+    app.UseCors(allowReactProduction);
 }
 
 // Register endpoint groups.
