@@ -20,8 +20,8 @@ public record PetsParams(
     string Location,
     [property: Range(1, int.MaxValue, ErrorMessage = "Page must be greater than 0."), DefaultValue(1)]
     int Page = 1,
-    [property: Range(0, 500, ErrorMessage = "Distance must be between 0-500"), DefaultValue(50)]
-    int Distance = 50,
+    [property: Range(0, 500, ErrorMessage = "Distance must be between 0-500"), DefaultValue(25)]
+    int Distance = 25,
     [property:
         RegularExpression(@"^-?(recent|distance)$",
             ErrorMessage = "Only location values: 'recent' and 'distance' with optional '-' prefix are accepted"),
