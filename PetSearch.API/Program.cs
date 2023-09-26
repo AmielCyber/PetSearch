@@ -94,7 +94,7 @@ builder.Services.AddHsts(options =>
 {
     options.Preload = true;
     options.IncludeSubDomains = true;
-    options.MaxAge = TimeSpan.FromHours(1);
+    options.MaxAge = TimeSpan.FromDays(30);
 });
 // End of Services configuration.
 
@@ -125,6 +125,7 @@ if (app.Environment.IsDevelopment()) // Use cors configuration to develop with o
 if (app.Environment.IsProduction())
 {
     app.UseCors(allowReactProduction);
+    app.UseCors(allowReactPreview);
 }
 
 // Register endpoint groups.
