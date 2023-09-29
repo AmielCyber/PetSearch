@@ -1,35 +1,61 @@
 # Pet Search
-A website to find available pets for adaption within a zip code.
-Website was made with React and ASP.NET. 
+A website to search available pets for adaption within a given zip code. Users can enter a zipcode or share their
+location with the browser to locate their zipcode.
 
-ASP.NET hosted at Azure and React hosted at Netlify.
+Website was made with React and ASP.NET Web Api. React application hosted at Netlify and ASP.NET Web API hosted at
+Microsoft Azure.
+
+[Pet Search React Application GitHub Repository](https://github.com/AmielCyber/pet-search-react)
 
 ## Live Demo
 
-[React Application Live Demo](https://pet-search-react.netlify.app)
+**Note:**
+Server response may take around 10 seconds during a
+[cold start](https://azure.microsoft.com/en-us/blog/understanding-serverless-cold-start/cold) when the server is
+reactivated after 10 minutes of inactivity. I'm considering upgrading the server to 'always on' on Microsoft Azure in
+the future.
 
 [ASP.NET Live Swagger UI](https://pet-search.azurewebsites.net/swagger/index.html)
 
-**Note:** ASP.NET Server may take ~5 seconds on initial load. Long initial loading time is due to
-a [cold start](https://azure.microsoft.com/en-us/blog/understanding-serverless-cold-start/)
-where the server and the database are being instantiated after being inactive for more than 10 minutes.
-I may upgrade in the future to have the server "always on" at Azure.
+[React Application Live Demo](https://pet-search-react.netlify.app)
 
 ## Preview
 ![Desktop Preview](/Assets/DesktopPreview.gif)
 
 ![Mobile Preview](/Assets/MobilePreview.gif)
 
-
 ## Technology Stack
-* C# and [ASP.NET](https://dotnet.microsoft.com/en-us/apps/aspnet)
-* Typescript and [React](https://react.dev) with [Vite](https://vitejs.dev)
-* Entity Framework
+
+### Backend Application
+<div style="display: flex; flex-wrap: wrap; gap: 5px">
+    <img alt="C Sharp" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"/>
+    <img alt="Dotnet Core" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg"/>
+    <img alt="Azure" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg"/>
+    <img alt="MySQL" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"/>
+</div>
+
+* C# and [ASP.NET](https://dotnet.microsoft.com/en-us/apps/aspnet) Web API
+* Tested with Xunit
+* [Microsoft Azure Web App Deployment](https://azure.microsoft.com/en-us/products/app-service/web)
 * MySQL
-* Azure Web App deployment
-* OpenApi/Swagger
+* [OpenApi/Swagger](https://www.openapis.org)
+* [PetFinder API](https://www.petfinder.com/developers/v2/docs/)
+* [MapBox Geolocation API](https://www.mapbox.com)
+
+### Frontend Application
+<div style="display: flex; flex-wrap: wrap; gap: 5px">
+    <img alt="React" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"/>
+    <img alt="TypeScript" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"/>
+    <img alt="Jest" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg"/>
+    <img alt="HTML" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"/>
+    <img alt="CSS" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"/>
+</div>
+
+* [React](https://react.dev) with TypeScript and [Vite](https://vitejs.dev)
+* Tested with [ViTest](https://vitest.dev)/Jest and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 * React Router
-* Material UI
+* [Material UI](https://mui.com/material-ui/)
+* [Netlify Deployment](https://www.netlify.com)
 
 ## React Application
 I am no longer serving the React files from ASP.NET. I have decided to host the React application at Netlify instead for
@@ -83,7 +109,11 @@ dotnet user-secrets set "PetFinder:ClientSecret" "your_client_secret"
    ```bash
    dotnet ef database update -p ../PetSearch.Data
    ```
-6. Run the application:
+6. Run tests:
+   ```bash
+   dotnet test
+   ```
+7. Run the application:
    ```bash
    dotnet run
    ```
