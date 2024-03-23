@@ -82,10 +82,12 @@ cd PetSearch
 ```
 
 #### ASP.NET Setup
-Note: You must set up a local environment with MySQL and change the following in file 
-appsettings.Development.json and replace {} with your own MySQL settings:
+Note: You must set a MySQL database called 'petsearch' and create a user with DBManager privileges.
+Note: You must also set up an account with MapBox and get an access token
+
+In the file: appsettings.development.json replace the empty {} with your own MySQL settings:
 ```
-Server=localhost;Port={};User Id={};Password={};Database=app
+"DefaultConnection": "server=localhost;port=3306;database=petsearch;user={};password={}"
 ```
 1. Go to the API application of the ASP.NET project: 
 ```bash
@@ -96,6 +98,7 @@ cd ../PetSearch.API
 dotnet user-secrets init
 dotnet user-secrets set "PetFinder:ClientId" "your_client_id"
 dotnet user-secrets set "PetFinder:ClientSecret" "your_client_secret"
+dotnet user-secrets set "MapBox:AccessToken" "your_access_token"
 ```
 3. Download and install NuGet dependencies:
     ```bash
