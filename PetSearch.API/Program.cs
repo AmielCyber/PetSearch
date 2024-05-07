@@ -14,6 +14,7 @@ const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
 const string allowReactProduction = "AllowReactProduction";
+const string allowAngularProduction = "AllowAngularProduction";
 const string allowReactPreview = "AllowReactPreview";
 const string allowLocalClientDevelopment = "AllowLocalClientDevelopment";
 
@@ -57,6 +58,15 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         }
     );
+    options.AddPolicy(name: allowAngularProduction,
+        policy =>
+        {
+            policy.WithOrigins("https://pet-search-angular.vercel.app")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    );
     options.AddPolicy(name: allowReactPreview,
         policy =>
         {
@@ -70,6 +80,10 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+            policy.WithOrigins("http://localhost:4200")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -149,7 +163,8 @@ petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
     o.Parameters[4].Description = "Sort value (- Descending): distance, -distance, recent, -recent";
     return o;
 });
-// Tell our server how to handle paths that it doesnt know of but React does.
+
+// Tell our server how to handle paths that it doesn't know of but SPAs do.
 petsApi.MapGet("/{id}", PetHandler.GetSinglePet).WithName("GetSinglePet");
 locationApi.MapGet("/zipcode/{zipcode}", LocationHandler.GetLocationFromZipCode).WithName("GetLocationFromZipCode");
 locationApi.MapGet("/coordinates", LocationHandler.GetLocationFromCoordinates).WithName("GetLocationFromCoordinates");
