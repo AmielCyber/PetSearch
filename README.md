@@ -17,6 +17,7 @@ the future.
 
 [ASP.NET Live Swagger UI](https://pet-search.azurewebsites.net/swagger/index.html)
 
+[Angular Application Live Demo](https://pet-search-angular.vercel.app)
 [React Application Live Demo](https://pet-search-react.netlify.app)
 
 ## Preview
@@ -25,8 +26,6 @@ the future.
 ![Mobile Preview](/Assets/MobilePreview.gif)
 
 ## Technology Stack
-
-### Backend Application
 <div style="display: flex; flex-wrap: wrap; gap: 5px">
     <img alt="C Sharp" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"/>
     <img alt="Dotnet Core" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg"/>
@@ -41,21 +40,9 @@ the future.
 * [OpenApi/Swagger](https://www.openapis.org)
 * [PetFinder API](https://www.petfinder.com/developers/v2/docs/)
 * [MapBox Geolocation API](https://www.mapbox.com)
-
-### Frontend Application
-<div style="display: flex; flex-wrap: wrap; gap: 5px">
-    <img alt="React" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"/>
-    <img alt="TypeScript" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"/>
-    <img alt="Jest" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg"/>
-    <img alt="HTML" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"/>
-    <img alt="CSS" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"/>
-</div>
-
-* [React](https://react.dev) with TypeScript and [Vite](https://vitejs.dev)
-* Tested with [ViTest](https://vitest.dev)/Jest and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-* React Router
-* [Material UI](https://mui.com/material-ui/)
-* [Netlify Deployment](https://www.netlify.com)
+* 
+## Angular Application
+[Angular Github Source Code](https://github.com/AmielCyber/pet-search-angular)
 
 ## React Application
 I am no longer serving the React files from ASP.NET. I have decided to host the React application at Netlify instead for
