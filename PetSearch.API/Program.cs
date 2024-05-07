@@ -139,6 +139,7 @@ if (app.Environment.IsDevelopment()) // Use cors configuration to develop with o
 if (app.Environment.IsProduction())
 {
     app.UseCors(allowReactProduction);
+    app.UseCors(allowAngularProduction);
     app.UseCors(allowReactPreview);
 }
 
