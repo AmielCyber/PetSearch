@@ -9,8 +9,7 @@ public static partial class Errors
     /// </summary>
     public static class Token
     {
-        public static Error NotAuthorized => Error.Custom(
-            type: MyErrorTypes.Unauthorized,
+        public static Error Unauthorized => Error.Unauthorized(
             code: "Token.NotAuthorized",
             description: "Access token is invalid or expired."
         );

@@ -9,20 +9,19 @@ namespace PetSearch.API.Handlers;
 public class BaseHandler
 {
     /// <summary>
-    /// Returns a problem detail that is rfc7807 compliant based on the list of custom Errors
-    /// that occurred while using the PetFinder API (https://tools.ietf.org/html/rfc7807).
+    /// Maps a list Error type to a problem details object.
     /// </summary>
     /// <param name="errors">List of custom ErrorOr Errors</param>
-    /// <returns>A problem details object</returns>
+    /// <returns>A problem details object(rfc7807 compliant).</returns>
     protected static IResult GetProblems(List<Error> errors)
     {
-        var firstError = errors[0];
+        var firstError = errors.First();
 
         var statusCode = firstError.NumericType switch
         {
             (int)ErrorType.Validation => StatusCodes.Status400BadRequest,
             (int)ErrorType.NotFound => StatusCodes.Status404NotFound,
-            MyErrorTypes.Unauthorized => StatusCodes.Status401Unauthorized,
+            (int)ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status500InternalServerError,
         };
 

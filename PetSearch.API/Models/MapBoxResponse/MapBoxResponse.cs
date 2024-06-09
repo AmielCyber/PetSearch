@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace PetSearch.API.Models.MabBoxResponse;
+namespace PetSearch.API.Models.MapBoxResponse;
 
 /// <summary>
 /// The response object we get from the MapBox API.

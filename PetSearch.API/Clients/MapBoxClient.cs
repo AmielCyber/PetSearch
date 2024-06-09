@@ -2,14 +2,14 @@ using ErrorOr;
 using Microsoft.Extensions.Options;
 using PetSearch.API.Common.Errors;
 using PetSearch.API.Common.Exceptions;
-using PetSearch.API.Models.MabBoxResponse;
+using PetSearch.API.Models.MapBoxResponse;
 using PetSearch.API.StronglyTypedConfigurations;
 
 namespace PetSearch.API.Clients;
 
 /// <summary>
 /// MapBoxClient implementation to handle requests from the MapBox API.
-/// Returns Location object to our client app.
+/// Returns Location object to our client application.
 /// </summary>
 public class MapBoxClient : IMapBoxClient
 {
@@ -21,26 +21,12 @@ public class MapBoxClient : IMapBoxClient
     /// </summary>
     /// <param name="httpClient">Have access to the global HttpClient object to make external API requests.</param>
     /// <param name="options">The configuration options for using the MapBox API.</param>
-    /// <exception cref="MissingMapBoxToken">If configuration options was not set up.</exception>
     public MapBoxClient(HttpClient httpClient, IOptions<MapBoxConfiguration> options)
     {
         _httpClient = httpClient;
         MapBoxConfiguration keys = options.Value;
-        string? accessToken = keys.AccessToken;
+        Dictionary<string, string> queryParameters = keys.QueryParameters;
 
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            throw new MissingMapBoxToken();
-        }
-
-        var queryParameters = new Dictionary<string, string>
-        {
-            { "country", "us" },
-            { "limit", "1" },
-            { "types", "postcode" },
-            { "language", "en" },
-            { "access_token", accessToken }
-        };
         _queryFormUrlEncoded = new FormUrlEncodedContent(queryParameters);
     }
 
@@ -49,7 +35,8 @@ public class MapBoxClient : IMapBoxClient
     /// </summary>
     /// <param name="zipcode">Five digit zipcode to get location information.</param>
     /// <returns>Location object if successful or an Error type if response was not successful.</returns>
-    /// <exception cref="MapBoxForbidden">If we are denied from using MapBox then we should log it with our exception middleware.</exception>
+    /// <exception cref="MapBoxForbidden">If we are denied from using MapBox then we should log it with our
+    /// exception middleware.</exception>
     public async Task<ErrorOr<LocationDto>> GetLocationFromZipCode(string zipcode)
     {
         string queryString = await _queryFormUrlEncoded.ReadAsStringAsync();
@@ -120,14 +107,13 @@ public class MapBoxClient : IMapBoxClient
         {
             // Throw exception since its unexpected and something we have to handle on our end, since our
             // client app handles auto refresh token.
-            // Is catch by our global error handler and will log exception.
             throw new MapBoxForbidden();
         }
 
         return statusCode switch
         {
             400 => Errors.Location.BadRequest,
-            401 => Errors.Token.NotAuthorized,
+            401 => Errors.Token.Unauthorized,
             404 => Errors.Location.NotFound,
             _ => Errors.Location.ServerError,
         };

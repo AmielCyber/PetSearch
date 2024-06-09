@@ -11,7 +11,7 @@ public static class MapBoxClientTestHelper
         return responseStatusCode switch
         {
             HttpStatusCode.BadRequest => Errors.Location.BadRequest,
-            HttpStatusCode.Unauthorized => Errors.Token.NotAuthorized,
+            HttpStatusCode.Unauthorized => Errors.Token.Unauthorized,
             HttpStatusCode.NotFound => Errors.Location.NotFound,
             _ => Errors.Location.ServerError,
         };

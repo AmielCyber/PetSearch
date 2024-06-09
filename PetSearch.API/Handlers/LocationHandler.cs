@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using PetSearch.API.Clients;
-using PetSearch.API.Models.MabBoxResponse;
+using PetSearch.API.Models.MapBoxResponse;
 
 namespace PetSearch.API.Handlers;
 
