@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using PetSearch.Data.Common.Exceptions;
-using PetSearch.Data.Entity;
+using PetSearch.Data.Entities;
 using PetSearch.Data.Services;
 using PetSearch.Data.StronglyTypedConfigurations;
 using RichardSzalay.MockHttp;

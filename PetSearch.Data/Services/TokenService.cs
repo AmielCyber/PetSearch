@@ -2,12 +2,15 @@ using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PetSearch.Data.Common.Exceptions;
-using PetSearch.Data.Entity;
+using PetSearch.Data.Entities;
 using PetSearch.Data.Models;
 using PetSearch.Data.StronglyTypedConfigurations;
 
 namespace PetSearch.Data.Services;
 
+/// <summary>
+/// TokenService implementation for storing and retrieving token from our DB.
+/// </summary>
 public class TokenService : ITokenService
 {
     private const int TokenId = 1;
@@ -31,6 +34,10 @@ public class TokenService : ITokenService
         _requestBody = new TokenRequestBody(clientId, clientSecret);
     }
 
+    /// <summary>
+    /// Gets token from our DB if there is one, else it will create a new token from the PetFinder API.
+    /// </summary>
+    /// <returns>Token Object</returns>
     public async Task<Token> GetToken()
     {
         Token token = await _context.Tokens.FirstOrDefaultAsync(t => t.Id == TokenId) ?? await CreateToken();
@@ -43,6 +50,11 @@ public class TokenService : ITokenService
         return token;
     }
 
+    /// <summary>
+    /// Creates new token and gets access token from the PetFinder's API.
+    /// </summary>
+    /// <returns>Token Object</returns>
+    /// <exception cref="TokenUpdateException"></exception>
     private async Task<Token> CreateToken()
     {
         DateTime expiresIn = DateTime.Now.AddMinutes(55);
@@ -55,16 +67,9 @@ public class TokenService : ITokenService
             ExpiresIn = expiresIn
         };
 
-        var result = await _context.Tokens.AddAsync(token);
-        var saved = await _context.SaveChangesAsync() > 0;
-
-        if (!saved)
-        {
-            throw new TokenUpdateException("Failed to save changes.");
-        }
-
-        return result.Entity;
+        return await StoreAndRetrieveTokenInDataBase(token);
     }
+
 
     private bool TokenIsExpired(Token token)
     {
@@ -108,5 +113,16 @@ public class TokenService : ITokenService
         }
 
         return petFinderToken;
+    }
+    
+    private async Task<Token> StoreAndRetrieveTokenInDataBase(Token token)
+    {
+        var result = await _context.Tokens.AddAsync(token);
+        var saved = await _context.SaveChangesAsync() > 0;
+        if (!saved)
+        {
+            throw new TokenUpdateException("Failed to save changes.");
+        }
+        return result.Entity;
     }
 }

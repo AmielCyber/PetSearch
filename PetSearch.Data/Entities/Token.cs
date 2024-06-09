@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PetSearch.Data.Entity;
+namespace PetSearch.Data.Entities;
 
+/// <summary>
+/// Token entity to be stored and retrieve from our DB.
+/// </summary>
 public class Token
 {
     public int Id { get; set; }

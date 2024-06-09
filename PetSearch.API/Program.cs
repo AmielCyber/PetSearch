@@ -91,8 +91,8 @@ builder.Services.AddCors(options =>
     );
 });
 // Add Strongly type configuration.
-builder.Services.Configure<PetFinderConfiguration>(builder.Configuration.GetSection("PetFinder"));
-builder.Services.Configure<MapBoxConfiguration>(builder.Configuration.GetSection("MapBox"));
+builder.Services.Configure<PetFinderConfiguration>(builder.Configuration.GetRequiredSection("PetFinder"));
+builder.Services.Configure<MapBoxConfiguration>(builder.Configuration.GetRequiredSection("MapBox"));
 // Add HTTPClient to DI container.
 builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
