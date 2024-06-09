@@ -42,7 +42,7 @@ the future.
 * [MapBox Geolocation API](https://www.mapbox.com)
 * 
 ## Angular Application
-[Angular Github Source Code](https://github.com/AmielCyber/pet-search-angular)
+[Angular GitHub Source Code](https://github.com/AmielCyber/pet-search-angular)
 
 ## React Application
 I am no longer serving the React files from ASP.NET. I have decided to host the React application at Netlify instead for
@@ -69,16 +69,25 @@ cd PetSearch
 ```
 
 #### ASP.NET Setup
-Note: You must set a MySQL database called 'petsearch' and create a user with DBManager privileges.
-Note: You must also set up an account with MapBox and get an access token
+Note: You must set a MySQL database and create a username and password with DBManager privileges. You must also create a connection for MySQL.
+```SQL
+DROP USER if exists 'your-user-name'@'localhost';
+
+CREATE USER 'your-user-name'@'localhost' IDENTIFIED BY 'your-password';
+
+GRANT ALL PRIVILEGES ON * . * TO 'your-user-name'@'localhost';
+
+```
+
+Note: You must also get access tokens from MapBox and PetFinder API
 
 In the file: appsettings.development.json replace the empty {} with your own MySQL settings:
 ```
-"DefaultConnection": "server=localhost;port=3306;database=petsearch;user={};password={}"
+"DefaultConnection": "server=localhost;port=3306;database={yourDatabaseName};user={yourUserName};password={yourPassword}"
 ```
 1. Go to the API application of the ASP.NET project: 
 ```bash
-cd ../PetSearch.API
+cd ./PetSearch.API
 ```
 2. Register **your** keys:
 ```bash

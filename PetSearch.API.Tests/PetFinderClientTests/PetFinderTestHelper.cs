@@ -11,7 +11,7 @@ public static class PetFinderTestHelper
         return responseStatusCode switch
         {
             HttpStatusCode.BadRequest => Errors.Pets.BadRequest,
-            HttpStatusCode.Unauthorized => Errors.Token.NotAuthorized,
+            HttpStatusCode.Unauthorized => Errors.Token.Unauthorized,
             HttpStatusCode.NotFound => Errors.Pets.NotFound,
             _ => Errors.Pets.ServerError,
         };

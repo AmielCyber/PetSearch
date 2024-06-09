@@ -6,7 +6,7 @@ using Moq;
 using PetSearch.API.Clients;
 using PetSearch.API.Common.Errors;
 using PetSearch.API.Common.Exceptions;
-using PetSearch.API.Models.MabBoxResponse;
+using PetSearch.API.Models.MapBoxResponse;
 using PetSearch.API.StronglyTypedConfigurations;
 using RichardSzalay.MockHttp;
 

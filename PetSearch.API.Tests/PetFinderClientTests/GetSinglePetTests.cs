@@ -5,7 +5,7 @@ using Moq;
 using PetSearch.API.Clients;
 using PetSearch.API.Common.Exceptions;
 using PetSearch.API.Models.PetFinderResponse;
-using PetSearch.Data.Entity;
+using PetSearch.Data.Entities;
 using PetSearch.Data.Services;
 using RichardSzalay.MockHttp;
 

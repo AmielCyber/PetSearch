@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace PetSearch.API.Middleware;
 
 /// <summary>
-/// Our global middleware that will catch errors and logged them.
+/// Our global middleware that will catch errors and log them.
 /// </summary>
 public class ExceptionMiddleware
 {
+    private const string DefaultErrorDetail = "An error occurred while processing your request.";
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionMiddleware> _logger;
     private readonly IHostEnvironment _env;
@@ -37,15 +38,25 @@ public class ExceptionMiddleware
             {
                 Title = e.Message,
                 // Only show stack trace in development.
-                Detail = _env.IsDevelopment() ? e.StackTrace : "An error occurred while processing your request.",
+                Detail = GetErrorDetail(e),
                 Status = (int)HttpStatusCode.InternalServerError,
             };
 
 
-            // We are outside of our api controller so we need to specify JsonNamingPolicy
+            // We are outside our api controller, so we need to specify JsonNamingPolicy
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            var json = JsonSerializer.Serialize(response, options);
+            string json = JsonSerializer.Serialize(response, options);
             await context.Response.WriteAsync(json);
         }
+    }
+
+    /// <summary>
+    /// Gets the error detail from an exception.
+    /// </summary>
+    /// <param name="exception">Exception object</param>
+    /// <returns>Stacktrace string if in development, else the default error message.</returns>
+    private string? GetErrorDetail(Exception exception)
+    {
+        return _env.IsDevelopment() ? exception.StackTrace : DefaultErrorDetail;
     }
 }

@@ -36,13 +36,13 @@ public record PetDto
     [Required]
     public required string Name { get; init; }
 
-    /// <summary>Optional incomplete description from PetFinder.</summary>
+    /// <summary>Optional pet description from PetFinder.</summary>
     public string? Description { get; init; }
 
-    /// <summary>List of photos of the pet or an empty list if none are provided.</summary>
+    /// <summary>List of photos or an empty list if none are provided.</summary>
     public required PhotoSizesUrl[] Photos { get; init; } = Array.Empty<PhotoSizesUrl>();
 
-    /// <summary>Optional cropped photo of a pet.</summary>
+    /// <summary>Optional cropped primary photo.</summary>
     [JsonPropertyName("primary_photo_cropped")]
     public PhotoSizesUrl? PrimaryPhotoSizesUrlCropped { get; init; }
 
@@ -50,6 +50,6 @@ public record PetDto
     [Required]
     public required string Status { get; init; }
 
-    /// <summary>Optional distance from client's location.</summary>
+    /// <summary>Distance from request location. Null if not from search but from GET PET/{id}.</summary>
     public double? Distance { get; init; }
 }

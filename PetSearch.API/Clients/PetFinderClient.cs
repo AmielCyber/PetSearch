@@ -7,7 +7,7 @@ using PetSearch.API.Common.Errors;
 using PetSearch.API.Common.Exceptions;
 using PetSearch.API.Models.PetFinderResponse;
 using PetSearch.API.RequestHelpers;
-using PetSearch.Data.Entity;
+using PetSearch.Data.Entities;
 using PetSearch.Data.Services;
 
 namespace PetSearch.API.Clients;
@@ -148,7 +148,7 @@ public class PetFinderClient : IPetFinderClient
         return statusCode switch
         {
             400 => Errors.Pets.BadRequest,
-            401 => Errors.Token.NotAuthorized,
+            401 => Errors.Token.Unauthorized,
             404 => Errors.Pets.NotFound,
             _ => Errors.Pets.ServerError,
         };

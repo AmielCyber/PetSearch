@@ -1,11 +1,11 @@
 using ErrorOr;
-using PetSearch.API.Models.MabBoxResponse;
+using PetSearch.API.Models.MapBoxResponse;
 
 namespace PetSearch.API.Clients;
 
 /// <summary>
-/// MapBox Client interface to handle MapBox API requests.
-/// Such as getting the location information from a zipcode or coordinates.
+/// MapBox Client interface to handle MapBox API requests,
+/// such as getting the location information from a zipcode or coordinates.
 /// </summary>
 public interface IMapBoxClient
 {

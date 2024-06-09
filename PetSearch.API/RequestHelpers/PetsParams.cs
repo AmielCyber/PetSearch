@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations;
 namespace PetSearch.API.RequestHelpers;
 
 /// <summary>
-/// Pet search search query parameters. 
+/// Pet search query parameters.
 /// </summary>
-/// <param name="Type">Search for either 'dog' or 'cat'</param>
-/// <param name="Location">Pets around the given zip code. Only 5 digit zip codes are supported.</param>
+/// <param name="Type">Search for pet type, either 'dog' or 'cat'</param>
+/// <param name="Location">Pets within given zip code. Only 5 digit zip codes are supported.</param>
 /// <param name="Page">Page number in the pet list.</param>
-/// <param name="Distance">Page number in the pet list.</param>
-/// <param name="Sort">Sort value (- Descending): distance, -distance, recent, -recent</param>
+/// <param name="Distance">Distance radius from location request zipcode.</param>
+/// <param name="Sort">Sort pet list. Values(- descending): distance, -distance, recent, -recent</param>
 public record PetsParams(
     [property: Required,
                RegularExpression(@"(?:dog|cat)$", ErrorMessage = "Only types: 'cat' and 'dog' are supported")]
