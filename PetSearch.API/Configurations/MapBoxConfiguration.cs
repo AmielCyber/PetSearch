@@ -1,4 +1,4 @@
-namespace PetSearch.API.StronglyTypedConfigurations;
+namespace PetSearch.API.Configurations;
 
 /// <summary>
 /// MapBoxConfiguration for storing access token in a Singleton.
@@ -21,7 +21,9 @@ public class MapBoxConfiguration
     {
         get
         {
-            _queryParameters.TryAdd(AccessTokenKey, AccessToken);
+            if (!_queryParameters.ContainsKey(AccessTokenKey))
+                _queryParameters.Add(AccessTokenKey, AccessToken);
+
             return _queryParameters;
         }
     }

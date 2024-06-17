@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;
 using PetSearch.API.Clients;
 using PetSearch.API.Handlers;
 using PetSearch.API.Middleware;
-using PetSearch.API.StronglyTypedConfigurations;
+using PetSearch.API.Configurations;
 using PetSearch.Data;
 using PetSearch.Data.Services;
 using PetSearch.Data.StronglyTypedConfigurations;
@@ -164,8 +164,6 @@ petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
     o.Parameters[4].Description = "Sort value (- Descending): distance, -distance, recent, -recent";
     return o;
 });
-
-// Tell our server how to handle paths that it doesn't know of but SPAs do.
 petsApi.MapGet("/{id}", PetHandler.GetSinglePet).WithName("GetSinglePet");
 locationApi.MapGet("/zipcode/{zipcode}", LocationHandler.GetLocationFromZipCode).WithName("GetLocationFromZipCode");
 locationApi.MapGet("/coordinates", LocationHandler.GetLocationFromCoordinates).WithName("GetLocationFromCoordinates");

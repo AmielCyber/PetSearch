@@ -1,5 +1,5 @@
 using ErrorOr;
-using PetSearch.API.Models.MapBoxResponse;
+using PetSearch.API.Models;
 
 namespace PetSearch.API.Clients;
 
