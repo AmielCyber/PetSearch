@@ -12,7 +12,6 @@ using PetSearch.Data.StronglyTypedConfigurations;
 
 const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
-const string mapBoxUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
 const string allowReactProduction = "AllowReactProduction";
 const string allowAngularProduction = "AllowAngularProduction";
 const string allowReactPreview = "AllowReactPreview";
@@ -44,7 +43,7 @@ builder.Services.AddSwaggerGen(opts =>
 builder.Services.AddDbContext<PetSearchContext>(options =>
 {
     string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                          throw new InvalidOperationException("Connection string 'Default Connection not found!");
+                              throw new InvalidOperationException("Connection string 'Default Connection not found!");
     options.UseMySQL(connectionString);
 });
 builder.Services.AddCors(options =>
@@ -103,7 +102,10 @@ builder.Services.AddHttpClient<TokenService>(client => { client.BaseAddress = ne
 builder.Services.AddTransient<ITokenService>(
     s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>())
 );
-builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client => { client.BaseAddress = new Uri(mapBoxUrl); });
+builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client =>
+{
+    client.BaseAddress = new Uri(MapBoxConfiguration.Url);
+});
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -119,6 +121,7 @@ if (app.Environment.IsProduction())
     // Add HTTP Strict Transport Security. Sends the browser this header. 
     app.UseHsts();
 }
+
 app.UseHttpsRedirection(); // Configure the HTTP request pipeline.
 // Ensure Database is created.
 {
@@ -153,6 +156,7 @@ if (app.Environment.IsProduction())
     app.MapGet("/", () => Results.Redirect("https://pet-search-react.netlify.app", true))
         .ExcludeFromDescription();
 }
+
 // Register endpoints with their handlers.
 petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
 {

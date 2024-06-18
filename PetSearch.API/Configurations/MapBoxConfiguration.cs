@@ -1,30 +1,42 @@
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace PetSearch.API.Configurations;
 
 /// <summary>
-/// MapBoxConfiguration for storing access token in a Singleton.
+/// MapBoxConfiguration for obtaining MapBox API options such as access token.
 /// </summary>
 public class MapBoxConfiguration
 {
-    private const string AccessTokenKey = "access_token";
+    /// <summary>
+    /// The endpoint to call the MapBoxApi
+    /// </summary>
+    public const string Url = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
 
-    private readonly Dictionary<string, string> _queryParameters = new()
+    /// <summary>
+    /// Options query to get the desired result along with our access token.
+    /// </summary>
+    public readonly string OptionsQuery = "";
+
+    /// <summary>
+    /// Access token to have asp net configuration initialize.
+    /// </summary>
+    public required string AccessToken
     {
-        { "country", "us" },
-        { "limit", "1" },
-        { "types", "postcode" },
-        { "language", "en" },
-    };
-
-    public required string AccessToken { init; get; }
-
-    public Dictionary<string, string> QueryParameters
-    {
-        get
+        init
         {
-            if (!_queryParameters.ContainsKey(AccessTokenKey))
-                _queryParameters.Add(AccessTokenKey, AccessToken);
-
-            return _queryParameters;
+            var options = new Dictionary<string, string>()
+            {
+                { "country", "us" },
+                { "limit", "1" },
+                { "types", "postcode" },
+                { "language", "en" },
+                { "access_token", value }
+            };
+            _accessToken = value;
+            OptionsQuery = QueryHelpers.AddQueryString(string.Empty, options!);
         }
+        get => _accessToken;
     }
+
+    private readonly string _accessToken = String.Empty;
 }

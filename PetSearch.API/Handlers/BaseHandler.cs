@@ -1,5 +1,5 @@
 using ErrorOr;
-using PetSearch.API.Common.Errors;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace PetSearch.API.Handlers;
 
@@ -25,6 +25,19 @@ public class BaseHandler
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return Results.Problem(statusCode: statusCode, detail: firstError.Description);
+        return TypedResults.Problem(statusCode: statusCode, detail: firstError.Description);
+    }
+
+    protected static ProblemHttpResult GetProblemHttpResult(Error error)
+    {
+        int statusCode = error.NumericType switch
+        {
+            (int)ErrorType.Validation => StatusCodes.Status400BadRequest,
+            (int)ErrorType.NotFound => StatusCodes.Status404NotFound,
+            (int)ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+            _ => StatusCodes.Status500InternalServerError,
+        };
+        
+        return TypedResults.Problem(statusCode: statusCode, detail: error.Description);
     }
 }
