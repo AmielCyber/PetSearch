@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 namespace PetSearch.API.Models.PetFinderResponse;
 
 /// <summary>
-/// Pet object containing the pet's attributes.
+/// Pet object containing the pet's attributes from a PetFinder API response.
 /// </summary>
 /// <param name="Pet">Pet details.</param>
-public record SinglePetResponse(
+public record SinglePet(
     [property: JsonPropertyName("animal"), Required]
-    PetDto Pet
+    Entities.Pet Pet
 );

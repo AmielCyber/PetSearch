@@ -1,6 +1,6 @@
 using ErrorOr;
 
-namespace PetSearch.API.Common.Errors;
+namespace PetSearch.API.Errors;
 
 public static partial class Errors
 {

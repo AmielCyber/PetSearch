@@ -6,11 +6,11 @@ using PetSearch.API.Clients;
 using PetSearch.API.Handlers;
 using PetSearch.API.Middleware;
 using PetSearch.API.Configurations;
+using PetSearch.API.Profiles;
 using PetSearch.Data;
 using PetSearch.Data.Services;
 using PetSearch.Data.StronglyTypedConfigurations;
 
-const string petFinderUrl = "https://api.petfinder.com/v2/";
 const string petFinderTokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 const string allowReactProduction = "AllowReactProduction";
 const string allowAngularProduction = "AllowAngularProduction";
@@ -95,13 +95,15 @@ builder.Services.Configure<MapBoxConfiguration>(builder.Configuration.GetRequire
 // Add HTTPClient to DI container.
 builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
 {
-    client.BaseAddress = new Uri(petFinderUrl);
+    client.BaseAddress = new Uri(PetFinderConfiguration.Uri);
 });
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient<TokenService>(client => { client.BaseAddress = new Uri(petFinderTokenUrl); });
 builder.Services.AddTransient<ITokenService>(
     s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>())
 );
+builder.Services.AddSingleton<PetProfile>();
+builder.Services.AddSingleton<PaginationMetaDataProfile>();
 builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client =>
 {
     client.BaseAddress = new Uri(MapBoxConfiguration.Url);

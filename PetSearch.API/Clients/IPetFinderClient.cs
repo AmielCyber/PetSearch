@@ -1,6 +1,6 @@
 using ErrorOr;
-using PetSearch.API.Models.PetFinderResponse;
-using PetSearch.API.RequestHelpers;
+using PetSearch.API.Models;
+using PetSearch.API.Helpers;
 
 namespace PetSearch.API.Clients;
 
@@ -10,6 +10,6 @@ namespace PetSearch.API.Clients;
 /// </summary>
 public interface IPetFinderClient
 {
-    public Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams);
+    public Task<ErrorOr<PagedList<PetDto>>> GetPets(PetsParams petsParams);
     public Task<ErrorOr<PetDto>> GetSinglePet(int id);
 }

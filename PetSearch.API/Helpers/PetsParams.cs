@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace PetSearch.API.RequestHelpers;
+namespace PetSearch.API.Helpers;
 
 /// <summary>
 /// Pet search query parameters.
