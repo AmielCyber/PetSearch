@@ -50,7 +50,7 @@ public class PetFinderClient : IPetFinderClient
     /// <returns>A PageList PetDto with a list of available pets and the pagination object if the object
     /// was successfully fetched, else returns a custom error type.</returns>
     /// <exception cref="ForbiddenAccessException">Throws when we get forbidden response from PetFinder Api.</exception>
-    public async Task<ErrorOr<PagedList<PetDto>>> GetPets(PetsParams petsParams)
+    public async Task<ErrorOr<PagedList<PetDto>>> GetPetsAsync(PetsParams petsParams)
     {
         await SetAuthenticationHeaders();
         using HttpResponseMessage response = await _client.GetAsync(GetPathWithQueryString(petsParams));
@@ -74,7 +74,7 @@ public class PetFinderClient : IPetFinderClient
     /// <returns>A PetDto if the request was successful, else returns an ErrorOr Error if request return without a 200
     /// response code.</returns>
     /// <exception cref="ForbiddenAccessException">Throws when we get forbidden response from PetFinder Api.</exception>
-    public async Task<ErrorOr<PetDto>> GetSinglePet(int id)
+    public async Task<ErrorOr<PetDto>> GetSinglePetAsync(int id)
     {
         await SetAuthenticationHeaders();
 

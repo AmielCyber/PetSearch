@@ -64,7 +64,7 @@ public class PetFinderClientTest
             new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
 
         // Action
-        ErrorOr<PagedList<PetDto>> response = await petFinderClient.GetPets(_petsParamsMock);
+        ErrorOr<PagedList<PetDto>> response = await petFinderClient.GetPetsAsync(_petsParamsMock);
 
         // Assert
         Assert.IsType<PagedList<PetDto>>(response.Value);
@@ -85,7 +85,7 @@ public class PetFinderClientTest
             new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
 
         // Act
-        ErrorOr<PagedList<PetDto>> response = await petFinderClient.GetPets(_petsParamsMock);
+        ErrorOr<PagedList<PetDto>> response = await petFinderClient.GetPetsAsync(_petsParamsMock);
 
 
         // Assert
@@ -109,7 +109,7 @@ public class PetFinderClientTest
 
         // Act and Assert
         await Assert.ThrowsAsync<ForbiddenAccessException>(async () =>
-            await petFinderClient.GetPets(_petsParamsMock)
+            await petFinderClient.GetPetsAsync(_petsParamsMock)
         );
     }
 
@@ -124,7 +124,7 @@ public class PetFinderClientTest
         var petFinderClient =
             new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
 
-        ErrorOr<PetDto> result = await petFinderClient.GetSinglePet(Id);
+        ErrorOr<PetDto> result = await petFinderClient.GetSinglePetAsync(Id);
 
         Assert.IsType<PetDto>(result.Value);
         _mockHttp.Expect(_expectedPetUri).Respond(HttpStatusCode.Accepted);
@@ -143,7 +143,7 @@ public class PetFinderClientTest
         var petFinderClient =
             new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
 
-        ErrorOr<PetDto> result = await petFinderClient.GetSinglePet(0);
+        ErrorOr<PetDto> result = await petFinderClient.GetSinglePetAsync(0);
 
         // Assert
         _mockHttp.Expect(_expectedPetUri).Respond(statusCode);
@@ -163,7 +163,7 @@ public class PetFinderClientTest
 
         // Act and Assert
         await Assert.ThrowsAsync<ForbiddenAccessException>(async () =>
-            await petFinderClient.GetSinglePet(Id)
+            await petFinderClient.GetSinglePetAsync(Id)
         );
     }
 

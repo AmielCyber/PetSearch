@@ -10,6 +10,6 @@ namespace PetSearch.API.Clients;
 /// </summary>
 public interface IPetFinderClient
 {
-    public Task<ErrorOr<PagedList<PetDto>>> GetPets(PetsParams petsParams);
-    public Task<ErrorOr<PetDto>> GetSinglePet(int id);
+    public Task<ErrorOr<PagedList<PetDto>>> GetPetsAsync(PetsParams petsParams);
+    public Task<ErrorOr<PetDto>> GetSinglePetAsync(int id);
 }

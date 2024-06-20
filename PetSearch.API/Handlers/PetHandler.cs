@@ -29,12 +29,13 @@ public class PetHandler : BaseHandler
     [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest,
         MediaTypeNames.Application.ProblemJson)]
     [Tags("pets")]
-    public static async Task<Results<Ok<List<PetDto>>, ProblemHttpResult>> GetPets([AsParameters] PetsParams petsParams,
-        [FromServices] IPetFinderClient petFinderClient,
+    public static async Task<Results<Ok<List<PetDto>>, ProblemHttpResult>> GetPetsAsync(
+        [AsParameters] PetsParams petsParams,
+        IPetFinderClient petFinderClient,
         HttpContext httpContext
     )
     {
-        ErrorOr<PagedList<PetDto>> petsResult = await petFinderClient.GetPets(petsParams);
+        ErrorOr<PagedList<PetDto>> petsResult = await petFinderClient.GetPetsAsync(petsParams);
         if (petsResult.IsError)
             return GetProblemHttpResult(petsResult.FirstError);
 
@@ -59,10 +60,12 @@ public class PetHandler : BaseHandler
         MediaTypeNames.Application.ProblemJson)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     [Tags("pets")]
-    public static async Task<Results<Ok<PetDto>, ProblemHttpResult>> GetSinglePet([FromRoute] int id,
-        [FromServices] IPetFinderClient petFinderClient)
+    public static async Task<Results<Ok<PetDto>, ProblemHttpResult>> GetSinglePetAsync(
+        [FromRoute] int id,
+        IPetFinderClient petFinderClient
+    )
     {
-        ErrorOr<PetDto> petResult = await petFinderClient.GetSinglePet(id);
+        ErrorOr<PetDto> petResult = await petFinderClient.GetSinglePetAsync(id);
         return petResult.IsError
             ? GetProblemHttpResult(petResult.FirstError)
             : TypedResults.Ok(petResult.Value);

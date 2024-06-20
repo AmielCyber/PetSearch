@@ -160,7 +160,7 @@ if (app.Environment.IsProduction())
 }
 
 // Register endpoints with their handlers.
-petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
+petsApi.MapGet("/", PetHandler.GetPetsAsync).WithName("GetPets").WithOpenApi(o =>
 {
     // Doing this ugly workaround since swagger currently does not support xml docs with AsParameters objects.
     o.Parameters[0].Description = "Search for either 'dog' or 'cat'.";
@@ -170,7 +170,7 @@ petsApi.MapGet("/", PetHandler.GetPets).WithName("GetPets").WithOpenApi(o =>
     o.Parameters[4].Description = "Sort value (- Descending): distance, -distance, recent, -recent";
     return o;
 });
-petsApi.MapGet("/{id}", PetHandler.GetSinglePet).WithName("GetSinglePet");
+petsApi.MapGet("/{id}", PetHandler.GetSinglePetAsync).WithName("GetSinglePet");
 locationApi.MapGet("/zipcode/{zipcode}", LocationHandler.GetLocationFromZipCode).WithName("GetLocationFromZipCode");
 locationApi.MapGet("/coordinates", LocationHandler.GetLocationFromCoordinates).WithName("GetLocationFromCoordinates");
 
