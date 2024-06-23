@@ -1,8 +1,6 @@
-using System.Net.Mime;
 using System.Text.Json;
 using ErrorOr;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using PetSearch.API.Clients;
 using PetSearch.API.Models;
 using PetSearch.API.Helpers;
@@ -19,20 +17,17 @@ public class PetHandler : BaseHandler
     /// </remarks>
     /// <param name="petsParams">Pets parameters</param>
     /// <param name="petFinderClient">Dependency Injection for IPetFinderClient</param>
-    /// <param name="httpContext">Dependency Injection to add add response headers</param>
+    /// <param name="httpResponse">Dependency Injection to add add response headers</param>
     /// <returns>
     /// Returns a list available pets and the pagination object if successful, else returns a
     /// problem detail.
     /// </returns>
     /// <response code="200">Returns the pet list from the search query and its pagination metadata.</response>
     /// <response code="400">If search parameters contains invalid values.</response>
-    [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest,
-        MediaTypeNames.Application.ProblemJson)]
-    [Tags("pets")]
     public static async Task<Results<Ok<List<PetDto>>, ProblemHttpResult>> GetPetsAsync(
         [AsParameters] PetsParams petsParams,
         IPetFinderClient petFinderClient,
-        HttpContext httpContext
+        HttpResponse httpResponse
     )
     {
         ErrorOr<PagedList<PetDto>> petsResult = await petFinderClient.GetPetsAsync(petsParams);
@@ -41,7 +36,8 @@ public class PetHandler : BaseHandler
 
         List<PetDto> petDtoList = petsResult.Value.Items;
         PaginationMetaData paginationMetaData = petsResult.Value.Pagination;
-        httpContext.Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetaData));
+        httpResponse.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetaData));
+        httpResponse.Headers.CacheControl = ($"private,max-age={TimeSpan.FromMinutes(10).TotalSeconds}");
 
         return TypedResults.Ok(petDtoList);
     }
@@ -56,12 +52,8 @@ public class PetHandler : BaseHandler
     /// <response code="200">Returns the pet object.</response>
     /// <response code="400">If id is not an integer.</response>
     /// <response code="404">If pet with passed id is not found or has been adopted.</response>
-    [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest,
-        MediaTypeNames.Application.ProblemJson)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
-    [Tags("pets")]
     public static async Task<Results<Ok<PetDto>, ProblemHttpResult>> GetSinglePetAsync(
-        [FromRoute] int id,
+        int id,
         IPetFinderClient petFinderClient
     )
     {

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PetSearch.API.Models;
 
 /// <summary>
@@ -5,4 +7,7 @@ namespace PetSearch.API.Models;
 /// </summary>
 /// <param name="Zipcode">A five digit zipcode.</param>
 /// <param name="LocationName">The location name in the following format: {City}, {State} {Zipcode}, {Country}</param>
-public record LocationDto(string Zipcode, string LocationName);
+public record LocationDto(
+    [property: Required] string Zipcode,
+    [property: Required] string LocationName
+);

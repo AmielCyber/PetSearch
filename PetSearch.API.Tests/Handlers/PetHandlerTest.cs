@@ -16,14 +16,14 @@ public class PetHandlerTest
 {
     private readonly PetsParams _params;
     private readonly Mock<IPetFinderClient> _mockPetFinderClient;
-    private readonly HttpContext _mockHttpContext;
+    private readonly HttpResponse _mockHttpResponse;
     private readonly string _expectedJsonSerializer;
 
     public PetHandlerTest()
     {
         _params = new PetsParams("dog", "92010");
         _mockPetFinderClient = new Mock<IPetFinderClient>();
-        _mockHttpContext = new DefaultHttpContext();
+        _mockHttpResponse = new DefaultHttpContext().Response;
 
         var petList = new List<PetDto>();
         petList.Add(PetDtoData.GetPetWithAllAttributesInitialized());
@@ -38,18 +38,18 @@ public class PetHandlerTest
     [Fact]
     public async Task GetPets_ShouldReturnAn_OkPetListResult()
     {
-        var result = await PetHandler.GetPetsAsync(_params, _mockPetFinderClient.Object, _mockHttpContext);
-        
+        var result = await PetHandler.GetPetsAsync(_params, _mockPetFinderClient.Object, _mockHttpResponse);
+
         Assert.IsType<Ok<List<PetDto>>>(result.Result);
     }
-    
+
     [Fact]
     public async Task GetPetsAsync_ShouldSet_XPaginationHeaders()
     {
-        await PetHandler.GetPetsAsync(_params, _mockPetFinderClient.Object, _mockHttpContext);
+        await PetHandler.GetPetsAsync(_params, _mockPetFinderClient.Object, _mockHttpResponse);
 
-        Assert.True(_mockHttpContext.Response.Headers.ContainsKey("X-Pagination"));
-        _mockHttpContext.Response.Headers.TryGetValue("X-Pagination", out var paginationStringVal);
+        Assert.True(_mockHttpResponse.Headers.ContainsKey("X-Pagination"));
+        _mockHttpResponse.Headers.TryGetValue("X-Pagination", out var paginationStringVal);
         Assert.Equal(paginationStringVal, _expectedJsonSerializer);
     }
 
@@ -57,7 +57,7 @@ public class PetHandlerTest
     public async Task GetSinglePetAsync_ShouldReturnAnOkPetDto()
     {
         var result = await PetHandler.GetSinglePetAsync(0, _mockPetFinderClient.Object);
-        
+
         Assert.IsType<Ok<PetDto>>(result.Result);
     }
 }
