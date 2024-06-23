@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Net.Mime;
 using ErrorOr;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -26,14 +25,10 @@ public class LocationHandler : BaseHandler
     /// <response code="200">Returns the location object.</response>
     /// <response code="400">If the given zipcode is invalid.</response>
     /// <response code="404">No location found with the given zipcode.</response>
-    [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest,
-        MediaTypeNames.Application.ProblemJson)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
-    [Tags("location")]
-    public static async Task<Results<Ok<LocationDto>, ProblemHttpResult>> GetLocationFromZipCode(
+    public static async Task<Results<Ok<LocationDto>, ProblemHttpResult>> GetLocationFromZipCodeAsync(
         [RegularExpression(@"^\d{5}$", ErrorMessage = "Zip Code must be 5 digits.")] [FromRoute]
         string zipcode,
-        [FromServices] IMapBoxClient mapBoxClient
+        IMapBoxClient mapBoxClient
     )
     {
         ErrorOr<LocationDto> locationResult = await mapBoxClient.GetLocationFromZipCode(zipcode);
@@ -57,14 +52,10 @@ public class LocationHandler : BaseHandler
     /// <response code="200">Returns the location object.</response>
     /// <response code="400">If the given zipcode is invalid.</response>
     /// <response code="404">No location found with the given zipcode.</response>
-    [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest,
-        MediaTypeNames.Application.ProblemJson)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
-    [Tags("location")]
-    public static async Task<Results<Ok<LocationDto>, ProblemHttpResult>> GetLocationFromCoordinates(
+    public static async Task<Results<Ok<LocationDto>, ProblemHttpResult>> GetLocationFromCoordinatesAsync(
         [FromQuery] double longitude,
         [FromQuery] double latitude,
-        [FromServices] IMapBoxClient mapBoxClient
+        IMapBoxClient mapBoxClient
     )
     {
         ErrorOr<LocationDto> locationResult = await mapBoxClient.GetLocationFromCoordinates(longitude, latitude);
