@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace PetSearch.API.Models.PetFinderResponse;
 
 /// <summary>
-/// Pagination object for our client app to navigate through the available pets in their area.
+/// Pagination object from PetFinder response.
 /// </summary>
 /// <param name="CountPerPage">Number of pets to have in the list.</param>
 /// <param name="TotalCount">Total amount of pets from the search.</param>

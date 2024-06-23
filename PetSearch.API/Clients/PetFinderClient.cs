@@ -1,12 +1,13 @@
+using System.Net;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Web;
 using ErrorOr;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using PetSearch.API.Common.Errors;
-using PetSearch.API.Common.Exceptions;
+using Microsoft.AspNetCore.Http.Extensions;
+using PetSearch.API.Exceptions;
+using PetSearch.API.Models;
 using PetSearch.API.Models.PetFinderResponse;
-using PetSearch.API.RequestHelpers;
+using PetSearch.API.Profiles;
+using PetSearch.API.Helpers;
 using PetSearch.Data.Entities;
 using PetSearch.Data.Services;
 
@@ -18,18 +19,27 @@ namespace PetSearch.API.Clients;
 /// </summary>
 public class PetFinderClient : IPetFinderClient
 {
+    private const string PetSearchEndpoint = "animals";
     private readonly HttpClient _client;
     private readonly ITokenService _tokenService;
+    private readonly PetProfile _petProfile;
+    private readonly PaginationMetaDataProfile _paginationMetaDataProfile;
 
     /// <summary>
     /// Set up dependency injection. 
     /// </summary>
     /// <param name="client">Have access to the global HttpClient object to make external API requests.</param>
-    /// <param name="tokenService"></param>
-    public PetFinderClient(HttpClient client, ITokenService tokenService)
+    /// <param name="tokenService">The token used to make calls the PetFinder Api.</param>
+    /// <param name="petProfile">Pet profile mapper to map pet entities to pet DTOs.</param>
+    /// <param name="paginationMetaDataProfile">PaginationMetaData profile mapper
+    /// to map Pagination to PaginationMetaData</param>
+    public PetFinderClient(HttpClient client, ITokenService tokenService, PetProfile petProfile,
+        PaginationMetaDataProfile paginationMetaDataProfile)
     {
-        _client = client; // To use the http client with a base address.
+        _client = client;
         _tokenService = tokenService;
+        _petProfile = petProfile;
+        _paginationMetaDataProfile = paginationMetaDataProfile;
     }
 
     /// <summary>
@@ -37,32 +47,24 @@ public class PetFinderClient : IPetFinderClient
     /// </summary>
     /// <param name="petsParams">Search Query object with its properties as the accepted parameters to use
     /// in the search query.</param>
-    /// <returns>A PetsResponseDto with a list of available pets and the pagination object if the object
-    /// was successfully fetched. Else, returns a custom error type.</returns>
-    /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    public async Task<ErrorOr<PetsResponseDto>> GetPets(PetsParams petsParams)
+    /// <returns>A PageList PetDto with a list of available pets and the pagination object if the object
+    /// was successfully fetched, else returns a custom error type.</returns>
+    /// <exception cref="ForbiddenAccessException">Throws when we get forbidden response from PetFinder Api.</exception>
+    public async Task<ErrorOr<PagedList<PetDto>>> GetPetsAsync(PetsParams petsParams)
     {
-        Token token = await _tokenService.GetToken();
-        string petUriQuery = GetPetsQueryString(petsParams);
-
-        _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token.AccessToken);
-
-        using HttpResponseMessage response = await _client.GetAsync($"animals?{petUriQuery}");
-
+        await SetAuthenticationHeaders();
+        using HttpResponseMessage response = await _client.GetAsync(GetPathWithQueryString(petsParams));
         if (!response.IsSuccessStatusCode)
-        {
-            return GetPetsError((int)response.StatusCode);
-        }
+            return GetPetsError(response.StatusCode);
 
-        PetResponse? petResponse = await response.Content.ReadFromJsonAsync<PetResponse>();
-
+        PaginatedPetList? petResponse = await response.Content.ReadFromJsonAsync<PaginatedPetList>();
         if (petResponse is null)
-        {
-            return GetPetsError(500);
-        }
+            return GetPetsError(HttpStatusCode.InternalServerError);
 
-        return MapPetResponseToPetsResponseDto(petResponse);
+        var petList = _petProfile.MapPetListToPetDtoList(petResponse.Animals);
+        var paginationMetaData = _paginationMetaDataProfile.MapPaginationToPaginationMetaData(petResponse.Pagination);
+
+        return new PagedList<PetDto>(petList, paginationMetaData);
     }
 
     /// <summary>
@@ -71,39 +73,21 @@ public class PetFinderClient : IPetFinderClient
     /// <param name="id">The id of the pet.</param>
     /// <returns>A PetDto if the request was successful, else returns an ErrorOr Error if request return without a 200
     /// response code.</returns>
-    /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    public async Task<ErrorOr<PetDto>> GetSinglePet(int id)
+    /// <exception cref="ForbiddenAccessException">Throws when we get forbidden response from PetFinder Api.</exception>
+    public async Task<ErrorOr<PetDto>> GetSinglePetAsync(int id)
     {
-        Token token = await _tokenService.GetToken();
-        _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token.AccessToken);
+        await SetAuthenticationHeaders();
 
-        using HttpResponseMessage response = await _client.GetAsync($"animals/{id}");
-
+        using HttpResponseMessage response = await _client.GetAsync($"{PetSearchEndpoint}/{id}");
         if (!response.IsSuccessStatusCode)
-        {
-            return GetPetsError((int)response.StatusCode);
-        }
+            return GetPetsError(response.StatusCode);
 
-        SinglePetResponse? petResponse = await response.Content.ReadFromJsonAsync<SinglePetResponse>();
-
+        SinglePet? petResponse = await response.Content.ReadFromJsonAsync<SinglePet>();
         if (petResponse is null)
-        {
-            return GetPetsError(500);
-        }
+            return GetPetsError(HttpStatusCode.InternalServerError);
 
         // Only return PetDto.
-        return petResponse.Pet;
-    }
-
-    /// <summary>
-    /// Maps a PetResponse object to a PetsResponseDto to send to the client.
-    /// </summary>
-    /// <param name="petResponse">The partial pet response object we got from pets request from PetFinder API.</param>
-    /// <returns>PetsResponseDto that lists all available pets and the server's pagination.</returns>
-    private PetsResponseDto MapPetResponseToPetsResponseDto(PetResponse petResponse)
-    {
-        return new PetsResponseDto(petResponse.Animals, petResponse.Pagination);
+        return _petProfile.MapPetToPetDto(petResponse.Pet);
     }
 
     /// <summary>
@@ -111,22 +95,32 @@ public class PetFinderClient : IPetFinderClient
     /// </summary>
     /// <param name="petsParams">Pets Parameter object containing search queries as properties.</param>
     /// <returns>A query string to use for the PetFinder API</returns>
-    public static string GetPetsQueryString(PetsParams petsParams)
+    private static string GetPathWithQueryString(PetsParams petsParams)
     {
-        var queryStringBuilder = new StringBuilder();
+        var query = new QueryBuilder
+        {
+            // Required.
+            { "type", petsParams.Type },
+            // Required.
+            { "location", petsParams.Location },
+            // Default page=1.
+            { "page", petsParams.Page.ToString() },
+            // Default distance=50.
+            { "distance", petsParams.Distance.ToString() },
+            // Default sort=recent.
+            { "sort", petsParams.Sort }
+        };
+        return $"{PetSearchEndpoint}{query}";
+    }
 
-        // Required.
-        queryStringBuilder.AppendFormat($"type={HttpUtility.UrlEncode(petsParams.Type)}");
-        // Required.
-        queryStringBuilder.AppendFormat($"&location={HttpUtility.UrlEncode(petsParams.Location)}");
-        // Default page=1.
-        queryStringBuilder.AppendFormat($"&page={HttpUtility.UrlEncode(petsParams.Page.ToString())}");
-        // Default distance=50.
-        queryStringBuilder.AppendFormat($"&distance={HttpUtility.UrlEncode(petsParams.Distance.ToString())}");
-        // Default sort=recent.
-        queryStringBuilder.AppendFormat($"&sort={HttpUtility.UrlEncode(petsParams.Sort)}");
-
-        return queryStringBuilder.ToString();
+    /// <summary>
+    /// Sets authentication headers to our http client to access PetFinder API.
+    /// </summary>
+    private async Task SetAuthenticationHeaders()
+    {
+        Token token = await _tokenService.GetToken();
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token.AccessToken);
     }
 
     /// <summary>
@@ -134,23 +128,18 @@ public class PetFinderClient : IPetFinderClient
     /// </summary>
     /// <param name="statusCode">The request status code that we got from an error.</param>
     /// <returns>ErrorOr Error type.</returns>
-    /// <exception cref="PetFinderForbidden">Throws when an error code is 403 since it is not a client error.</exception>
-    private static Error GetPetsError(int statusCode)
+    /// <exception cref="ForbiddenAccessException">Throws when we get forbidden response from PetFinder Api.</exception>
+    private static Error GetPetsError(HttpStatusCode statusCode)
     {
-        if (statusCode == 403)
-        {
-            // Throw exception since its unexpected and something we have to handle on our end, since our
-            // client app handles auto refresh token.
-            // Is catch by our global error handler and will log exception.
-            throw new PetFinderForbidden();
-        }
+        if (statusCode == HttpStatusCode.Forbidden)
+            throw new ForbiddenAccessException("Forbidden response generated from PetFinder API");
 
         return statusCode switch
         {
-            400 => Errors.Pets.BadRequest,
-            401 => Errors.Token.Unauthorized,
-            404 => Errors.Pets.NotFound,
-            _ => Errors.Pets.ServerError,
+            HttpStatusCode.BadRequest => Errors.Errors.Pets.BadRequest,
+            HttpStatusCode.Unauthorized => Errors.Errors.Token.Unauthorized,
+            HttpStatusCode.NotFound => Errors.Errors.Pets.NotFound,
+            _ => Errors.Errors.Pets.ServerError,
         };
     }
 }

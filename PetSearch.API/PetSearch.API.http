@@ -1,0 +1,19 @@
+@PetSearch.API_HostAddress = http://localhost:5005
+
+### Get Location Data for San Diego's zipcode.
+GET {{PetSearch.API_HostAddress}}/api/location/zipcode/92101
+Accept: application/json
+
+### Get Location Data for San Diego Zoo's coordinates.
+GET {{PetSearch.API_HostAddress}}/api/location/coordinates?latitude=32.7310927&longitude=-117.1543808
+Accept: application/json
+
+### Get a list of pets
+GET {{PetSearch.API_HostAddress}}/api/pets?type=dog&location=92101
+
+### Get the second page of pet list with radius distance of 5 miles and sorted by oldest post
+GET {{PetSearch.API_HostAddress}}/api/pets?type=dog&location=92101&page=2&distance=5&sort=-recent
+
+### Get the pet information with id: 71109141 
+GET {{PetSearch.API_HostAddress}}/api/pets/71109141
+

@@ -1,5 +1,5 @@
 using ErrorOr;
-using PetSearch.API.Common.Errors;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace PetSearch.API.Handlers;
 
@@ -9,15 +9,13 @@ namespace PetSearch.API.Handlers;
 public class BaseHandler
 {
     /// <summary>
-    /// Maps a list Error type to a problem details object.
+    /// Maps an Error type to a problem details object.
     /// </summary>
-    /// <param name="errors">List of custom ErrorOr Errors</param>
+    /// <param name="error">Error</param>
     /// <returns>A problem details object(rfc7807 compliant).</returns>
-    protected static IResult GetProblems(List<Error> errors)
+    protected static ProblemHttpResult GetProblemHttpResult(Error error)
     {
-        var firstError = errors.First();
-
-        var statusCode = firstError.NumericType switch
+        int statusCode = error.NumericType switch
         {
             (int)ErrorType.Validation => StatusCodes.Status400BadRequest,
             (int)ErrorType.NotFound => StatusCodes.Status404NotFound,
@@ -25,6 +23,6 @@ public class BaseHandler
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return Results.Problem(statusCode: statusCode, detail: firstError.Description);
+        return TypedResults.Problem(statusCode: statusCode, detail: error.Description);
     }
 }
