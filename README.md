@@ -1,13 +1,10 @@
 # Pet Search
 
-A restful API to search available pets for adaption within a given zip code. Users can also enter a zipcode or enter a
-set
-of coordinates to get the city's information in order to search for available pets.
+A user-friendly API allows for the search of available pets for adoption within a specific zip code. Users can also input a zip code or a set of coordinates to obtain the city’s information, enabling them to search for available pets in that area.
 
-Web API was made with ASP.NET Web Api and .NET 8.
+The Web application was developed using ASP.NET Web API and .NET 8.
 
-Angular application hosted at Vercel, React application hosted at Netlify and ASP.NET Web API hosted at
-Microsoft Azure.
+The Angular application is hosted on Vercel, the React application is hosted on Netlify, and the ASP.NET Web API is hosted on Microsoft Azure.
 
 [Pet Search Angular Application GitHub Repository](https://github.com/AmielCyber/pet-search-angular)
 
@@ -103,7 +100,7 @@ GRANT ALL PRIVILEGES ON * . * TO
 
 Note: You must also get access tokens from MapBox and PetFinder API
 
-In the file: appsettings.development.json replace the empty {} with your own MySQL settings:
+In the file: appsettings.development.json replace the brackets ({}) and the contents inside with your own MySQL settings:
 
 ```
 "DefaultConnection": "server=localhost;port=3306;database={yourDatabaseName};user={yourUserName};password={yourPassword}"
@@ -115,7 +112,7 @@ In the file: appsettings.development.json replace the empty {} with your own MyS
 cd ./PetSearch.API
 ```
 
-2. Register **your** keys:
+2. Register **your** PetFinder and MapBox keys:
 
 ```bash
 dotnet user-secrets init
