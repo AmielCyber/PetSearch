@@ -28,8 +28,8 @@ public static class ServiceConfiguration
                 Version = "1.0",
                 Contact = new OpenApiContact
                 {
-                    Name = "Amiel",
-                    Url = new Uri("https://github.com/AmielCyber")
+                    Name = "Pet Search Client Application",
+                    Url = new Uri("https://pet-search-angular.vercel.app")
                 },
             });
             var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
