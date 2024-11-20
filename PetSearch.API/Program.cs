@@ -6,7 +6,7 @@ using PetSearch.API.Models;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.ConfigureServices();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 app.ConfigurePipeline();
 
 RouteGroupBuilder petsApi = app.MapGroup("/api/pets").WithParameterValidation().WithTags("pets");

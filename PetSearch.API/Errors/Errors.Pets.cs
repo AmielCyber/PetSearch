@@ -30,7 +30,7 @@ public static partial class Errors
         /// </summary>
         public static Error ServerError => Error.Failure(
             code: "Pets.ServerError",
-            description: "Something went wrong with your request."
+            description: "Something went wrong with your request. Please try again."
         );
     }
 }
