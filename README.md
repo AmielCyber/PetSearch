@@ -86,17 +86,19 @@ cd PetSearch
 Note: You must set a MySQL database and create a username and password with DBManager privileges. You must also create a
 connection for MySQL.
 
+In MySQL Workbench run this script and replace 'username' and 'password'
 ```SQL
 DROP
-USER if exists 'your-user-name'@'localhost';
+USER if exists 'username'@'localhost';
 
 CREATE
-USER 'your-user-name'@'localhost' IDENTIFIED BY 'your-password';
+USER 'username'@'localhost' IDENTIFIED BY 'password';
 
 GRANT ALL PRIVILEGES ON * . * TO
-'your-user-name'@'localhost';
+'username'@'localhost';
 
 ```
+Then set up a connection on [MySQL Workbench](https://dev.mysql.com/doc/workbench/en/wb-mysql-connections-new.html) with the credentials you put above.
 
 Note: You must also get access tokens from MapBox and PetFinder API
 
