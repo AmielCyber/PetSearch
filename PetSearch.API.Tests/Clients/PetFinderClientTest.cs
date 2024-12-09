@@ -1,11 +1,12 @@
 using System.Net;
 using System.Net.Http.Json;
-using ErrorOr;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
 using PetSearch.API.Clients;
 using PetSearch.API.Configurations;
 using PetSearch.API.Entities;
+using PetSearch.API.Problems;
 using PetSearch.API.Exceptions;
 using PetSearch.API.Helpers;
 using PetSearch.API.Models;
@@ -31,6 +32,7 @@ public class PetFinderClientTest
     private readonly PaginationMetaDataProfile _paginationMetaDataProfile;
     private const int Id = 0;
     private readonly string _expectedPetUri;
+    private readonly IExpectedProblems _expectedProblems;
 
     public PetFinderClientTest()
     {
@@ -47,6 +49,7 @@ public class PetFinderClientTest
         _petProfile = new PetProfile();
         _paginationMetaDataProfile = new PaginationMetaDataProfile();
         _expectedPetUri = $"{_petFinderUri}/{Id}";
+        _expectedProblems = new PetFinderProblems();
     }
 
     [Theory]
@@ -61,20 +64,22 @@ public class PetFinderClientTest
         PaginatedPetList paginatedPetList = new PaginatedPetList(petList, pagination);
         var request = SetGetPetsRequest(HttpStatusCode.Accepted, paginatedPetList);
         var petFinderClient =
-            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
+            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile,
+                _expectedProblems);
 
         // Action
-        ErrorOr<PagedList<PetDto>> response = await petFinderClient.GetPetsAsync(_petsParamsMock);
+        Results<Ok<PagedList<PetDto>>, ProblemHttpResult> result = await petFinderClient.GetPetsAsync(_petsParamsMock);
 
+        var response = Assert.IsType<Ok<PagedList<PetDto>>>(result.Result);
         // Assert
         Assert.IsType<PagedList<PetDto>>(response.Value);
         Assert.Equal(1, _mockHttp.GetMatchCount(request));
     }
 
     [Theory]
-    [ClassData(typeof(PetFinderClientErrorsData))]
+    [ClassData(typeof(PetFinderClientProblemsData))]
     public async Task GetPets_ShouldReturnCorrectError_IfResponseIsUnsuccessful(
-        HttpStatusCode statusCode, Error expectedError
+        HttpStatusCode statusCode
     )
     {
         // Arrange
@@ -82,16 +87,17 @@ public class PetFinderClientTest
         httpClient.BaseAddress = _petFinderUri;
         var request = SetGetPetsRequest(statusCode);
         var petFinderClient =
-            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
+            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile,
+                _expectedProblems);
 
         // Act
-        ErrorOr<PagedList<PetDto>> response = await petFinderClient.GetPetsAsync(_petsParamsMock);
-
+        Results<Ok<PagedList<PetDto>>, ProblemHttpResult> result = await petFinderClient.GetPetsAsync(_petsParamsMock);
+        ProblemHttpResult problemHttpResult = Assert.IsType<ProblemHttpResult>(result.Result);
 
         // Assert
         Assert.Equal(1, _mockHttp.GetMatchCount(request));
         _mockHttp.Expect(MapBoxConfiguration.Url).Respond(statusCode);
-        Assert.Equal(expectedError, response.FirstError);
+        Assert.Equal((int)statusCode, problemHttpResult.StatusCode);
     }
 
     [Fact]
@@ -105,7 +111,8 @@ public class PetFinderClientTest
         PaginatedPetList paginatedPetList = new PaginatedPetList(petList, pagination);
         SetGetPetsRequest(HttpStatusCode.Forbidden, paginatedPetList);
         var petFinderClient =
-            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
+            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile,
+                _expectedProblems);
 
         // Act and Assert
         await Assert.ThrowsAsync<ForbiddenAccessException>(async () =>
@@ -122,18 +129,20 @@ public class PetFinderClientTest
         SetGetSinglePetRequest(Id, HttpStatusCode.Accepted, pet);
 
         var petFinderClient =
-            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
+            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile,
+                _expectedProblems);
 
-        ErrorOr<PetDto> result = await petFinderClient.GetSinglePetAsync(Id);
+        Results<Ok<PetDto>, ProblemHttpResult> response = await petFinderClient.GetSinglePetAsync(Id);
+        var result = Assert.IsType<Ok<PetDto>>(response.Result);
 
         Assert.IsType<PetDto>(result.Value);
         _mockHttp.Expect(_expectedPetUri).Respond(HttpStatusCode.Accepted);
     }
 
     [Theory]
-    [ClassData(typeof(PetFinderClientErrorsData))]
+    [ClassData(typeof(PetFinderClientProblemsData))]
     public async Task GetSinglePet_ShouldReturnCorrectError_IfResponseIsUnsuccessful(
-        HttpStatusCode statusCode, Error expectedError
+        HttpStatusCode statusCode
     )
     {
         using HttpClient httpClient = _mockHttp.ToHttpClient();
@@ -141,15 +150,16 @@ public class PetFinderClientTest
         SetGetSinglePetRequest(Id, statusCode, null);
 
         var petFinderClient =
-            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
+            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile,
+                _expectedProblems);
 
-        ErrorOr<PetDto> result = await petFinderClient.GetSinglePetAsync(0);
+        Results<Ok<PetDto>, ProblemHttpResult> result = await petFinderClient.GetSinglePetAsync(0);
+        ProblemHttpResult problemHttpResult = Assert.IsType<ProblemHttpResult>(result.Result);
 
         // Assert
         _mockHttp.Expect(_expectedPetUri).Respond(statusCode);
-        Assert.Equal(expectedError, result.FirstError);
+        Assert.Equal((int)statusCode, problemHttpResult.StatusCode);
     }
-
 
     [Fact]
     public async Task GetSinglePet_ShouldThrowForbiddenAccess_IfApiStatusCodeIs403()
@@ -159,7 +169,8 @@ public class PetFinderClientTest
         httpClient.BaseAddress = _petFinderUri;
         SetGetSinglePetRequest(Id, HttpStatusCode.Forbidden, null);
         var petFinderClient =
-            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile);
+            new PetFinderClient(httpClient, _mockTokenService.Object, _petProfile, _paginationMetaDataProfile,
+                _expectedProblems);
 
         // Act and Assert
         await Assert.ThrowsAsync<ForbiddenAccessException>(async () =>

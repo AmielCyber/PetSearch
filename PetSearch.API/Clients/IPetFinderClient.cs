@@ -1,4 +1,4 @@
-using ErrorOr;
+using Microsoft.AspNetCore.Http.HttpResults;
 using PetSearch.API.Models;
 using PetSearch.API.Helpers;
 
@@ -10,6 +10,6 @@ namespace PetSearch.API.Clients;
 /// </summary>
 public interface IPetFinderClient
 {
-    public Task<ErrorOr<PagedList<PetDto>>> GetPetsAsync(PetsParams petsParams);
-    public Task<ErrorOr<PetDto>> GetSinglePetAsync(int id);
+    public Task<Results<Ok<PagedList<PetDto>>, ProblemHttpResult>> GetPetsAsync(PetsParams petsParams);
+    public Task<Results<Ok<PetDto>, ProblemHttpResult>> GetSinglePetAsync(int id);
 }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using ErrorOr;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using PetSearch.API.Clients;
@@ -10,7 +9,7 @@ namespace PetSearch.API.Handlers;
 /// <summary>
 /// Handler function for the endpoint: "/api/location"
 /// </summary>
-public class LocationHandler : BaseHandler
+public class LocationHandler 
 {
     /// <summary>
     /// Gets the location information from a zipcode.
@@ -31,11 +30,7 @@ public class LocationHandler : BaseHandler
         IMapBoxClient mapBoxClient
     )
     {
-        ErrorOr<LocationDto> locationResult = await mapBoxClient.GetLocationFromZipCode(zipcode);
-
-        return locationResult.IsError
-            ? GetProblemHttpResult(locationResult.FirstError)
-            : TypedResults.Ok(locationResult.Value);
+        return await mapBoxClient.GetLocationFromZipCode(zipcode);
     }
 
     /// <summary>
@@ -58,10 +53,7 @@ public class LocationHandler : BaseHandler
         IMapBoxClient mapBoxClient
     )
     {
-        ErrorOr<LocationDto> locationResult = await mapBoxClient.GetLocationFromCoordinates(longitude, latitude);
+        return await mapBoxClient.GetLocationFromCoordinates(longitude, latitude);
 
-        return locationResult.IsError
-            ? GetProblemHttpResult(locationResult.FirstError)
-            : TypedResults.Ok(locationResult.Value);
     }
 }

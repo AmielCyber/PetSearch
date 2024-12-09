@@ -27,4 +27,8 @@
       <ProjectReference Include="..\PetSearch.API\PetSearch.API.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Helpers\" />
+    </ItemGroup>
+
 </Project>

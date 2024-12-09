@@ -1,11 +1,13 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
-using ErrorOr;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using Moq;
 using PetSearch.API.Clients;
 using PetSearch.API.Configurations;
+using PetSearch.API.Problems;
 using PetSearch.API.Exceptions;
 using PetSearch.API.Models;
 using PetSearch.API.Tests.Data;
@@ -26,6 +28,7 @@ public class MapBoxClientTest
     private readonly Mock<IOptions<MapBoxConfiguration>> _mapBoxOptionsMock;
     private readonly string _accessTokenValue;
     private readonly LocationDto _expectedDefaultLocationDto;
+    private readonly IExpectedProblems _expectedProblems;
 
     public MapBoxClientTest()
     {
@@ -40,6 +43,7 @@ public class MapBoxClientTest
         };
         _mapBoxOptionsMock = new Mock<IOptions<MapBoxConfiguration>>();
         _mapBoxOptionsMock.Setup(options => options.Value).Returns(mapBoxConfiguration);
+        _expectedProblems = new MapBoxProblems();
     }
 
     [Fact]
@@ -51,12 +55,12 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         var result = await mapBoxClient.GetLocationFromZipCode(DefaultZipCode);
-        var locationDto = result.Value;
-
+        LocationDto? locationDto = Assert.IsType<Ok<LocationDto>>(result.Result).Value;
         // Assert
         Assert.NotNull(locationDto);
         Assert.IsType<LocationDto>(locationDto);
@@ -73,7 +77,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await mapBoxClient.GetLocationFromZipCode(DefaultZipCode);
@@ -92,7 +96,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await mapBoxClient.GetLocationFromZipCode(DefaultZipCode);
@@ -112,7 +116,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await mapBoxClient.GetLocationFromZipCode(DefaultZipCode);
@@ -124,9 +128,9 @@ public class MapBoxClientTest
     }
 
     [Theory]
-    [ClassData(typeof(MapBoxClientErrorsData))]
+    [ClassData(typeof(MapBoxClientProblemsData))]
     public async Task GetLocationFromZipCode_ShouldReturnCorrectError_IfResultIsUnsuccessful(
-        HttpStatusCode statusCode, Error expectedError
+        HttpStatusCode statusCode
     )
     {
         // Arrange
@@ -135,14 +139,15 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
-        var result = await mapBoxClient.GetLocationFromZipCode(DefaultZipCode);
+        Results<Ok<LocationDto>, ProblemHttpResult> result = await mapBoxClient.GetLocationFromZipCode(DefaultZipCode);
 
+        ProblemHttpResult problemResult = Assert.IsType<ProblemHttpResult>(result.Result);
         // Assert
         _mockHttp.Expect(MapBoxConfiguration.Url).Respond(statusCode);
-        Assert.Equal(expectedError, result.FirstError);
+        Assert.Equal((int)statusCode, problemResult.StatusCode);
     }
 
     [Fact]
@@ -154,7 +159,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await Assert.ThrowsAsync<ForbiddenAccessException>(
@@ -171,11 +176,12 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
-        var result = await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
-        var locationDto = result.Value;
+        Results<Ok<LocationDto>, ProblemHttpResult> result =
+            await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
+        LocationDto? locationDto = Assert.IsType<Ok<LocationDto>>(result.Result).Value;
 
         // Assert
         Assert.NotNull(locationDto);
@@ -193,7 +199,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
@@ -212,7 +218,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
@@ -232,7 +238,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
@@ -240,14 +246,14 @@ public class MapBoxClientTest
         // Assert
         Assert.Equal(1, _mockHttp.GetMatchCount(request));
         _mockHttp.Expect(MapBoxConfiguration.Url)
-            .WithContent(DefaultLongitude.ToString())
-            .WithContent(DefaultLatitude.ToString());
+            .WithContent(DefaultLongitude.ToString(CultureInfo.InvariantCulture))
+            .WithContent(DefaultLatitude.ToString(CultureInfo.InvariantCulture));
     }
 
     [Theory]
-    [ClassData(typeof(MapBoxClientErrorsData))]
+    [ClassData(typeof(MapBoxClientProblemsData))]
     public async Task GetLocationFromCoordinates_ShouldReturnCorrectError_IfResultIsUnsuccessful(
-        HttpStatusCode statusCode, Error expectedError
+        HttpStatusCode statusCode
     )
     {
         // Arrange
@@ -256,14 +262,17 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
-        var result = await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
+        Results<Ok<LocationDto>, ProblemHttpResult> result =
+            await mapBoxClient.GetLocationFromCoordinates(DefaultLongitude, DefaultLatitude);
+
+        ProblemHttpResult problemResult = Assert.IsType<ProblemHttpResult>(result.Result);
 
         // Assert
         _mockHttp.Expect(MapBoxConfiguration.Url).Respond(statusCode);
-        Assert.Equal(expectedError, result.FirstError);
+        Assert.Equal((int)statusCode, problemResult.StatusCode);
     }
 
     [Fact]
@@ -275,7 +284,7 @@ public class MapBoxClientTest
         HttpClient mockHttpClient = _mockHttp.ToHttpClient();
         mockHttpClient.BaseAddress = _mapBoxUri;
 
-        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object);
+        var mapBoxClient = new MapBoxClient(mockHttpClient, _mapBoxOptionsMock.Object, _expectedProblems);
 
         // Act
         await Assert.ThrowsAsync<ForbiddenAccessException>(

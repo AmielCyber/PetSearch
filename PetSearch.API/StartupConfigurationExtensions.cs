@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using PetSearch.API.Clients;
 using PetSearch.API.Configurations;
+using PetSearch.API.Problems;
 using PetSearch.API.Middleware;
 using PetSearch.API.Profiles;
 using PetSearch.Data;
@@ -33,6 +34,7 @@ public static class StartupConfigurationExtensions
         // Add HTTPClient to DI container.
         builder.Services.AddHttpClient<IPetFinderClient, PetFinderClient>(client =>
         {
+            // TODO: Add retry policy
             client.BaseAddress = new Uri(PetFinderConfiguration.Uri);
         });
         builder.Services.AddMemoryCache();
@@ -40,6 +42,8 @@ public static class StartupConfigurationExtensions
         builder.Services.AddTransient<ITokenService>(
             s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>())
         );
+        builder.Services.AddKeyedSingleton<IExpectedProblems, MapBoxProblems>("mapBoxProblems");
+        builder.Services.AddKeyedSingleton<IExpectedProblems, PetFinderProblems>("petFinderProblems");
         builder.Services.AddSingleton<PetProfile>();
         builder.Services.AddSingleton<PaginationMetaDataProfile>();
         builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client =>
@@ -60,15 +64,16 @@ public static class StartupConfigurationExtensions
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         if (app.Environment.IsProduction())
+        {
             // Add HTTP Strict Transport Security. Sends the browser this header. 
             app.UseHsts();
+            app.UseHttpsRedirection(); // Configure the HTTPS request pipeline.
+        }
 
-        app.UseHttpsRedirection(); // Configure the HTTPS request pipeline.
         app.UseMiddleware<ExceptionMiddleware>(); // Global error handling middleware.
         app.UseStatusCodePages(); // Add a problem details that have no response body and an error status code.
         app.UseSwagger(); // Expose swagger.
         app.UseSwaggerUI(); // Show swagger UI @ /swagger/index.html
-        app.UseRouting(); // Move default middleware below the client-app middleware to short-circuit client-app routes. 
         if (app.Environment.IsDevelopment()) // Use cors configuration to develop with our client app.
             app.UseCors(ServiceConfiguration.AllowLocalClientDevelopment);
 
