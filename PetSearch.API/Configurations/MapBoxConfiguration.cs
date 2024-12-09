@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace PetSearch.API.Configurations;
@@ -24,16 +25,16 @@ public class MapBoxConfiguration
     {
         init
         {
-            var options = new Dictionary<string, string>()
+            IDictionary<string, string?> options = new Dictionary<string, string?>()
             {
                 { "country", "us" },
                 { "limit", "1" },
                 { "types", "postcode" },
                 { "language", "en" },
                 { "access_token", value }
-            };
+            }.ToImmutableDictionary();
             _accessToken = value;
-            OptionsQuery = QueryHelpers.AddQueryString(string.Empty, options!);
+            OptionsQuery = QueryHelpers.AddQueryString(string.Empty, options);
         }
         get => _accessToken;
     }
