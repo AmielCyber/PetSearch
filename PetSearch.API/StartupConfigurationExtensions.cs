@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using PetSearch.API.Clients;
 using PetSearch.API.Configurations;
+using PetSearch.API.Problems;
 using PetSearch.API.Middleware;
 using PetSearch.API.Profiles;
 using PetSearch.Data;
@@ -41,6 +42,8 @@ public static class StartupConfigurationExtensions
         builder.Services.AddTransient<ITokenService>(
             s => new CachedTokenService(s.GetRequiredService<TokenService>(), s.GetRequiredService<IMemoryCache>())
         );
+        builder.Services.AddKeyedSingleton<IExpectedProblems, MapBoxProblems>("mapBoxProblems");
+        builder.Services.AddKeyedSingleton<IExpectedProblems, PetFinderProblems>("petFinderProblems");
         builder.Services.AddSingleton<PetProfile>();
         builder.Services.AddSingleton<PaginationMetaDataProfile>();
         builder.Services.AddHttpClient<IMapBoxClient, MapBoxClient>(client =>

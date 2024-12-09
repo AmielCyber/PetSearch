@@ -1,5 +1,4 @@
 using System.Text.Json;
-using ErrorOr;
 using Microsoft.AspNetCore.Http.HttpResults;
 using PetSearch.API.Clients;
 using PetSearch.API.Models;
@@ -7,7 +6,7 @@ using PetSearch.API.Helpers;
 
 namespace PetSearch.API.Handlers;
 
-public class PetHandler : BaseHandler
+public class PetHandler 
 {
     /// <summary>
     /// Get a list of available pets for adoption. 
@@ -17,7 +16,7 @@ public class PetHandler : BaseHandler
     /// </remarks>
     /// <param name="petsParams">Pets parameters</param>
     /// <param name="petFinderClient">Dependency Injection for IPetFinderClient</param>
-    /// <param name="httpResponse">Dependency Injection to add add response headers</param>
+    /// <param name="httpResponse">Dependency Injection to add response headers</param>
     /// <returns>
     /// Returns a list available pets and the pagination object if successful, else returns a
     /// problem detail.
@@ -30,15 +29,15 @@ public class PetHandler : BaseHandler
         HttpResponse httpResponse
     )
     {
-        ErrorOr<PagedList<PetDto>> petsResult = await petFinderClient.GetPetsAsync(petsParams);
-        if (petsResult.IsError)
-            return GetProblemHttpResult(petsResult.FirstError);
+        Results<Ok<PagedList<PetDto>>, ProblemHttpResult> results = await petFinderClient.GetPetsAsync(petsParams);
 
-        List<PetDto> petDtoList = petsResult.Value.Items;
-        PaginationMetaData paginationMetaData = petsResult.Value.Pagination;
+        if (results.Result is not Ok<PagedList<PetDto>> petsResult)
+            return results.Result as ProblemHttpResult ?? TypedResults.Problem(statusCode: 500);
+        
+        List<PetDto> petDtoList = petsResult.Value?.Items ?? new List<PetDto>();
+        PaginationMetaData paginationMetaData = petsResult.Value?.Pagination ?? new PaginationMetaData(0,0,0,0);
         httpResponse.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetaData));
         httpResponse.Headers.CacheControl = ($"private,max-age={TimeSpan.FromMinutes(10).TotalSeconds}");
-
         return TypedResults.Ok(petDtoList);
     }
 
@@ -57,9 +56,6 @@ public class PetHandler : BaseHandler
         IPetFinderClient petFinderClient
     )
     {
-        ErrorOr<PetDto> petResult = await petFinderClient.GetSinglePetAsync(id);
-        return petResult.IsError
-            ? GetProblemHttpResult(petResult.FirstError)
-            : TypedResults.Ok(petResult.Value);
+        return await petFinderClient.GetSinglePetAsync(id);
     }
 }

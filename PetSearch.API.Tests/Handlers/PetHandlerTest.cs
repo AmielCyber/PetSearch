@@ -15,6 +15,7 @@ namespace PetSearch.API.Tests.Handlers;
 public class PetHandlerTest
 {
     private readonly PetsParams _params;
+    private readonly int _id;
     private readonly Mock<IPetFinderClient> _mockPetFinderClient;
     private readonly HttpResponse _mockHttpResponse;
     private readonly string _expectedJsonSerializer;
@@ -22,6 +23,7 @@ public class PetHandlerTest
     public PetHandlerTest()
     {
         _params = new PetsParams("dog", "92010");
+        _id = 1;
         _mockPetFinderClient = new Mock<IPetFinderClient>();
         _mockHttpResponse = new DefaultHttpContext().Response;
 
@@ -31,9 +33,11 @@ public class PetHandlerTest
         var paginationMetaData = new PaginationMetaData(1, 2, 1, 2);
 
         var pagedList = new PagedList<PetDto>(petList, paginationMetaData);
-        _mockPetFinderClient.Setup(c => c.GetPetsAsync(_params)).ReturnsAsync(pagedList);
+        _mockPetFinderClient.Setup(c => c.GetPetsAsync(_params)).ReturnsAsync(TypedResults.Ok(pagedList));
+        _mockPetFinderClient.Setup(c => c.GetSinglePetAsync(_id)).ReturnsAsync(TypedResults.Ok(petList[0]));
         _expectedJsonSerializer = JsonSerializer.Serialize(paginationMetaData);
     }
+
 
     [Fact]
     public async Task GetPets_ShouldReturnAn_OkPetListResult()
@@ -56,7 +60,7 @@ public class PetHandlerTest
     [Fact]
     public async Task GetSinglePetAsync_ShouldReturnAnOkPetDto()
     {
-        var result = await PetHandler.GetSinglePetAsync(0, _mockPetFinderClient.Object);
+        var result = await PetHandler.GetSinglePetAsync(_id, _mockPetFinderClient.Object);
 
         Assert.IsType<Ok<PetDto>>(result.Result);
     }

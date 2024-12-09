@@ -1,4 +1,4 @@
-using ErrorOr;
+using Microsoft.AspNetCore.Http.HttpResults;
 using PetSearch.API.Models;
 
 namespace PetSearch.API.Clients;
@@ -9,6 +9,6 @@ namespace PetSearch.API.Clients;
 /// </summary>
 public interface IMapBoxClient
 {
-    public Task<ErrorOr<LocationDto>> GetLocationFromZipCode(string zipcode);
-    public Task<ErrorOr<LocationDto>> GetLocationFromCoordinates(double longitude, double latitude);
+    public Task<Results<Ok<LocationDto>, ProblemHttpResult>> GetLocationFromZipCode(string zipcode);
+    public Task<Results<Ok<LocationDto>, ProblemHttpResult>> GetLocationFromCoordinates(double longitude, double latitude);
 }
