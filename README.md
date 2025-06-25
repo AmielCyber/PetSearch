@@ -1,4 +1,9 @@
-# Pet Search
+# Pet Search [ARCHIEVED]
+
+## NOTE:
+This project has been moved to https://github.com/AmielCyber/DotnetPetSearch and will no longer be recieving updates in this repository.
+##
+
 
 A user-friendly API allows for the search of available pets for adoption within a specific zip code. Users can also input a zip code or a set of coordinates to obtain the city’s information, enabling them to search for available pets in that area.
 
